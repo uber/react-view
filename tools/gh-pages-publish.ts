@@ -1,8 +1,10 @@
 const { cd, exec, echo, touch } = require('shelljs')
+//@ts-ignore
 const { readFileSync } = require('fs')
 const url = require('url')
 
 let repoUrl
+//@ts-ignore
 let pkg = JSON.parse(readFileSync('package.json') as any)
 if (typeof pkg.repository === 'object') {
   if (!pkg.repository.hasOwnProperty('url')) {

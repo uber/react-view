@@ -2,7 +2,9 @@ const path = require('path')
 const { fork } = require('child_process')
 const colors = require('colors')
 
+// @ts-ignore
 const { readFileSync, writeFileSync } = require('fs')
+// @ts-ignore
 const pkg = JSON.parse(readFileSync(path.resolve(__dirname, '..', 'package.json')))
 
 pkg.scripts.prepush = 'npm run test:prod && npm run build'
