@@ -5,12 +5,12 @@ cache:
 notifications:
   email: false
 node_js:
-  - '10'
-  - '12'
+  - "10"
+  - "12"
 script:
   - npm run test:prod && npm run build
 after_success:
-  - npm run travis-deploy-once "npm run report-coverage"
+  - npm run travis-deploy-once
   - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run travis-deploy-once "npm run deploy-docs"; fi
   - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run travis-deploy-once "npm run semantic-release"; fi
 branches:
