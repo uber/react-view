@@ -59,8 +59,9 @@
     ]
   },
   "prettier": {
-    "semi": false,
+    "semi": true,
     "singleQuote": true,
+    "bracketSpacing": false,
     "trailingComma": "es5"
   },
   "commitlint": {
@@ -70,12 +71,13 @@
   },
   "dependencies": {
     "@babel/code-frame": "^7.5.5",
+    "@babel/core": "^7.6.4",
     "@babel/generator": "^7.6.4",
     "@babel/preset-react": "^7.6.3",
     "@babel/template": "^7.6.0",
     "@babel/traverse": "^7.6.3",
     "@babel/types": "^7.6.3",
-    "@miksu/prettier": "^1.18.2",
+    "@miksu/prettier": "^1.18.3",
     "baseui": "^9.13.0",
     "copy-to-clipboard": "^3.2.0",
     "just-clone": "^3.1.0",
@@ -84,7 +86,6 @@
     "react-simple-code-editor": "^0.10.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.4",
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@storybook/addon-actions": "^5.2.5",

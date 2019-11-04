@@ -6,8 +6,8 @@ module.exports = ({ config }) => {
         loader: require.resolve('awesome-typescript-loader'),
       },
     ],
-  })
-  config['node'] = { fs: 'empty' }
-  config.resolve.extensions.push('.ts', '.tsx')
-  return config
-}
+  });
+  config['node'] = { fs: 'empty' };
+  config.resolve.extensions.push('.ts', '.tsx');
+  return config;
+};

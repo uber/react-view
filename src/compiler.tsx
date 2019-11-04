@@ -7,7 +7,7 @@ import presetReact from '@babel/preset-react';
 
 const errorBoundary = (
   Element: React.FC | React.ComponentClass | undefined,
-  errorCallback: (error: Error) => void,
+  errorCallback: (error: Error) => void
 ) => {
   class ErrorBoundary extends React.Component {
     componentDidCatch(error: Error) {
@@ -22,13 +22,11 @@ const errorBoundary = (
 };
 
 const evalCode = (ast: babel.types.Node, scope: any) => {
-  const transformedCode = transformFromAstSync(
-    ast as babel.types.Node,
-    undefined,
-    {
-      presets: [presetReact],
-    },
-  );
+  const transformedCode = transformFromAstSync(ast as babel.types.Node, undefined, {
+    presets: [presetReact],
+    inputSourceMap: false as any,
+    sourceMaps: false,
+  });
   const resultCode = transformedCode ? transformedCode.code : '';
   const scopeKeys = Object.keys(scope);
   const scopeValues = Object.values(scope);
@@ -40,7 +38,7 @@ const evalCode = (ast: babel.types.Node, scope: any) => {
 const generateElement = (
   ast: babel.types.Node,
   scope: any,
-  errorCallback: (error: Error) => void,
+  errorCallback: (error: Error) => void
 ) => {
   return errorBoundary(evalCode(ast, scope), errorCallback);
 };
@@ -50,13 +48,12 @@ const transpile = (
   transformations: ((ast: babel.types.Node) => babel.types.Node)[],
   scope: any,
   setOutput: (params: {component: React.ComponentClass | null}) => void,
-  setError: (error: string | null) => void,
+  setError: (error: string | null) => void
 ) => {
   try {
-    const ast = transformations.reduce(
-      (result, transformation) => transformation(result),
-      parse(code) as babel.types.Node,
-    );
+    const ast = transformations.reduce((result, transformation) => transformation(result), parse(
+      code
+    ) as babel.types.Node);
     const component = generateElement(ast, scope, (error: Error) => {
       setError(error.toString());
     });
@@ -74,14 +71,7 @@ const Compiler: React.FC<{
   setError: (error: string | null) => void;
   transformations: ((ast: babel.types.Node) => babel.types.Node)[];
   PlaceholderElement: React.FC;
-}> = ({
-  scope,
-  code,
-  setError,
-  transformations,
-  PlaceholderElement,
-  minHeight,
-}) => {
+}> = ({scope, code, setError, transformations, PlaceholderElement, minHeight}) => {
   const [output, setOutput] = React.useState<{
     component: React.ComponentClass | null;
   }>({component: null});
@@ -113,7 +103,4 @@ const Compiler: React.FC<{
   );
 };
 
-export default React.memo(
-  Compiler,
-  (prevProps, nextProps) => prevProps.code === nextProps.code,
-);
+export default React.memo(Compiler, (prevProps, nextProps) => prevProps.code === nextProps.code);
