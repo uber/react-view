@@ -6,12 +6,14 @@ import Yard from './yard'
 //import {withRouter} from 'next/router';
 import { useStyletron } from 'baseui'
 
-const YardWrapper: React.FC<
-  TYardProps & { placeholderHeight: number; queryStringName: string; router: any }
-> = ({ placeholderHeight, queryStringName, ...restProps }) => {
+const YardWrapper: React.FC<TYardProps & { queryStringName?: string }> = ({
+  minHeight,
+  queryStringName,
+  ...restProps
+}) => {
   const [useCss] = useStyletron()
   const placeholderCx = useCss({
-    height: `${placeholderHeight}px`,
+    height: `${minHeight}px`,
     width: '100%',
     display: 'flex',
     justifyContent: 'center',
@@ -21,15 +23,15 @@ const YardWrapper: React.FC<
   return (
     <Card>
       <Yard
-        minHeight={placeholderHeight}
+        minHeight={minHeight}
         pathname="/"
         queryStringName={queryStringName}
         placeholderElement={() => {
-          if (!placeholderHeight) return null
+          if (!minHeight) return null
 
           return (
             <div className={placeholderCx}>
-              <Spinner size={placeholderHeight > 50 ? 50 : placeholderHeight} />
+              <Spinner size={minHeight > 50 ? 50 : minHeight} />
             </div>
           )
         }}

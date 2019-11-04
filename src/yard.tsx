@@ -11,14 +11,6 @@ import { ButtonGroup } from 'baseui/button-group'
 import copy from 'copy-to-clipboard'
 import debounce from 'lodash/debounce'
 
-// code sandbox stuff
-//@ts-ignore
-import CodeSandboxer from 'react-codesandboxer'
-//@ts-ignore
-import { version } from '../../../package.json'
-//@ts-ignore
-import { codesandboxIndexCode } from '../const'
-
 // transformations, code generation
 import { transformBeforeCompilation } from './ast'
 import { getCode, formatCode } from './code-generator'
@@ -39,7 +31,7 @@ import Overrides from './overrides'
 import ThemeEditor from './theme-editor'
 
 // other UIs
-import { Beta, YardTabs, YardTab } from './styled-components'
+import { YardTabs, YardTab } from './styled-components'
 import PopupError from './popup-error'
 
 // compiler
@@ -317,33 +309,7 @@ const Yard: React.FC<
         >
           Reset
         </Button>
-        <CodeSandboxer
-          key="js"
-          examplePath="/example.js"
-          example={state.code}
-          providedFiles={{
-            'index.js': {
-              content: codesandboxIndexCode,
-            },
-          }}
-          template="create-react-app"
-          name={componentName}
-          dependencies={{
-            baseui: version,
-            react: '16.8.6',
-            'react-dom': '16.8.6',
-            'react-scripts': '3.0.1',
-            'styletron-engine-atomic': '1.4.0',
-            'styletron-react': '5.2.0',
-          }}
-          children={() => (
-            <Button kind={KIND.secondary} size={SIZE.compact}>
-              CodeSandbox
-            </Button>
-          )}
-        />
       </ButtonGroup>
-      <Beta />
     </React.Fragment>
   )
 }
