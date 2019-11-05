@@ -1,16 +1,16 @@
-import * as React from 'react'
-import { useStyletron } from 'baseui'
-import { StyledLink } from 'baseui/link'
-import { assertUnreachable, useValueDebounce } from './utils'
-import { PropTypes } from './const'
-import { Input } from 'baseui/input'
-import { Radio, RadioGroup } from 'baseui/radio'
-import { Checkbox } from 'baseui/checkbox'
-import { Select, SIZE } from 'baseui/select'
-import { StatefulTooltip } from 'baseui/tooltip'
-import PopupError from './popup-error'
-import Editor from './editor'
-import { TPropValue } from './types'
+import * as React from 'react';
+import {useStyletron} from 'baseui';
+import {StyledLink} from 'baseui/link';
+import {assertUnreachable, useValueDebounce} from './utils';
+import {PropTypes} from './const';
+import {Input} from 'baseui/input';
+import {Radio, RadioGroup} from 'baseui/radio';
+import {Checkbox} from 'baseui/checkbox';
+import {Select, SIZE} from 'baseui/select';
+import {StatefulTooltip} from 'baseui/tooltip';
+import PopupError from './popup-error';
+import Editor from './editor';
+import {TPropValue} from './types';
 
 const getTooltip = (description: string, type: string, name: string) => (
   <span>
@@ -19,18 +19,18 @@ const getTooltip = (description: string, type: string, name: string) => (
     </p>
     <p>{description}</p>
   </span>
-)
+);
 
-const Spacing: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [useCss, theme] = useStyletron()
-  return <div className={useCss({ margin: `${theme.sizing.scale400} 0` })}>{children}</div>
-}
+const Spacing: React.FC<{children: React.ReactNode}> = ({children}) => {
+  const [useCss, theme] = useStyletron();
+  return <div className={useCss({margin: `${theme.sizing.scale400} 0`})}>{children}</div>;
+};
 
 const Label: React.FC<{
-  children: React.ReactNode
-  tooltip: React.ReactNode
-}> = ({ children, tooltip }) => {
-  const [useCss, theme] = useStyletron()
+  children: React.ReactNode;
+  tooltip: React.ReactNode;
+}> = ({children, tooltip}) => {
+  const [useCss, theme] = useStyletron();
   return (
     <label
       className={useCss({
@@ -42,19 +42,19 @@ const Label: React.FC<{
         {children}
       </StatefulTooltip>
     </label>
-  )
-}
+  );
+};
 
 const Knob: React.SFC<{
-  name: string
-  error: string | null
-  description: string
-  val: TPropValue
-  set: (val: TPropValue) => void
-  type: PropTypes
-  options?: { [key: string]: string }
-  placeholder?: string
-  enumName?: string
+  name: string;
+  error: string | null;
+  description: string;
+  val: TPropValue;
+  set: (val: TPropValue) => void;
+  type: PropTypes;
+  options?: {[key: string]: string};
+  placeholder?: string;
+  enumName?: string;
 }> = ({
   name,
   error,
@@ -66,7 +66,7 @@ const Knob: React.SFC<{
   placeholder,
   enumName,
 }) => {
-  const [val, set] = useValueDebounce<TPropValue>(globalVal, globalSet)
+  const [val, set] = useValueDebounce<TPropValue>(globalVal, globalSet);
   switch (type) {
     case PropTypes.Ref:
       return (
@@ -84,7 +84,7 @@ const Knob: React.SFC<{
           </StyledLink>
           <PopupError error={error} />
         </Spacing>
-      )
+      );
     case PropTypes.String:
     case PropTypes.Date:
     case PropTypes.Number:
@@ -101,14 +101,14 @@ const Knob: React.SFC<{
           />
           <PopupError error={error} />
         </Spacing>
-      )
+      );
     case PropTypes.Boolean:
       return (
         <Spacing>
           <Checkbox
             checked={Boolean(val)}
             onChange={() => {
-              globalSet(!val)
+              globalSet(!val);
             }}
           >
             <StatefulTooltip
@@ -121,15 +121,15 @@ const Knob: React.SFC<{
           </Checkbox>
           <PopupError error={error} />
         </Spacing>
-      )
+      );
     case PropTypes.Enum:
-      const optionsKeys = Object.keys(options)
-      const numberOfOptions = optionsKeys.length
+      const optionsKeys = Object.keys(options);
+      const numberOfOptions = optionsKeys.length;
       const selectOptions = optionsKeys.map(key => ({
         id: key,
         option: options[key],
-      }))
-      const valueKey = val && String(val).split('.')[1]
+      }));
+      const valueKey = val && String(val).split('.')[1];
       return (
         <Spacing>
           <Label tooltip={getTooltip(description, type, name)}>{name}</Label>
@@ -139,7 +139,7 @@ const Knob: React.SFC<{
               align="horizontal"
               overrides={{
                 RadioGroupRoot: {
-                  style: ({ $theme }: any) => ({
+                  style: ({$theme}: any) => ({
                     flexWrap: 'wrap',
                     marginTop: 0,
                     marginBottom: $theme.sizing.scale300,
@@ -147,7 +147,7 @@ const Knob: React.SFC<{
                 },
               }}
               onChange={e => {
-                globalSet((e.target as any).value)
+                globalSet((e.target as any).value);
               }}
               value={String(val)}
             >
@@ -157,14 +157,14 @@ const Knob: React.SFC<{
                   value={`${enumName || name.toUpperCase()}.${opt}`}
                   overrides={{
                     Root: {
-                      style: ({ $theme }: any) => ({
+                      style: ({$theme}: any) => ({
                         marginRight: $theme.sizing.scale600,
                         marginTop: 0,
                         marginBottom: 0,
                       }),
                     },
                     Label: {
-                      style: ({ $theme }: any) => $theme.typography.font250,
+                      style: ({$theme}: any) => $theme.typography.font250,
                     },
                   }}
                 >
@@ -177,18 +177,18 @@ const Knob: React.SFC<{
               size={SIZE.compact}
               options={selectOptions}
               clearable={false}
-              value={[{ id: valueKey || '', option: valueKey }]}
+              value={[{id: valueKey || '', option: valueKey}]}
               labelKey="option"
               valueKey="id"
-              onChange={({ value }) => {
-                globalSet(`${enumName || name.toUpperCase()}.${value[0].id}`)
+              onChange={({value}) => {
+                globalSet(`${enumName || name.toUpperCase()}.${value[0].id}`);
               }}
             />
           )}
 
           <PopupError error={error} />
         </Spacing>
-      )
+      );
     case PropTypes.ReactNode:
     case PropTypes.Function:
     case PropTypes.Array:
@@ -198,7 +198,7 @@ const Knob: React.SFC<{
           <Label tooltip={getTooltip(description, type, name)}>{name}</Label>
           <Editor
             onChange={code => {
-              globalSet(code)
+              globalSet(code);
             }}
             code={val ? String(val) : ''}
             placeholder={placeholder}
@@ -206,12 +206,12 @@ const Knob: React.SFC<{
           />
           <PopupError error={error} />
         </Spacing>
-      )
+      );
     case PropTypes.Overrides:
-      return null
+      return null;
     default:
-      return assertUnreachable()
+      return assertUnreachable();
   }
-}
+};
 
-export default Knob
+export default Knob;

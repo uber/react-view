@@ -46,9 +46,7 @@ const Knobs: React.FC<TKnobsProps> = ({knobProps, set, error}) => {
   const [useCss, theme] = useStyletron();
   const [showAllKnobs, setShowAllKnobs] = React.useState(false);
   const allKnobNames = Object.keys(knobProps);
-  const filteredKnobNames = allKnobNames.filter(
-    (name: string) => knobProps[name].hidden !== true,
-  );
+  const filteredKnobNames = allKnobNames.filter((name: string) => knobProps[name].hidden !== true);
   const knobNames = showAllKnobs ? allKnobNames : filteredKnobNames;
   const firstGroup = knobNames.slice(0, knobNames.length / 2);
   const secondGroup = knobNames.slice(knobNames.length / 2);
@@ -63,18 +61,8 @@ const Knobs: React.FC<TKnobsProps> = ({knobProps, set, error}) => {
           margin: `0 -${theme.sizing.scale600}`,
         })}
       >
-        <KnobColumn
-          knobProps={knobProps}
-          knobNames={firstGroup}
-          set={set}
-          error={error}
-        />
-        <KnobColumn
-          knobProps={knobProps}
-          knobNames={secondGroup}
-          set={set}
-          error={error}
-        />
+        <KnobColumn knobProps={knobProps} knobNames={firstGroup} set={set} error={error} />
+        <KnobColumn knobProps={knobProps} knobNames={secondGroup} set={set} error={error} />
       </div>
       {filteredKnobNames.length !== allKnobNames.length && (
         <Button

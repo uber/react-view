@@ -24,10 +24,7 @@ export const getAstPropsArray = (props: {[key: string]: TProp}) => {
   return Object.entries(props).map(([name, prop]) => {
     const {value, stateful, defaultValue} = prop;
     if (stateful)
-      return t.jsxAttribute(
-        t.jsxIdentifier(name),
-        t.jsxExpressionContainer(t.identifier(name)),
-      );
+      return t.jsxAttribute(t.jsxIdentifier(name), t.jsxExpressionContainer(t.identifier(name)));
     // When the `defaultValue` is set and `value` is the same as the `defaultValue`
     // we don't add it to the list of props.
     // It handles boolean props where `defaultValue` set to true,
@@ -49,9 +46,7 @@ export const getAstPropsArray = (props: {[key: string]: TProp}) => {
     }
     return t.jsxAttribute(
       t.jsxIdentifier(name),
-      astValue.type === 'StringLiteral'
-        ? astValue
-        : t.jsxExpressionContainer(astValue),
+      astValue.type === 'StringLiteral' ? astValue : t.jsxExpressionContainer(astValue)
     );
   });
 };
@@ -66,10 +61,7 @@ export const getAstPropValue = (prop: TProp) => {
     case PropTypes.Enum:
       return t.identifier(String(value));
     case PropTypes.Date:
-      return t.newExpression(
-        t.identifier('Date'),
-        value ? [t.stringLiteral(value as any)] : [],
-      );
+      return t.newExpression(t.identifier('Date'), value ? [t.stringLiteral(value as any)] : []);
     case PropTypes.Ref:
       return null;
     case PropTypes.Object:
@@ -78,8 +70,7 @@ export const getAstPropValue = (prop: TProp) => {
     case PropTypes.Number:
     case PropTypes.Function:
     case PropTypes.ReactNode:
-      const output = (template.ast(String(value), {plugins: ['jsx']}) as any)
-        .expression;
+      const output = (template.ast(String(value), {plugins: ['jsx']}) as any).expression;
       // we never expect that user would input a variable as the value
       // treat it as a string instead
       if (output.type === 'Identifier') {
@@ -95,21 +86,17 @@ export const getAstPropValue = (prop: TProp) => {
         t.objectProperty(
           t.identifier(key),
           t.objectExpression([
-            t.objectProperty(t.identifier('style'), template.expression(
-              val.style,
-            )({}) as any),
-          ]),
-        ),
+            t.objectProperty(t.identifier('style'), template.expression(val.style)({}) as any),
+          ])
+        )
       );
       return t.objectExpression(keys);
   }
 };
 
 export const getAstReactHooks = (props: {[key: string]: TProp}) => {
-  const hooks: babel.types.ExpressionStatement[] = [];
-  const buildReactHook = template(
-    `const [%%name%%, %%setName%%] = React.useState(%%value%%);`,
-  );
+  const hooks: t.ExpressionStatement[] = [];
+  const buildReactHook = template(`const [%%name%%, %%setName%%] = React.useState(%%value%%);`);
   Object.keys(props).forEach(name => {
     if (props[name].stateful === true) {
       hooks.push(buildReactHook({
@@ -122,61 +109,55 @@ export const getAstReactHooks = (props: {[key: string]: TProp}) => {
   return hooks;
 };
 
-export const getAstImport = (
-  identifiers: string[],
-  source: string,
-  defaultIdentifier?: string,
-) => {
+export const getAstImport = (identifiers: string[], source: string, defaultIdentifier?: string) => {
   return t.importDeclaration(
     [
-      ...(defaultIdentifier
-        ? [t.importDefaultSpecifier(t.identifier(defaultIdentifier))]
-        : []),
+      ...(defaultIdentifier ? [t.importDefaultSpecifier(t.identifier(defaultIdentifier))] : []),
       ...identifiers.map(identifier =>
-        t.importSpecifier(t.identifier(identifier), t.identifier(identifier)),
+        t.importSpecifier(t.identifier(identifier), t.identifier(identifier))
       ),
     ],
-    t.stringLiteral(source),
+    t.stringLiteral(source)
   );
 };
 
 export const getAstJsxElement = (
   name: string,
   attrs: (t.JSXAttribute | null)[],
-  children: TJsxChild[],
+  children: TJsxChild[]
 ) => {
   const isSelfClosing = children.length === 0;
   return t.jsxElement(
     t.jsxOpeningElement(
       t.jsxIdentifier(name),
       attrs.filter(attr => !!attr) as t.JSXAttribute[],
-      isSelfClosing,
+      isSelfClosing
     ),
     isSelfClosing ? null : t.jsxClosingElement(t.jsxIdentifier(name)),
     children,
-    true,
+    true
   );
 };
 
 export const getAstThemeImport = (
   isCustomTheme: boolean,
-  themePrimitives: string,
-) => {
+  themePrimitives: string
+): t.Statement[] => {
   if (!isCustomTheme) return [];
   const buildImportTheme = template(
-    `import {ThemeProvider, createTheme, %%primitives%%} from "baseui"`,
+    `import {ThemeProvider, createTheme, %%primitives%%} from "baseui"`
   );
   return [
     buildImportTheme({
       primitives: t.identifier(themePrimitives),
-    }),
+    }) as t.Statement,
   ];
 };
 
 export const getAstThemeWrapper = (
   themeValues: {[key: string]: string},
   themePrimitives: string,
-  children: t.JSXElement,
+  children: t.JSXElement
 ) => {
   if (!themeValues || Object.keys(themeValues).length === 0) {
     return children;
@@ -194,38 +175,27 @@ export const getAstThemeWrapper = (
                 t.identifier('colors'),
                 t.objectExpression(
                   Object.entries(themeValues).map(([name, value]) =>
-                    t.objectProperty(
-                      t.identifier(name),
-                      t.stringLiteral(value as string),
-                    ),
-                  ),
-                ),
+                    t.objectProperty(t.identifier(name), t.stringLiteral(value as string))
+                  )
+                )
               ),
             ]),
-          ]),
-        ),
+          ])
+        )
       ),
     ],
-    [children],
+    [children]
   );
 };
 
-export const getAstImports = (
-  importsConfig: TImportsConfig,
-  props: {[key: string]: TProp},
-) => {
+export const getAstImports = (importsConfig: TImportsConfig, props: {[key: string]: TProp}) => {
   // global scoped import that are always displayed
   const importList = clone(importsConfig);
 
   // prop level imports (typically enums related) that are displayed
   // only when the prop is being used
   Object.values(props).forEach(prop => {
-    if (
-      prop.imports &&
-      prop.value &&
-      prop.value !== '' &&
-      prop.value !== prop.defaultValue
-    ) {
+    if (prop.imports && prop.value && prop.value !== '' && prop.value !== prop.defaultValue) {
       for (let [importFrom, importNames] of Object.entries(prop.imports)) {
         if (!importList.hasOwnProperty(importFrom)) {
           importList[importFrom] = {
@@ -241,11 +211,7 @@ export const getAstImports = (
             importList[importFrom]['named'] = [];
           }
           importList[importFrom].named = [
-            ...new Set(
-              (importList[importFrom].named as string[]).concat(
-                importNames.named,
-              ),
-            ),
+            ...new Set((importList[importFrom].named as string[]).concat(importNames.named)),
           ];
         }
       }
@@ -253,7 +219,7 @@ export const getAstImports = (
   });
 
   return Object.keys(importList).map(from =>
-    getAstImport(importList[from].named || [], from, importList[from].default),
+    getAstImport(importList[from].named || [], from, importList[from].default)
   );
 };
 
@@ -267,11 +233,10 @@ export const getAst = (
   props: {[key: string]: TProp},
   componentName: string,
   theme: any,
-  importsConfig: TImportsConfig,
+  importsConfig: TImportsConfig
 ) => {
   const {children, ...restProps} = props;
-  const isCustomTheme =
-    theme && theme.themeValues && Object.keys(theme.themeValues).length > 0;
+  const isCustomTheme = theme && theme.themeValues && Object.keys(theme.themeValues).length > 0;
   const themePrimitives =
     theme.themeName && theme.themeName.startsWith('dark-theme')
       ? 'darkThemePrimitives'
@@ -293,17 +258,15 @@ export const getAst = (
               getAstJsxElement(
                 componentName,
                 getAstPropsArray(restProps),
-                children && children.value
-                  ? getChildrenAst(String(children.value))
-                  : [],
-              ),
-            ),
+                children && children.value ? getChildrenAst(String(children.value)) : []
+              )
+            )
           ),
         ],
       }),
     ] as any),
     [],
-    [],
+    []
   );
 };
 
@@ -333,7 +296,7 @@ export const getCode = (
   props: {[key: string]: TProp},
   componentName: string,
   theme: {themeValues: {[key: string]: string}; themeName: string},
-  importsConfig: TImportsConfig,
+  importsConfig: TImportsConfig
 ) => {
   const ast = getAst(props, componentName, theme, importsConfig);
   return formatAstAndPrint(ast as any);

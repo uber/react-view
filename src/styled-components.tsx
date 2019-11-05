@@ -1,13 +1,13 @@
-import * as React from 'react'
-import { useStyletron } from 'baseui'
-import { StatefulTooltip } from 'baseui/tooltip'
-import { Tag, VARIANT } from 'baseui/tag'
-import { StatefulTabs, Tab } from 'baseui/tabs'
+import * as React from 'react';
+import {useStyletron} from 'baseui';
+import {StatefulTooltip} from 'baseui/tooltip';
+import {Tag, VARIANT} from 'baseui/tag';
+import {StatefulTabs, Tab} from 'baseui/tabs';
 
 export const Beta = () => {
-  const [css] = useStyletron()
+  const [css] = useStyletron();
   return (
-    <div className={css({ display: 'flex', justifyContent: 'flex-end' })}>
+    <div className={css({display: 'flex', justifyContent: 'flex-end'})}>
       <Tag closeable={false} variant={VARIANT.outlined} kind="warning">
         <StatefulTooltip
           accessibilityType="tooltip"
@@ -18,14 +18,14 @@ export const Beta = () => {
         </StatefulTooltip>
       </Tag>
     </div>
-  )
-}
+  );
+};
 
-export const YardTabs: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [, theme] = useStyletron()
+export const YardTabs: React.FC<{children: React.ReactNode}> = ({children}) => {
+  const [, theme] = useStyletron();
   return (
     <StatefulTabs
-      initialState={{ activeKey: '0' }}
+      initialState={{activeKey: '0'}}
       overrides={{
         Root: {
           style: {
@@ -33,15 +33,15 @@ export const YardTabs: React.FC<{ children: React.ReactNode }> = ({ children }) 
           },
         },
         TabBar: {
-          style: { backgroundColor: 'transparent', paddingLeft: 0 },
+          style: {backgroundColor: 'transparent', paddingLeft: 0},
         },
-        TabContent: { style: { paddingLeft: 0, paddingRight: 0 } },
+        TabContent: {style: {paddingLeft: 0, paddingRight: 0}},
       }}
     >
       {children}
     </StatefulTabs>
-  )
-}
+  );
+};
 
 export const YardTab: React.FC<any> = props => {
   return (
@@ -49,7 +49,7 @@ export const YardTab: React.FC<any> = props => {
       {...props}
       overrides={{
         Tab: {
-          style: ({ $theme }: any) =>
+          style: ({$theme}: any) =>
             ({
               marginLeft: 0,
               ...$theme.typography.font450,
@@ -57,5 +57,5 @@ export const YardTab: React.FC<any> = props => {
         },
       }}
     />
-  )
-}
+  );
+};

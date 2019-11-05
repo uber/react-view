@@ -17,7 +17,7 @@ type TransformTokenT = (tokenProps: {
 const highlightCode = (
   code: string,
   theme: typeof lightTheme,
-  transformToken?: TransformTokenT,
+  transformToken?: TransformTokenT
 ) => (
   <Highlight Prism={Prism} code={code} theme={theme} language="jsx">
     {({tokens, getLineProps, getTokenProps}) => (
@@ -48,18 +48,14 @@ const Editor: React.FC<{
 }> = ({code: globalCode, transformToken, onChange, placeholder, small}) => {
   const [css, theme] = useStyletron();
   const [focused, setFocused] = React.useState(false);
-  const plainStyles = theme.name.startsWith('light-theme')
-    ? lightTheme
-    : darkTheme;
+  const plainStyles = theme.name.startsWith('light-theme') ? lightTheme : darkTheme;
   const editorTheme = {
     ...plainStyles,
     plain: {
       ...plainStyles.plain,
       fontSize: small ? '13px' : '14px',
       whiteSpace: 'break-spaces',
-      backgroundColor: focused
-        ? theme.colors.inputFillActive
-        : theme.colors.inputFill,
+      backgroundColor: focused ? theme.colors.inputFillActive : theme.colors.inputFill,
     },
   };
 

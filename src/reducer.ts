@@ -2,10 +2,7 @@ import {TState} from './types';
 import {Action} from './const';
 import {assertUnreachable, buildPropsObj} from './utils';
 
-export default function reducer(
-  state: TState,
-  action: {type: Action; payload: any},
-): TState {
+export default function reducer(state: TState, action: {type: Action; payload: any}): TState {
   switch (action.type) {
     case Action.UpdateCode:
       return {...state, code: action.payload, codeNoRecompile: ''};

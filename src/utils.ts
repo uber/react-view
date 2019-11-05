@@ -9,10 +9,7 @@ export function assertUnreachable(): never {
 export const formatBabelError = (error: string) => {
   return error
     .replace('1 | /* @babel/template */;', '')
-    .replace(
-      /\((\d+):(\d+)\)/,
-      (_, line, col) => `(${parseInt(line, 10) - 1}:${col})`,
-    )
+    .replace(/\((\d+):(\d+)\)/, (_, line, col) => `(${parseInt(line, 10) - 1}:${col})`)
     .replace('<>', '')
     .replace('</>', '')
     .replace(/(\d+) \|/g, (_, line) => {
@@ -25,7 +22,7 @@ export const formatBabelError = (error: string) => {
 
 export const buildPropsObj = (
   stateProps: {[key: string]: TProp},
-  updatedPropValues: {[key: string]: TPropValue},
+  updatedPropValues: {[key: string]: TPropValue}
 ) => {
   const newProps: {
     [key: string]: TProp;
@@ -53,10 +50,7 @@ export const buildPropsObj = (
   return newProps;
 };
 
-export const getComponentThemeFromContext = (
-  theme: Theme,
-  themeConfig: string[],
-) => {
+export const getComponentThemeFromContext = (theme: Theme, themeConfig: string[]) => {
   const componentThemeObj: {[key: string]: string} = {};
   themeConfig.forEach(key => {
     componentThemeObj[key] = (theme.colors as any)[key];
@@ -67,14 +61,11 @@ export const getComponentThemeFromContext = (
 export const getThemeForCodeGenerator = (
   themeConfig: string[],
   updatedThemeValues: {[key: string]: string},
-  theme: Theme,
+  theme: Theme
 ) => {
   const componentThemeValueDiff: {[key: string]: string} = {};
   themeConfig.forEach(key => {
-    if (
-      updatedThemeValues[key] &&
-      (theme.colors as any)[key] !== updatedThemeValues[key]
-    ) {
+    if (updatedThemeValues[key] && (theme.colors as any)[key] !== updatedThemeValues[key]) {
       componentThemeValueDiff[key] = updatedThemeValues[key];
     }
   });
@@ -94,10 +85,7 @@ export const countOverrides = (overrides: any) => {
   return existingOverrides.filter(key => overrides.value[key].active).length;
 };
 
-export const countProps = (
-  props: {[key: string]: TProp},
-  propsConfig: {[key: string]: TProp},
-) => {
+export const countProps = (props: {[key: string]: TProp}, propsConfig: {[key: string]: TProp}) => {
   let changedProps = 0;
   Object.keys(props).forEach(prop => {
     if (
@@ -121,7 +109,7 @@ export const countThemeValues = (componentThemeDiff: TThemeDiff) => {
 // while debouncing top-level state updates that are slow
 export function useValueDebounce<T>(
   globalVal: T,
-  globalSet: (val: T) => void,
+  globalSet: (val: T) => void
 ): [T, (val: T) => void] {
   const [val, set] = React.useState(globalVal);
 

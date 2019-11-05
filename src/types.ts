@@ -1,88 +1,88 @@
-import * as t from '@babel/types'
-import { PropTypes } from './const'
-import { Action } from './const'
+import * as t from '@babel/types';
+import {PropTypes} from './const';
+import {Action} from './const';
 
-export type TDispatch = (value: { type: Action; payload: any }) => void
+export type TDispatch = (value: {type: Action; payload: any}) => void;
 
 export type TThemeDiff = {
-  themeValues: { [key: string]: string }
-  themeName: string
-}
+  themeValues: {[key: string]: string};
+  themeName: string;
+};
 
 type TPropHookFn = (params: {
-  getYardOnChange: (what: string, into: string) => t.CallExpression
-  fnBodyAppend: (path: any, callExpression: t.CallExpression) => void
-}) => any
+  getYardOnChange: (what: string, into: string) => t.CallExpression;
+  fnBodyAppend: (path: any, callExpression: t.CallExpression) => void;
+}) => any;
 
 export type TPropHook =
   | {
-      what: string
-      into: string
+      what: string;
+      into: string;
     }
-  | TPropHookFn
+  | TPropHookFn;
 
 export type TImportsConfig = {
   [key: string]: {
-    named?: string[]
-    default?: string
-  }
-}
+    named?: string[];
+    default?: string;
+  };
+};
 
 export type TError = {
-  where: string
-  msg: string | null
-}
+  where: string;
+  msg: string | null;
+};
 
 export type TYardProps = {
-  componentName: string
-  minHeight: number
-  scope: { [key: string]: any }
-  props: { [key: string]: TProp }
-  theme: string[]
-  imports: TImportsConfig
-  mapTokensToProps?: { [key: string]: any }
-}
+  componentName: string;
+  minHeight: number;
+  scope: {[key: string]: any};
+  props: {[key: string]: TProp};
+  theme: string[];
+  imports: TImportsConfig;
+  mapTokensToProps?: {[key: string]: any};
+};
 
 export type TConfig = {
-  scope: { [key: string]: any }
-  props: { [key: string]: TProp }
-  theme: string[]
-  imports: TImportsConfig
-  mapTokensToProps?: { [key: string]: any }
-}
+  scope: {[key: string]: any};
+  props: {[key: string]: TProp};
+  theme: string[];
+  imports: TImportsConfig;
+  mapTokensToProps?: {[key: string]: any};
+};
 
 type TPropValueOverrides = {
   [key: string]: {
-    active: boolean
-    style: string
-  }
-}
+    active: boolean;
+    style: string;
+  };
+};
 
-export type TPropValue = undefined | boolean | string | number | TPropValueOverrides
+export type TPropValue = undefined | boolean | string | number | TPropValueOverrides;
 
 export type TProp = {
-  value: TPropValue
-  type: PropTypes
-  description: string
-  options?: any
-  placeholder?: string
-  defaultValue?: TPropValue
-  enumName?: string
-  hidden?: boolean
-  names?: string[]
-  sharedProps?: { [key: string]: string | { type: string; description: string } }
-  stateful?: boolean
-  propHook?: TPropHook
-  imports?: TImportsConfig
-}
+  value: TPropValue;
+  type: PropTypes;
+  description: string;
+  options?: any;
+  placeholder?: string;
+  defaultValue?: TPropValue;
+  enumName?: string;
+  hidden?: boolean;
+  names?: string[];
+  sharedProps?: {[key: string]: string | {type: string; description: string}};
+  stateful?: boolean;
+  propHook?: TPropHook;
+  imports?: TImportsConfig;
+};
 
 export type TState = {
-  code: string
-  codeNoRecompile: string
+  code: string;
+  codeNoRecompile: string;
   theme: {
-    [key: string]: string
-  }
+    [key: string]: string;
+  };
   props: {
-    [key: string]: TProp
-  }
-}
+    [key: string]: TProp;
+  };
+};

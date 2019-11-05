@@ -1,8 +1,8 @@
-import * as React from 'react'
-import { Button, KIND, SIZE, SHAPE } from 'baseui/button'
-import { PropTypes } from '../src/const'
-import { TConfig } from '../src/types'
-import Yard from '../src/index'
+import * as React from 'react';
+import {Button, KIND, SIZE, SHAPE} from 'baseui/button';
+import {PropTypes} from '../src/const';
+import {TConfig} from '../src/types';
+import Yard from '../src/index';
 
 const ButtonConfig: TConfig = {
   imports: {
@@ -112,18 +112,18 @@ const ButtonConfig: TConfig = {
       },
     },
   },
-}
+};
 
 export default {
   title: 'react-view',
-}
+};
 
 export const toStorybook = () => (
   <div>
     <Yard componentName="Button" minHeight={52} {...ButtonConfig} />
   </div>
-)
+);
 
 toStorybook.story = {
   name: 'Basic',
-}
+};

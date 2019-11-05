@@ -22,7 +22,7 @@ describe('getAstPropsArray', () => {
           type: PropTypes.Boolean,
           description: '',
         },
-      }),
+      })
     ).toEqual([null]);
   });
   test('boolean (false) and value === defaulValue', () => {
@@ -34,7 +34,7 @@ describe('getAstPropsArray', () => {
           type: PropTypes.Boolean,
           description: '',
         },
-      }),
+      })
     ).toEqual([null]);
   });
   test('boolean (false) and !defaulValue', () => {
@@ -45,7 +45,7 @@ describe('getAstPropsArray', () => {
           type: PropTypes.Boolean,
           description: '',
         },
-      }),
+      })
     ).toEqual([null]);
   });
   test('enum and value === defaulValue', () => {
@@ -57,7 +57,7 @@ describe('getAstPropsArray', () => {
           type: PropTypes.Enum,
           description: '',
         },
-      }),
+      })
     ).toEqual([null]);
   });
   test('!value', () => {
@@ -68,7 +68,7 @@ describe('getAstPropsArray', () => {
           type: PropTypes.String,
           description: '',
         },
-      }),
+      })
     ).toEqual([null]);
   });
   test('boolean (true) and value !== defaulValue', () => {
@@ -79,7 +79,7 @@ describe('getAstPropsArray', () => {
           type: PropTypes.Boolean,
           description: '',
         },
-      }),
+      })
     ).not.toEqual([null]);
   });
   test('enum and value !== defaulValue', () => {
@@ -91,7 +91,7 @@ describe('getAstPropsArray', () => {
           type: PropTypes.Enum,
           description: '',
         },
-      }),
+      })
     ).not.toEqual([null]);
   });
 });
@@ -102,7 +102,7 @@ describe('getAstPropValue', () => {
         value: true,
         type: PropTypes.Boolean,
         description: '',
-      }),
+      })
     ).toEqual({
       type: 'BooleanLiteral',
       value: true,
@@ -114,7 +114,7 @@ describe('getAstPropValue', () => {
         value: 'Hello',
         type: PropTypes.String,
         description: '',
-      }),
+      })
     ).toEqual({
       type: 'StringLiteral',
       value: 'Hello',
@@ -126,7 +126,7 @@ describe('getAstPropValue', () => {
         value: '42',
         type: PropTypes.Number,
         description: '',
-      }),
+      })
     ).toEqual({
       extra: {
         raw: '42',
@@ -143,7 +143,7 @@ describe('getAstPropValue', () => {
         value: 'SIZE.large',
         type: PropTypes.Enum,
         description: '',
-      }),
+      })
     ).toEqual({
       name: 'SIZE.large',
       type: 'Identifier',
@@ -155,7 +155,7 @@ describe('getAstPropValue', () => {
         value: undefined,
         type: PropTypes.Ref,
         description: '',
-      }),
+      })
     ).toBe(null);
   });
   test('array', () => {
@@ -164,7 +164,7 @@ describe('getAstPropValue', () => {
         value: '[1]',
         type: PropTypes.Array,
         description: '',
-      }),
+      })
     ).toEqual({
       elements: [
         {
@@ -187,7 +187,7 @@ describe('getAstPropValue', () => {
         value: `{foo: true}`,
         type: PropTypes.Object,
         description: '',
-      }),
+      })
     ).toEqual({
       body: [
         {
@@ -220,7 +220,7 @@ describe('getAstPropValue', () => {
         value: '<div />',
         type: PropTypes.ReactNode,
         description: '',
-      }),
+      })
     ).toEqual({
       children: [],
       closingElement: null,
@@ -245,7 +245,7 @@ describe('getAstPropValue', () => {
         value: '(foo) => {}',
         type: PropTypes.Function,
         description: '',
-      }),
+      })
     ).toEqual({
       async: false,
       body: {
@@ -281,7 +281,7 @@ describe('getAstPropValue', () => {
         },
         type: PropTypes.Overrides,
         description: '',
-      }),
+      })
     ).toEqual({
       type: 'ObjectExpression',
       properties: [
@@ -343,8 +343,8 @@ describe('getAstReactHooks', () => {
   test('return single value hook', () => {
     expect(
       generate(
+        //@ts-ignore
         t.program(
-          //@ts-ignore
           getAstReactHooks({
             value: {
               value: 'Hey',
@@ -357,18 +357,18 @@ describe('getAstReactHooks', () => {
               type: PropTypes.String,
               description: '',
             },
-          }),
-        ),
-      ).code,
+          })
+        )
+      ).code
     ).toBe('const [value, setValue] = React.useState("Hey");');
   });
 });
 
 describe('getAstImport', () => {
   test('return multiple named imports', () => {
-    expect(
-      generate(getAstImport(['Button', 'KIND'], 'baseui/button') as any).code,
-    ).toBe('import { Button, KIND } from "baseui/button";');
+    expect(generate(getAstImport(['Button', 'KIND'], 'baseui/button') as any).code).toBe(
+      'import { Button, KIND } from "baseui/button";'
+    );
   });
 });
 
@@ -430,9 +430,9 @@ describe('getAstImports', () => {
                 },
               },
             },
-          },
-        ),
-      ) as any).code,
+          }
+        )
+      ) as any).code
     ).toBe(`import OverrideRoot, { Tab, Tabs, ORIENTATION } from "baseui/tabs";
 import { Motion } from "react-motion";`);
   });
@@ -443,8 +443,8 @@ describe('get theme AST primitives', () => {
     expect(
       generate(
         //@ts-ignore
-        t.program(getAstThemeImport(true, 'dark') as any),
-      ).code,
+        t.program(getAstThemeImport(true, 'dark') as any)
+      ).code
     ).toBe('import { ThemeProvider, createTheme, dark } from "baseui";');
   });
 
@@ -454,8 +454,8 @@ describe('get theme AST primitives', () => {
         {inputFill: 'yellow'},
         'light-theme',
         //@ts-ignore
-        t.jsxText('Hey'),
-      ) as any).code,
+        t.jsxText('Hey')
+      ) as any).code
     ).toBe(`<ThemeProvider theme={createTheme(light-theme, {
   colors: {
     inputFill: "yellow"
@@ -500,8 +500,8 @@ describe('getCode', () => {
           'baseui/input': {
             named: ['Input'],
           },
-        },
-      ),
+        }
+      )
     ).toBe(`import * as React from "react";
 import { Input } from "baseui/input";
 import {

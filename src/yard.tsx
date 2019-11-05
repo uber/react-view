@@ -1,19 +1,19 @@
-import React from 'react'
+import React from 'react';
 import {
   useStyletron,
   createTheme,
   lightThemePrimitives,
   darkThemePrimitives,
   ThemeProvider,
-} from 'baseui'
-import { Button, KIND, SIZE } from 'baseui/button'
-import { ButtonGroup } from 'baseui/button-group'
-import copy from 'copy-to-clipboard'
-import debounce from 'lodash/debounce'
+} from 'baseui';
+import {Button, KIND, SIZE} from 'baseui/button';
+import {ButtonGroup} from 'baseui/button-group';
+import copy from 'copy-to-clipboard';
+import debounce from 'lodash/debounce';
 
 // transformations, code generation
-import { transformBeforeCompilation } from './ast'
-import { getCode, formatCode } from './code-generator'
+import {transformBeforeCompilation} from './ast';
+import {getCode, formatCode} from './code-generator';
 import {
   buildPropsObj,
   getComponentThemeFromContext,
@@ -21,23 +21,23 @@ import {
   countOverrides,
   countProps,
   countThemeValues,
-} from './utils'
-import PropsTooltip from './props-tooltip'
-import { TYardProps, TPropValue, TError } from './types'
+} from './utils';
+import PropsTooltip from './props-tooltip';
+import {TYardProps, TPropValue, TError} from './types';
 
 // tabs aka editing UIs
-import Knobs from './knobs'
-import Overrides from './overrides'
-import ThemeEditor from './theme-editor'
+import Knobs from './knobs';
+import Overrides from './overrides';
+import ThemeEditor from './theme-editor';
 
 // other UIs
-import { YardTabs, YardTab } from './styled-components'
-import PopupError from './popup-error'
+import {YardTabs, YardTab} from './styled-components';
+import PopupError from './popup-error';
 
 // compiler
-import Compiler from './compiler'
-import Editor from './editor'
-import Error from './error'
+import Compiler from './compiler';
+import Editor from './editor';
+import Error from './error';
 
 // actions that can be dispatched
 import {
@@ -48,15 +48,15 @@ import {
   updateThemeAndCode,
   updatePropsAndCode,
   updatePropsAndCodeNoRecompile,
-} from './actions'
-import reducer from './reducer'
+} from './actions';
+import reducer from './reducer';
 
 const Yard: React.FC<
   TYardProps & {
-    placeholderElement: React.FC
-    pathname: string
-    urlCode?: string
-    queryStringName?: string
+    placeholderElement: React.FC;
+    pathname: string;
+    urlCode?: string;
+    queryStringName?: string;
   }
 > = ({
   componentName,
@@ -69,10 +69,10 @@ const Yard: React.FC<
   placeholderElement,
   urlCode,
 }) => {
-  const [, theme] = useStyletron()
-  const [hydrated, setHydrated] = React.useState(false)
-  const [error, setError] = React.useState<TError>({ where: '', msg: null })
-  const initialThemeObj = getComponentThemeFromContext(theme, themeConfig)
+  const [, theme] = useStyletron();
+  const [hydrated, setHydrated] = React.useState(false);
+  const [error, setError] = React.useState<TError>({where: '', msg: null});
+  const initialThemeObj = getComponentThemeFromContext(theme, themeConfig);
 
   // initial state
   const [state, dispatch] = React.useReducer(reducer, {
@@ -87,17 +87,17 @@ const Yard: React.FC<
     codeNoRecompile: '',
     props: propsConfig,
     theme: initialThemeObj,
-  })
+  });
 
   // initialize from the URL
   React.useEffect(() => {
     if (urlCode && !hydrated) {
-      setHydrated(true)
+      setHydrated(true);
       try {
-        updateAll(dispatch, urlCode, componentName, propsConfig)
+        updateAll(dispatch, urlCode, componentName, propsConfig);
       } catch (e) {}
     }
-  }, [urlCode])
+  }, [urlCode]);
 
   //when theme (context) is switched, reset the theme state
   React.useEffect(() => {
@@ -105,47 +105,47 @@ const Yard: React.FC<
     // prevents the initial re-update
     const isIdentical = Object.keys(initialThemeObj).every(
       key => initialThemeObj[key] === state.theme[key]
-    )
+    );
     if (!isIdentical) {
       const newCode = getCode(
         state.props,
         componentName,
         getThemeForCodeGenerator(themeConfig, {}, theme),
         importsConfig
-      )
-      updateThemeAndCode(dispatch, newCode, getComponentThemeFromContext(theme, themeConfig))
+      );
+      updateThemeAndCode(dispatch, newCode, getComponentThemeFromContext(theme, themeConfig));
       if (state.code !== newCode) {
         //updateUrl({ pathname, code: newCode, queryStringName })
       }
     }
-  }, [theme.name])
+  }, [theme.name]);
 
   // this callback is secretely inserted into props marked with
   // "propHook" this way we can get notified when the internal
   // state of previewed component is changed by user
   const __yard_onChange = debounce((propValue: TPropValue, propName: string) => {
-    !hydrated && setHydrated(true)
+    !hydrated && setHydrated(true);
     const newCode = getCode(
-      buildPropsObj(state.props, { [propName]: propValue }),
+      buildPropsObj(state.props, {[propName]: propValue}),
       componentName,
       getThemeForCodeGenerator(themeConfig, state.theme, theme),
       importsConfig
-    )
-    updatePropsAndCodeNoRecompile(dispatch, newCode, propName, propValue)
+    );
+    updatePropsAndCodeNoRecompile(dispatch, newCode, propName, propValue);
     //updateUrl({ pathname, code: newCode, queryStringName })
-  }, 200)
+  }, 200);
 
-  const componentThemeDiff = getThemeForCodeGenerator(themeConfig, state.theme, theme)
+  const componentThemeDiff = getThemeForCodeGenerator(themeConfig, state.theme, theme);
 
-  const activeProps = countProps(state.props, propsConfig)
-  const activeOverrides = countOverrides(state.props.overrides)
-  const activeThemeValues = countThemeValues(componentThemeDiff)
+  const activeProps = countProps(state.props, propsConfig);
+  const activeOverrides = countOverrides(state.props.overrides);
+  const activeThemeValues = countThemeValues(componentThemeDiff);
 
   return (
     <React.Fragment>
       <Compiler
         code={state.code}
-        setError={msg => setError({ where: '__compiler', msg })}
+        setError={msg => setError({where: '__compiler', msg})}
         minHeight={minHeight}
         transformations={[code => transformBeforeCompilation(code, componentName, propsConfig)]}
         scope={{
@@ -168,19 +168,19 @@ const Yard: React.FC<
             error={error}
             set={(propValue: TPropValue, propName: string) => {
               try {
-                !hydrated && setHydrated(true)
+                !hydrated && setHydrated(true);
                 const newCode = getCode(
-                  buildPropsObj(state.props, { [propName]: propValue }),
+                  buildPropsObj(state.props, {[propName]: propValue}),
                   componentName,
                   componentThemeDiff,
                   importsConfig
-                )
-                setError({ where: '', msg: null })
-                updatePropsAndCode(dispatch, newCode, propName, propValue)
+                );
+                setError({where: '', msg: null});
+                updatePropsAndCode(dispatch, newCode, propName, propValue);
                 //updateUrl({ pathname, code: newCode, queryStringName })
               } catch (e) {
-                updateProps(dispatch, propName, propValue)
-                setError({ where: propName, msg: e.toString() })
+                updateProps(dispatch, propName, propValue);
+                setError({where: propName, msg: e.toString()});
               }
             }}
           />
@@ -192,20 +192,20 @@ const Yard: React.FC<
               componentConfig={propsConfig}
               overrides={state.props.overrides}
               set={(propValue: TPropValue) => {
-                const propName = 'overrides'
+                const propName = 'overrides';
                 try {
                   const newCode = getCode(
-                    buildPropsObj(state.props, { [propName]: propValue }),
+                    buildPropsObj(state.props, {[propName]: propValue}),
                     componentName,
                     componentThemeDiff,
                     importsConfig
-                  )
-                  setError({ where: '', msg: null })
-                  updatePropsAndCode(dispatch, newCode, propName, propValue)
+                  );
+                  setError({where: '', msg: null});
+                  updatePropsAndCode(dispatch, newCode, propName, propValue);
                   //updateUrl({ pathname, code: newCode, queryStringName })
                 } catch (e) {
-                  updateProps(dispatch, propName, propValue)
-                  setError({ where: propName, msg: e.toString() })
+                  updateProps(dispatch, propName, propValue);
+                  setError({where: propName, msg: e.toString()});
                 }
               }}
             />
@@ -217,19 +217,19 @@ const Yard: React.FC<
               themeInit={initialThemeObj}
               theme={state.theme}
               componentName={componentName}
-              set={(updatedThemeValues: { [key: string]: string }) => {
+              set={(updatedThemeValues: {[key: string]: string}) => {
                 const componentThemeDiff = getThemeForCodeGenerator(
                   themeConfig,
                   updatedThemeValues,
                   theme
-                )
+                );
                 const newCode = getCode(
                   state.props,
                   componentName,
                   componentThemeDiff,
                   importsConfig
-                )
-                updateThemeAndCode(dispatch, newCode, updatedThemeValues)
+                );
+                updateThemeAndCode(dispatch, newCode, updatedThemeValues);
                 //updateUrl({ pathname, code: newCode, queryStringName })
               }}
             />
@@ -240,18 +240,18 @@ const Yard: React.FC<
         code={state.codeNoRecompile !== '' ? state.codeNoRecompile : state.code}
         onChange={newCode => {
           try {
-            updateAll(dispatch, newCode, componentName, propsConfig)
+            updateAll(dispatch, newCode, componentName, propsConfig);
             //updateUrl({ pathname, code: newCode, queryStringName })
           } catch (e) {
-            updateCode(dispatch, newCode)
+            updateCode(dispatch, newCode);
           }
         }}
         transformToken={tokenProps => {
-          const token = tokenProps.children.trim()
+          const token = tokenProps.children.trim();
           if (mapTokensToProps && mapTokensToProps[token]) {
-            return <PropsTooltip {...tokenProps} typeDefinition={mapTokensToProps[token]} />
+            return <PropsTooltip {...tokenProps} typeDefinition={mapTokensToProps[token]} />;
           }
-          return <span {...tokenProps} />
+          return <span {...tokenProps} />;
         }}
       />
       <Error error={error.where === '__compiler' ? error.msg : null} code={state.code} />
@@ -259,7 +259,7 @@ const Yard: React.FC<
         size={SIZE.compact}
         overrides={{
           Root: {
-            style: ({ $theme }: any) => ({
+            style: ({$theme}: any) => ({
               flexWrap: 'wrap',
               marginTop: $theme.sizing.scale300,
             }),
@@ -269,7 +269,7 @@ const Yard: React.FC<
         <Button
           kind={KIND.tertiary}
           onClick={() => {
-            updateCode(dispatch, formatCode(state.code))
+            updateCode(dispatch, formatCode(state.code));
           }}
         >
           Format
@@ -277,7 +277,7 @@ const Yard: React.FC<
         <Button
           kind={KIND.tertiary}
           onClick={() => {
-            copy(state.code)
+            copy(state.code);
           }}
         >
           Copy code
@@ -285,7 +285,7 @@ const Yard: React.FC<
         <Button
           kind={KIND.tertiary}
           onClick={() => {
-            copy(window.location.href)
+            copy(window.location.href);
           }}
         >
           Copy URL
@@ -303,7 +303,7 @@ const Yard: React.FC<
               ),
               propsConfig,
               initialThemeObj
-            )
+            );
             //updateUrl({ pathname })
           }}
         >
@@ -311,7 +311,7 @@ const Yard: React.FC<
         </Button>
       </ButtonGroup>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Yard
+export default Yard;

@@ -1,6 +1,6 @@
 # react-view
 
-**React View is an interactive playground, documentation and code generator** for your  React components. All that packaged in a single component that can be dropped into any application.
+**React View is an interactive playground, documentation and code generator** for your React components. All that packaged in a single component that can be dropped into any application.
 
 Use it to document your component APIs. Users can then live-edit component props and grab the generated ready-to-use source code.
 
@@ -31,20 +31,20 @@ yarn add react-view
 ## Building Blocks
 
 - **react-view useView hook**
-    - no UIs or styling, focused on the data, turns config into data (props)
-    - Customization of parsing/code generation for all PropTypes.
-    - Adding custom PropTypes.
-    - Adding an optional Provider (Theme) parsing / code generation.
+  - no UIs or styling, focused on the data, turns config into data (props)
+  - Customization of parsing/code generation for all PropTypes.
+  - Adding custom PropTypes.
+  - Adding an optional Provider (Theme) parsing / code generation.
 - **react-view components**
-    - unopinionated Compiler, Editor, Error
+  - unopinionated Compiler, Editor, Error
 - **react-view/default**
-    - Comes with a basic minimal styling but should be useful out of the box.
-    - Allows adding an optional Provider (Theme) parsing / code generation.
+  - Comes with a basic minimal styling but should be useful out of the box.
+  - Allows adding an optional Provider (Theme) parsing / code generation.
 - **react-view/base**
-    - Comes with Base Web, polished, a drop-in replacement for yard.
-    - By default assumes / supports Base Web provider (theme) structure.
-    - Requires installing / setting up baseui and styletron.
-    - Fully supports `PropTypes.Overrides`.
+  - Comes with Base Web, polished, a drop-in replacement for yard.
+  - By default assumes / supports Base Web provider (theme) structure.
+  - Requires installing / setting up baseui and styletron.
+  - Fully supports `PropTypes.Overrides`.
 
 ## react-view basic usage
 
@@ -53,14 +53,7 @@ import {useView, Compiler, Editor, Error, PropTypes} from 'react-view';
 import {Button} from 'baseui/button';
 
 export default () => {
-  const {
-    compilerProps,
-    knobProps,
-    providerProps,
-    editorProps,
-    error,
-    actions,
-  } = useView({
+  const {compilerProps, knobProps, providerProps, editorProps, error, actions} = useView({
     componentName: 'Button',
     componentPlaceholder: '<div>Loading...</div>',
     componentMinHeight: '200px',
@@ -124,6 +117,7 @@ export default () => {
   );
 };
 ```
+
 ## react-view/default
 
 ```jsx
@@ -154,7 +148,7 @@ export default () => {
     },
     initialCode: 'useful to hydrate the state from URL',
   });
-  return <View {...viewProps} />
+  return <View {...viewProps} />;
 };
 ```
 
@@ -187,7 +181,7 @@ export default () => {
       </BaseProvider>
     </StyletronProvider>
   );
-}
+};
 ```
 
 ## Exports
@@ -195,14 +189,9 @@ export default () => {
 An overview of all exports.
 
 ```js
-import { View } from 'react-view/default'; // unstyled / inline styles
+import {View} from 'react-view/default'; // unstyled / inline styles
 
-import {
-  View,
-  PropTypes,
-  lightEditorTheme,
-  darkEditorTheme
-} from 'react-view/base'; // opinionated
+import {View, PropTypes, lightEditorTheme, darkEditorTheme} from 'react-view/base'; // opinionated
 
 import {
   useView,
@@ -211,15 +200,15 @@ import {
   Editor,
   editorLightTheme,
   editorDarkTheme,
-  PropTypes
+  PropTypes,
 } from 'react-view'; // basic pieces to build your own UIs
 ```
 
 ### Custom PropTypes
 
-Does your component library have some unique prop that could benefit by having a dedicated UI knob? You can extend the default `PropTypes`, add custom parse/generate handlers and UI. 
+Does your component library have some unique prop that could benefit by having a dedicated UI knob? You can extend the default `PropTypes`, add custom parse/generate handlers and UI.
 
-For example, Base Web components have the `[overrides` prop](https://baseweb.design/guides/understanding-overrides/) that lets you customize any aspect of their styles. However, it's quite a complex data-structure so we provide a custom UI to ease its exploration and usage. 
+For example, Base Web components have the `[overrides` prop](https://baseweb.design/guides/understanding-overrides/) that lets you customize any aspect of their styles. However, it's quite a complex data-structure so we provide a custom UI to ease its exploration and usage.
 
 ```js
 import { PropTypes as defaultPropTypes } from 'react-view';

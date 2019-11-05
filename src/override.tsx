@@ -1,11 +1,11 @@
-import * as React from 'react'
-import { useStyletron } from 'baseui'
-import { StatefulTooltip } from 'baseui/tooltip'
-import { Button, KIND, SIZE } from 'baseui/button'
-import { ButtonGroup } from 'baseui/button-group'
-import { toggleOverrideSharedProps } from './ast'
-import { formatCode } from './code-generator'
-import Editor from './editor'
+import * as React from 'react';
+import {useStyletron} from 'baseui';
+import {StatefulTooltip} from 'baseui/tooltip';
+import {Button, KIND, SIZE} from 'baseui/button';
+import {ButtonGroup} from 'baseui/button-group';
+import {toggleOverrideSharedProps} from './ast';
+import {formatCode} from './code-generator';
+import Editor from './editor';
 
 export const getHighlightStyles = (isLightTheme: boolean, sharedProps: string[]) =>
   formatCode(`({ $theme, ${sharedProps.join(',')} }) => { return ({
@@ -14,39 +14,39 @@ export const getHighlightStyles = (isLightTheme: boolean, sharedProps: string[])
     }} solid\`,
     backgroundColor: ${isLightTheme ? '$theme.colors.warning200' : '$theme.colors.warning600'},
     })}
-  `)
+  `);
 
 const getEmptyStyles = (sharedProps: string[]) =>
   formatCode(`({ $theme, ${sharedProps.join(',')} }) => { return ({})}
-`)
+`);
 
 type TProps = {
-  overrideKey: string
-  overrides: any
-  overridesObj: any
-  componentConfig: any
-  componentName: string
-  set: (args: any) => void
-}
+  overrideKey: string;
+  overrides: any;
+  overridesObj: any;
+  componentConfig: any;
+  componentName: string;
+  set: (args: any) => void;
+};
 
 const SharedPropsTooltip: React.FC<{
-  componentConfig: any
-  children: React.ReactNode
-}> = ({ componentConfig, children }) => {
-  const sharedProps = Object.keys(componentConfig.overrides.sharedProps)
+  componentConfig: any;
+  children: React.ReactNode;
+}> = ({componentConfig, children}) => {
+  const sharedProps = Object.keys(componentConfig.overrides.sharedProps);
   const getDescription = (name: string) => {
-    let metaObj: any = {}
+    let metaObj: any = {};
     if (typeof componentConfig.overrides.sharedProps[name] === 'string') {
-      metaObj = componentConfig[componentConfig.overrides.sharedProps[name]]
+      metaObj = componentConfig[componentConfig.overrides.sharedProps[name]];
     } else {
-      metaObj = componentConfig.overrides.sharedProps[name]
+      metaObj = componentConfig.overrides.sharedProps[name];
     }
     return (
       <React.Fragment>
         <i>{metaObj.type}</i> - {metaObj.description}
       </React.Fragment>
-    )
-  }
+    );
+  };
   return (
     <StatefulTooltip
       accessibilityType="tooltip"
@@ -69,8 +69,8 @@ const SharedPropsTooltip: React.FC<{
     >
       {children}
     </StatefulTooltip>
-  )
-}
+  );
+};
 
 const Override: React.FC<TProps> = ({
   overrideKey,
@@ -79,17 +79,17 @@ const Override: React.FC<TProps> = ({
   componentConfig,
   set,
 }) => {
-  const [, theme] = useStyletron()
-  const isLightTheme = theme.name.startsWith('light-theme')
-  const code = overridesObj[overrideKey] ? overridesObj[overrideKey].style : ''
+  const [, theme] = useStyletron();
+  const isLightTheme = theme.name.startsWith('light-theme');
+  const code = overridesObj[overrideKey] ? overridesObj[overrideKey].style : '';
   return (
     <React.Fragment>
       <Editor
         onChange={newCode => {
           set({
             ...overrides.value,
-            [overrideKey]: { style: newCode, active: true },
-          })
+            [overrideKey]: {style: newCode, active: true},
+          });
         }}
         code={code}
       />
@@ -97,7 +97,7 @@ const Override: React.FC<TProps> = ({
         size={SIZE.compact}
         overrides={{
           Root: {
-            style: ({ $theme }: any) => ({
+            style: ({$theme}: any) => ({
               marginTop: $theme.sizing.scale300,
               [`@media screen and (max-width: ${$theme.breakpoints.medium}px)`]: {
                 flexWrap: 'wrap',
@@ -115,7 +115,7 @@ const Override: React.FC<TProps> = ({
                 style: formatCode(overrides.value[overrideKey].style),
                 active: true,
               },
-            })
+            });
           }}
         >
           Format
@@ -128,14 +128,14 @@ const Override: React.FC<TProps> = ({
                 overrides.value[overrideKey].style,
                 Object.keys(overrides.sharedProps)
               )
-            )
+            );
             set({
               ...overrides.value,
               [overrideKey]: {
                 style: newCode,
                 active: true,
               },
-            })
+            });
           }}
         >
           <SharedPropsTooltip componentConfig={componentConfig}>
@@ -151,7 +151,7 @@ const Override: React.FC<TProps> = ({
                 style: getEmptyStyles([]),
                 active: true,
               },
-            })
+            });
           }}
         >
           Empty
@@ -165,14 +165,14 @@ const Override: React.FC<TProps> = ({
                 style: getHighlightStyles(isLightTheme, []),
                 active: true,
               },
-            })
+            });
           }}
         >
           Reset
         </Button>
       </ButtonGroup>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Override
+export default Override;

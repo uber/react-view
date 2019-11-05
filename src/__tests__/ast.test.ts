@@ -15,18 +15,18 @@ describe('transformBeforeCompilation', () => {
       import { foo } from "baz";
       () => <Input value="Hello" />;
     `;
-    expect(
-      formatAstAndPrint(transformBeforeCompilation(parse(source), '', {})),
-    ).toBe('() => <Input value="Hello" />');
+    expect(formatAstAndPrint(transformBeforeCompilation(parse(source), '', {}))).toBe(
+      '() => <Input value="Hello" />'
+    );
   });
 
   test('remove exports', () => {
     const source = `
       export default () => <Input value="Hello" />;
     `;
-    expect(
-      formatAstAndPrint(transformBeforeCompilation(parse(source), '', {})),
-    ).toBe('() => <Input value="Hello" />');
+    expect(formatAstAndPrint(transformBeforeCompilation(parse(source), '', {}))).toBe(
+      '() => <Input value="Hello" />'
+    );
   });
 
   test('instrument a callback with __yard_onChange', () => {
@@ -43,8 +43,8 @@ describe('transformBeforeCompilation', () => {
               into: 'value',
             },
           },
-        }),
-      ),
+        })
+      )
     ).toBe(`<Input
   onChange={e => {
     foo();
@@ -67,8 +67,8 @@ describe('transformBeforeCompilation', () => {
               into: 'value',
             },
           },
-        }),
-      ),
+        })
+      )
     ).toBe(`<Input
   onChange={e => {
     foo();
@@ -92,8 +92,8 @@ describe('transformBeforeCompilation', () => {
               into: 'value',
             },
           },
-        }),
-      ),
+        })
+      )
     ).toBe(`<Foo>
   {e => {
     foo();
@@ -114,16 +114,13 @@ describe('transformBeforeCompilation', () => {
             propHook: ({getYardOnChange, fnBodyAppend}) => ({
               JSXAttribute(path: any) {
                 if (path.get('name').node.name === 'onClick') {
-                  fnBodyAppend(
-                    path.get('value'),
-                    getYardOnChange('e.target.value', 'value'),
-                  );
+                  fnBodyAppend(path.get('value'), getYardOnChange('e.target.value', 'value'));
                 }
               },
             }),
           },
-        }),
-      ),
+        })
+      )
     ).toBe(`<Foo>
   <button
     onClick={e => {
@@ -137,8 +134,7 @@ describe('transformBeforeCompilation', () => {
   });
 
   test('instrument a callback with propHook function', () => {
-    const source =
-      '<Foo render={() => <button onClick={e => foo()}>Ha</button>} />';
+    const source = '<Foo render={() => <button onClick={e => foo()}>Ha</button>} />';
     expect(
       formatAstAndPrint(
         transformBeforeCompilation(parse(source), 'Foo', {
@@ -149,16 +145,13 @@ describe('transformBeforeCompilation', () => {
             propHook: ({getYardOnChange, fnBodyAppend}) => ({
               JSXAttribute(path: any) {
                 if (path.get('name').node.name === 'onClick') {
-                  fnBodyAppend(
-                    path.get('value'),
-                    getYardOnChange('e.target.value', 'value'),
-                  );
+                  fnBodyAppend(path.get('value'), getYardOnChange('e.target.value', 'value'));
                 }
               },
             }),
           },
-        }),
-      ),
+        })
+      )
     ).toBe(`<Foo
   render={() => (
     <button

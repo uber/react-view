@@ -43,9 +43,7 @@ export function reduceToObj(type) {
     // Only attempt to reduce generic if it has a reducable value
     // Unreducable generics that have an identifier value, e.g. ElementConfig, are still valid
     // so we return early to avoid the console warn below
-    return reducableKinds.includes(type.value.kind)
-      ? reduceToObj(type.value)
-      : [];
+    return reducableKinds.includes(type.value.kind) ? reduceToObj(type.value) : [];
   } else if (type.kind === 'object') {
     return type.members;
   } else if (type.kind === 'intersection') {
@@ -79,8 +77,7 @@ const converters = {
   If the value here is undefined, we can safely assume that we're dealing with
   a StringTypeAnnotation and not a StringLiteralTypeAnnotation.
 */
-  string: type =>
-    type.value != null ? `"${type.value.toString()}"` : type.kind,
+  string: type => (type.value != null ? `"${type.value.toString()}"` : type.kind),
   custom: type => type.value.toString(),
   any: type => type.kind,
   void: type => 'undefined',
@@ -195,9 +192,7 @@ const converters = {
     //   // If the value is an assignment pattern with a left hand ID that is the same as our type.key, just return the resolved value.
     //   return `${convert(type.value)}`;
     // } else {
-    return `${convert(type.key)}${type.optional ? '?' : ''}: ${convert(
-      type.value,
-    )}`;
+    return `${convert(type.key)}${type.optional ? '?' : ''}: ${convert(type.value)}`;
     // }
   },
 
@@ -353,10 +348,7 @@ const getPropTypes = propTypesObj => {
   if (resolvedTypes.kind === 'object') {
     propTypes = resolvedTypes.members;
   } else if (resolvedTypes.kind === 'intersection') {
-    propTypes = resolvedTypes.types.reduce(
-      (acc, type) => [...acc, ...reduceToObj(type)],
-      [],
-    );
+    propTypes = resolvedTypes.types.reduce((acc, type) => [...acc, ...reduceToObj(type)], []);
   }
   return propTypes;
 };

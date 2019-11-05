@@ -8,9 +8,7 @@ const CodeBox = ({children}: {children: React.ReactNode}) => {
     <div
       className={useCss({
         overflow: 'scroll',
-        borderLeft: `5px solid ${
-          isLight ? theme.colors.warning200 : theme.colors.mono500
-        }`,
+        borderLeft: `5px solid ${isLight ? theme.colors.warning200 : theme.colors.mono500}`,
         backgroundColor: isLight ? 'rgb(253, 253, 253)' : '#292929',
         paddingLeft: theme.sizing.scale400,
         marginBottom: theme.sizing.scale600,

@@ -1,4 +1,4 @@
-module.exports = ({ config }) => {
+module.exports = ({config}) => {
   config.module.rules.push({
     test: /\.(ts|tsx)$/,
     use: [
@@ -7,7 +7,7 @@ module.exports = ({ config }) => {
       },
     ],
   });
-  config['node'] = { fs: 'empty' };
+  config['node'] = {fs: 'empty'};
   config.resolve.extensions.push('.ts', '.tsx');
   return config;
 };

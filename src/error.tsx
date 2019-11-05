@@ -15,10 +15,7 @@ const frameError = (error: string, code: string) => {
   return error;
 };
 
-const Error: React.FC<{error: string | null; code: string}> = ({
-  error,
-  code,
-}) => {
+const Error: React.FC<{error: string | null; code: string}> = ({error, code}) => {
   const [css, theme] = useStyletron();
   const errorCx = css({
     backgroundColor: theme.colors.negative600,

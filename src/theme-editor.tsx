@@ -1,31 +1,31 @@
-import * as React from 'react'
-import { useValueDebounce } from './utils'
-import { Input, SIZE } from 'baseui/input'
-import { useStyletron } from 'baseui'
-import { Caption1 } from 'baseui/typography'
+import * as React from 'react';
+import {useValueDebounce} from './utils';
+import {Input, SIZE} from 'baseui/input';
+import {useStyletron} from 'baseui';
+import {Caption1} from 'baseui/typography';
 
 type ThemeEditorProps = {
-  componentName: string
-  theme: { [key: string]: string }
-  themeInit: { [key: string]: string }
-  set: (value: { [key: string]: string }) => void
-}
+  componentName: string;
+  theme: {[key: string]: string};
+  themeInit: {[key: string]: string};
+  set: (value: {[key: string]: string}) => void;
+};
 
 type ColumnProps = {
-  themeKeys: string[]
-  theme: { [key: string]: string }
-  themeInit: { [key: string]: string }
-  set: (value: { [key: string]: string }) => void
-}
+  themeKeys: string[];
+  theme: {[key: string]: string};
+  themeInit: {[key: string]: string};
+  set: (value: {[key: string]: string}) => void;
+};
 
 const ColorInput: React.FC<{
-  themeKey: string
-  themeInit: { [key: string]: string }
-  globalColor: string
-  globalSet: (color: string) => void
-}> = ({ themeKey, themeInit, globalSet, globalColor }) => {
-  const [useCss, $theme] = useStyletron()
-  const [color, setColor] = useValueDebounce<string>(globalColor, globalSet)
+  themeKey: string;
+  themeInit: {[key: string]: string};
+  globalColor: string;
+  globalSet: (color: string) => void;
+}> = ({themeKey, themeInit, globalSet, globalColor}) => {
+  const [useCss, $theme] = useStyletron();
+  const [color, setColor] = useValueDebounce<string>(globalColor, globalSet);
 
   return (
     <label
@@ -47,7 +47,7 @@ const ColorInput: React.FC<{
         placeholder={themeInit[themeKey]}
         value={color}
         onChange={e => setColor((e.target as HTMLInputElement).value)}
-        overrides={{ Root: { style: { width: '100px' } } }}
+        overrides={{Root: {style: {width: '100px'}}}}
       />
       <div
         title={themeKey}
@@ -64,11 +64,11 @@ const ColorInput: React.FC<{
         {themeKey}
       </div>
     </label>
-  )
-}
+  );
+};
 
-const Column: React.FC<ColumnProps> = ({ themeKeys, themeInit, theme, set }) => {
-  const [useCss] = useStyletron()
+const Column: React.FC<ColumnProps> = ({themeKeys, themeInit, theme, set}) => {
+  const [useCss] = useStyletron();
   return (
     <div
       className={useCss({
@@ -89,19 +89,19 @@ const Column: React.FC<ColumnProps> = ({ themeKeys, themeInit, theme, set }) => 
             }
             themeInit={themeInit}
           />
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
-const ThemeEditor: React.FC<ThemeEditorProps> = ({ theme, themeInit, set, componentName }) => {
-  const [useCss, currentTheme] = useStyletron()
-  const themeKeys = Object.keys(theme)
+const ThemeEditor: React.FC<ThemeEditorProps> = ({theme, themeInit, set, componentName}) => {
+  const [useCss, currentTheme] = useStyletron();
+  const themeKeys = Object.keys(theme);
 
-  const midPoint = themeKeys.length % 2 === 0 ? themeKeys.length / 2 : themeKeys.length / 2 + 1
-  const firstThemeKeys = themeKeys.slice(0, midPoint)
-  const secondThemeKeys = themeKeys.slice(midPoint)
+  const midPoint = themeKeys.length % 2 === 0 ? themeKeys.length / 2 : themeKeys.length / 2 + 1;
+  const firstThemeKeys = themeKeys.slice(0, midPoint);
+  const secondThemeKeys = themeKeys.slice(midPoint);
 
   return (
     <React.Fragment>
@@ -122,7 +122,7 @@ const ThemeEditor: React.FC<ThemeEditorProps> = ({ theme, themeInit, set, compon
         <Column themeKeys={secondThemeKeys} theme={theme} themeInit={themeInit} set={set} />
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default ThemeEditor
+export default ThemeEditor;

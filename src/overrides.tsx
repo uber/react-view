@@ -1,67 +1,62 @@
-import * as React from 'react'
-import { Accordion, Panel } from 'baseui/accordion'
-import { Caption1 } from 'baseui/typography'
+import * as React from 'react';
+import {Accordion, Panel} from 'baseui/accordion';
+import {Caption1} from 'baseui/typography';
 //import Link from 'next/link';
-import { useStyletron } from 'baseui'
+import {useStyletron} from 'baseui';
 
-import Override, { getHighlightStyles } from './override'
+import Override, {getHighlightStyles} from './override';
 
 type TOverridesProps = {
-  set: any
-  overrides: any
-  componentConfig: any
-  componentName: string
-}
+  set: any;
+  overrides: any;
+  componentConfig: any;
+  componentName: string;
+};
 
-const Overrides: React.FC<TOverridesProps> = ({
-  overrides,
-  set,
-  componentName,
-  componentConfig,
-}) => {
-  const [, theme] = useStyletron()
-  const isLightTheme = theme.name.startsWith('light-theme')
+const Overrides: React.FC<TOverridesProps> = ({overrides, set, componentName, componentConfig}) => {
+  const [, theme] = useStyletron();
+  const isLightTheme = theme.name.startsWith('light-theme');
   if (!overrides.names || overrides.names.length === 0) {
-    return null
+    return null;
   }
 
   const overridesObj: {
     [key: string]: {
-      style: any
-    }
-  } = {}
+      style: any;
+    };
+  } = {};
 
   overrides.names.forEach((key: string) => {
     if (overrides.value && overrides.value[key]) {
-      overridesObj[key] = overrides.value[key]
+      overridesObj[key] = overrides.value[key];
     } else {
       overridesObj[key] = {
         style: null,
-      }
+      };
     }
-  })
+  });
 
-  const handleChange = ({ expanded }: { expanded: (string | number)[] }) => {
-    const returnValue: any = { ...overrides.value }
+  const handleChange = ({expanded}: {expanded: (string | number)[]}) => {
+    const returnValue: any = {...overrides.value};
     if (overrides.value) {
       Object.keys(overrides.value).forEach(key => {
-        returnValue[key]['active'] = false
-      })
+        returnValue[key]['active'] = false;
+      });
     }
     expanded.forEach(key => {
       if (overridesObj[key].style === null) {
         returnValue[key] = {
           style: getHighlightStyles(isLightTheme, []),
-        }
+        };
       } else {
         returnValue[key] = {
           style: overridesObj[key].style,
-        }
+        };
       }
-      returnValue[key]['active'] = true
-    })
-    set(Object.keys(returnValue).length > 0 ? returnValue : undefined)
-  }
+      returnValue[key]['active'] = true;
+    });
+    set(Object.keys(returnValue).length > 0 ? returnValue : undefined);
+  };
 
   return (
     <React.Fragment>
@@ -103,7 +98,7 @@ const Overrides: React.FC<TOverridesProps> = ({
         ))}
       </Accordion>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Overrides
+export default Overrides;
