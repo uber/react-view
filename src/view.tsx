@@ -27,17 +27,28 @@ import {
 } from './actions';
 import reducer from './reducer';
 
+const themeState = getThemeForCodeGenerator([], {}, {colors: {}} as any);
+
 const useView = ({
   componentName,
-  imports,
-  scope,
-  props,
+  props: propsConfig,
+  scope: scopeConfig,
+  imports: importsConfig,
+  provider: providerConfig,
   onUpdate,
   initialCode,
   providerValues,
-  provider,
-  propTypes,
+  propTypes: propTypesConfig,
 }) => {
+  const [hydrated, setHydrated] = React.useState(false);
+  const [error, setError] = React.useState<TError>({where: '', msg: null});
+  const [state, dispatch] = React.useReducer(reducer, {
+    code: initialCode || getCode(propsConfig, componentName, themeState, importsConfig),
+    codeNoRecompile: '',
+    props: propsConfig,
+    theme: {},
+  });
+
   return {
     compilerProps: {},
     knobProps: {},
@@ -66,25 +77,9 @@ const Yard: React.FC<
   placeholderElement,
   urlCode,
 }) => {
-  const [, theme] = useStyletron();
-  const [hydrated, setHydrated] = React.useState(false);
-  const [error, setError] = React.useState<TError>({where: '', msg: null});
-  const initialThemeObj = getComponentThemeFromContext(theme, themeConfig);
+  //const initialThemeObj = getComponentThemeFromContext(theme, themeConfig);
 
   // initial state
-  const [state, dispatch] = React.useReducer(reducer, {
-    code:
-      urlCode ||
-      getCode(
-        propsConfig,
-        componentName,
-        getThemeForCodeGenerator(themeConfig, {}, theme),
-        importsConfig
-      ),
-    codeNoRecompile: '',
-    props: propsConfig,
-    theme: initialThemeObj,
-  });
 
   // initialize from the URL
   React.useEffect(() => {
