@@ -2,7 +2,7 @@ import * as t from '@babel/types';
 import {PropTypes} from './const';
 import {Action} from './const';
 
-export type TUseViewProps = (params: {
+export type TUseView = (params: {
   componentName: string;
   // componentPlaceholder: React.ReactNode;
   // componentMinHeight: string;
@@ -11,12 +11,12 @@ export type TUseViewProps = (params: {
   props: {[key: string]: TProp};
   onUpdate?: (params: {code: string; props: {[key: string]: TProp}}) => void;
   initialCode?: string;
-  provider: {
+  provider?: {
     parse: (params: {astRoot: any}) => {[key: string]: TPropValue};
     generate: (params: {values: any; initialValues: any}) => any;
     imports: TImportsConfig;
   };
-  propTypes: {
+  propTypes?: {
     [key in PropTypes]: {
       parse: (params: {astAttrValue: string}) => TPropValue;
       generate: (params: {value: TPropValue}) => any;

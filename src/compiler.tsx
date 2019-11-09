@@ -97,7 +97,7 @@ const Compiler: React.FC<{
           flexWrap: 'wrap',
         })}
       >
-        {Element ? <Element /> : <PlaceholderElement />}
+        {Element ? <Element /> : PlaceholderElement ? <PlaceholderElement /> : null}
       </div>
     </div>
   );

@@ -1,19 +1,13 @@
 import * as React from 'react';
+import copy from 'copy-to-clipboard';
 
 import debounce from 'lodash/debounce';
 
 // transformations, code generation
 import {transformBeforeCompilation} from './ast';
 import {getCode, formatCode} from './code-generator';
-import {
-  buildPropsObj,
-  getComponentThemeFromContext,
-  getThemeForCodeGenerator,
-  countOverrides,
-  countProps,
-  countThemeValues,
-} from './utils';
-import {TYardProps, TPropValue, TError, TUseView} from './types';
+import {buildPropsObj, getThemeForCodeGenerator, countProps} from './utils';
+import {TPropValue, TError, TUseView} from './types';
 
 // actions that can be dispatched
 import {
@@ -21,7 +15,6 @@ import {
   updateAll,
   updateCode,
   updateProps,
-  updateThemeAndCode,
   updatePropsAndCode,
   updatePropsAndCodeNoRecompile,
 } from './actions';
@@ -29,16 +22,16 @@ import reducer from './reducer';
 
 const themeState = getThemeForCodeGenerator([], {}, {colors: {}} as any);
 
-const useView = ({
+const useView: TUseView = ({
   componentName,
   props: propsConfig,
   scope: scopeConfig,
   imports: importsConfig,
-  provider: providerConfig,
-  onUpdate,
+  //provider: providerConfig,
+  //onUpdate,
   initialCode,
-  providerValues,
-  propTypes: propTypesConfig,
+  //providerValues,
+  //propTypes: propTypesConfig,
 }) => {
   const [hydrated, setHydrated] = React.useState(false);
   const [error, setError] = React.useState<TError>({where: '', msg: null});
@@ -49,68 +42,15 @@ const useView = ({
     theme: {},
   });
 
-  return {
-    compilerProps: {},
-    knobProps: {},
-    providerProps: {},
-    editorProps: {},
-    error: {},
-    actions: {},
-  };
-};
-
-const Yard: React.FC<
-  TYardProps & {
-    placeholderElement: React.FC;
-    pathname: string;
-    urlCode?: string;
-    queryStringName?: string;
-  }
-> = ({
-  componentName,
-  props: propsConfig,
-  theme: themeConfig,
-  scope: scopeConfig,
-  imports: importsConfig,
-  mapTokensToProps,
-  minHeight,
-  placeholderElement,
-  urlCode,
-}) => {
-  //const initialThemeObj = getComponentThemeFromContext(theme, themeConfig);
-
-  // initial state
-
-  // initialize from the URL
+  // initialize from the initialCode
   React.useEffect(() => {
-    if (urlCode && !hydrated) {
+    if (initialCode && !hydrated) {
       setHydrated(true);
       try {
-        updateAll(dispatch, urlCode, componentName, propsConfig);
+        updateAll(dispatch, initialCode, componentName, propsConfig);
       } catch (e) {}
     }
-  }, [urlCode]);
-
-  //when theme (context) is switched, reset the theme state
-  React.useEffect(() => {
-    // don't make the reset if theme values were untouched
-    // prevents the initial re-update
-    const isIdentical = Object.keys(initialThemeObj).every(
-      key => initialThemeObj[key] === state.theme[key]
-    );
-    if (!isIdentical) {
-      const newCode = getCode(
-        state.props,
-        componentName,
-        getThemeForCodeGenerator(themeConfig, {}, theme),
-        importsConfig
-      );
-      updateThemeAndCode(dispatch, newCode, getComponentThemeFromContext(theme, themeConfig));
-      if (state.code !== newCode) {
-        //updateUrl({ pathname, code: newCode, queryStringName })
-      }
-    }
-  }, [theme.name]);
+  }, [initialCode]);
 
   // this callback is secretely inserted into props marked with
   // "propHook" this way we can get notified when the internal
@@ -120,190 +60,84 @@ const Yard: React.FC<
     const newCode = getCode(
       buildPropsObj(state.props, {[propName]: propValue}),
       componentName,
-      getThemeForCodeGenerator(themeConfig, state.theme, theme),
+      themeState,
       importsConfig
     );
     updatePropsAndCodeNoRecompile(dispatch, newCode, propName, propValue);
     //updateUrl({ pathname, code: newCode, queryStringName })
   }, 200);
 
-  const componentThemeDiff = getThemeForCodeGenerator(themeConfig, state.theme, theme);
+  //const componentThemeDiff = getThemeForCodeGenerator(themeConfig, state.theme, theme);
 
   const activeProps = countProps(state.props, propsConfig);
-  const activeOverrides = countOverrides(state.props.overrides);
-  const activeThemeValues = countThemeValues(componentThemeDiff);
 
-  return (
-    <React.Fragment>
-      <Compiler
-        code={state.code}
-        setError={msg => setError({where: '__compiler', msg})}
-        minHeight={minHeight}
-        transformations={[code => transformBeforeCompilation(code, componentName, propsConfig)]}
-        scope={{
-          ...scopeConfig,
-          ThemeProvider,
-          lightThemePrimitives,
-          darkThemePrimitives,
-          createTheme,
-          __yard_onChange,
-        }}
-        PlaceholderElement={placeholderElement}
-      />
-      {(error.where === '__compiler' || error.where === 'overrides') && error.msg && (
-        <PopupError error={error.msg} />
-      )}
-      <YardTabs>
-        <YardTab title={`Props${activeProps > 0 ? ` (${activeProps})` : ''}`}>
-          <Knobs
-            knobProps={state.props}
-            error={error}
-            set={(propValue: TPropValue, propName: string) => {
-              try {
-                !hydrated && setHydrated(true);
-                const newCode = getCode(
-                  buildPropsObj(state.props, {[propName]: propValue}),
-                  componentName,
-                  componentThemeDiff,
-                  importsConfig
-                );
-                setError({where: '', msg: null});
-                updatePropsAndCode(dispatch, newCode, propName, propValue);
-                //updateUrl({ pathname, code: newCode, queryStringName })
-              } catch (e) {
-                updateProps(dispatch, propName, propValue);
-                setError({where: propName, msg: e.toString()});
-              }
-            }}
-          />
-        </YardTab>
-        {propsConfig.overrides.names && propsConfig.overrides.names.length > 0 && (
-          <YardTab title={`Style Overrides${activeOverrides > 0 ? ` (${activeOverrides})` : ''}`}>
-            <Overrides
-              componentName={componentName}
-              componentConfig={propsConfig}
-              overrides={state.props.overrides}
-              set={(propValue: TPropValue) => {
-                const propName = 'overrides';
-                try {
-                  const newCode = getCode(
-                    buildPropsObj(state.props, {[propName]: propValue}),
-                    componentName,
-                    componentThemeDiff,
-                    importsConfig
-                  );
-                  setError({where: '', msg: null});
-                  updatePropsAndCode(dispatch, newCode, propName, propValue);
-                  //updateUrl({ pathname, code: newCode, queryStringName })
-                } catch (e) {
-                  updateProps(dispatch, propName, propValue);
-                  setError({where: propName, msg: e.toString()});
-                }
-              }}
-            />
-          </YardTab>
-        )}
-        {themeConfig.length > 0 && (
-          <YardTab title={`Theme ${activeThemeValues > 0 ? `(${activeThemeValues})` : ''}`}>
-            <ThemeEditor
-              themeInit={initialThemeObj}
-              theme={state.theme}
-              componentName={componentName}
-              set={(updatedThemeValues: {[key: string]: string}) => {
-                const componentThemeDiff = getThemeForCodeGenerator(
-                  themeConfig,
-                  updatedThemeValues,
-                  theme
-                );
-                const newCode = getCode(
-                  state.props,
-                  componentName,
-                  componentThemeDiff,
-                  importsConfig
-                );
-                updateThemeAndCode(dispatch, newCode, updatedThemeValues);
-                //updateUrl({ pathname, code: newCode, queryStringName })
-              }}
-            />
-          </YardTab>
-        )}
-      </YardTabs>
-      <Editor
-        code={state.codeNoRecompile !== '' ? state.codeNoRecompile : state.code}
-        onChange={newCode => {
-          try {
-            updateAll(dispatch, newCode, componentName, propsConfig);
-            //updateUrl({ pathname, code: newCode, queryStringName })
-          } catch (e) {
-            updateCode(dispatch, newCode);
-          }
-        }}
-        transformToken={tokenProps => {
-          const token = tokenProps.children.trim();
-          if (mapTokensToProps && mapTokensToProps[token]) {
-            return <PropsTooltip {...tokenProps} typeDefinition={mapTokensToProps[token]} />;
-          }
-          return <span {...tokenProps} />;
-        }}
-      />
-      <Error error={error.where === '__compiler' ? error.msg : null} code={state.code} />
-      <ButtonGroup
-        size={SIZE.compact}
-        overrides={{
-          Root: {
-            style: ({$theme}: any) => ({
-              flexWrap: 'wrap',
-              marginTop: $theme.sizing.scale300,
-            }),
-          },
-        }}
-      >
-        <Button
-          kind={KIND.tertiary}
-          onClick={() => {
-            updateCode(dispatch, formatCode(state.code));
-          }}
-        >
-          Format
-        </Button>
-        <Button
-          kind={KIND.tertiary}
-          onClick={() => {
-            copy(state.code);
-          }}
-        >
-          Copy code
-        </Button>
-        <Button
-          kind={KIND.tertiary}
-          onClick={() => {
-            copy(window.location.href);
-          }}
-        >
-          Copy URL
-        </Button>
-        <Button
-          kind={KIND.tertiary}
-          onClick={() => {
-            reset(
-              dispatch,
-              getCode(
-                propsConfig,
-                componentName,
-                getThemeForCodeGenerator(themeConfig, {}, theme),
-                importsConfig
-              ),
-              propsConfig,
-              initialThemeObj
-            );
-            //updateUrl({ pathname })
-          }}
-        >
-          Reset
-        </Button>
-      </ButtonGroup>
-    </React.Fragment>
-  );
+  return {
+    compilerProps: {
+      code: state.code,
+      setError: (msg: string) => setError({where: '__compiler', msg}),
+      transformations: [
+        (code: string) => transformBeforeCompilation(code, componentName, propsConfig),
+      ],
+      scope: {
+        ...scopeConfig,
+        __yard_onChange,
+      },
+    },
+    knobProps: {
+      activeProps,
+      knobProps: state.props,
+      error,
+      set: (propValue: TPropValue, propName: string) => {
+        try {
+          !hydrated && setHydrated(true);
+          const newCode = getCode(
+            buildPropsObj(state.props, {[propName]: propValue}),
+            componentName,
+            themeState,
+            importsConfig
+          );
+          setError({where: '', msg: null});
+          updatePropsAndCode(dispatch, newCode, propName, propValue);
+          //updateUrl({ pathname, code: newCode, queryStringName })
+        } catch (e) {
+          updateProps(dispatch, propName, propValue);
+          setError({where: propName, msg: e.toString()});
+        }
+      },
+    },
+    providerProps: {},
+    editorProps: {
+      code: state.codeNoRecompile !== '' ? state.codeNoRecompile : state.code,
+      onChange: (newCode: string) => {
+        try {
+          updateAll(dispatch, newCode, componentName, propsConfig);
+          //updateUrl({ pathname, code: newCode, queryStringName })
+        } catch (e) {
+          updateCode(dispatch, newCode);
+        }
+      },
+    },
+    error,
+    actions: {
+      formatCode: () => {
+        updateCode(dispatch, formatCode(state.code));
+      },
+      copyCode: () => {
+        copy(state.code);
+      },
+      copyUrl: () => {
+        copy(window.location.href);
+      },
+      reset: () => {
+        reset(
+          dispatch,
+          getCode(propsConfig, componentName, themeState, importsConfig),
+          propsConfig,
+          {}
+        );
+      },
+    },
+  };
 };
 
-export default Yard;
+export default useView;

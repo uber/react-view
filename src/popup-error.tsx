@@ -1,34 +1,40 @@
 import * as React from 'react';
-import {Popover, PLACEMENT} from 'baseui/popover';
-import {useStyletron} from 'baseui';
+import {Portal} from 'react-portal';
+import {Reference, Popper} from 'react-popper';
 import {formatBabelError} from './utils';
 
 const PopupError: React.FC<{error: string | null}> = ({error}) => {
-  const [css, theme] = useStyletron();
-  const errorCx = css({
-    backgroundColor: theme.colors.negative600,
-    whiteSpace: 'pre',
-    fontSize: '11px',
-    fontFamily: `Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace`,
-    color: theme.colors.mono100,
-    paddingLeft: theme.sizing.scale400,
-    paddingRight: theme.sizing.scale400,
-    paddingTop: theme.sizing.scale400,
-    paddingBottom: theme.sizing.scale400,
-    overflowX: 'scroll',
-  });
   if (error === null) {
     return null;
   }
   return (
-    <Popover
-      isOpen
-      accessibilityType="tooltip"
-      placement={PLACEMENT.bottom}
-      content={<div className={errorCx}>{formatBabelError(error)}</div>}
-    >
-      <div />
-    </Popover>
+    <React.Fragment>
+      <Reference>{({ref}) => <span ref={ref} />}</Reference>
+      <Portal>
+        <Popper placement="bottom">
+          {({ref, style, placement}) => (
+            <div ref={ref} style={style} data-placement={placement}>
+              <div
+                style={{
+                  marginLeft: '28px',
+                  marginTop: '4px',
+                  backgroundColor: '#892C21',
+                  whiteSpace: 'pre',
+                  fontSize: '11px',
+                  fontFamily: `Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace`,
+                  color: '#FFF',
+                  padding: '16px',
+                  overflowX: 'scroll',
+                  zIndex: 1000,
+                }}
+              >
+                {formatBabelError(error)}
+              </div>
+            </div>
+          )}
+        </Popper>
+      </Portal>
+    </React.Fragment>
   );
 };
 

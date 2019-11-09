@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {useStyletron} from 'baseui';
-import {Button, KIND, SIZE} from 'baseui/button';
+import {Manager} from 'react-popper';
 import {TPropValue, TProp, TError} from './types';
 import Knob from './knob';
 
@@ -16,13 +15,12 @@ const KnobColumn: React.FC<TKnobsProps & {knobNames: string[]}> = ({
   error,
   set,
 }) => {
-  const [useCss, theme] = useStyletron();
   return (
     <div
-      className={useCss({
+      style={{
         flexBasis: '50%',
-        padding: `0 ${theme.sizing.scale600}`,
-      })}
+        padding: `0 16px`,
+      }}
     >
       {knobNames.map((name: string) => (
         <Knob
@@ -43,7 +41,6 @@ const KnobColumn: React.FC<TKnobsProps & {knobNames: string[]}> = ({
 };
 
 const Knobs: React.FC<TKnobsProps> = ({knobProps, set, error}) => {
-  const [useCss, theme] = useStyletron();
   const [showAllKnobs, setShowAllKnobs] = React.useState(false);
   const allKnobNames = Object.keys(knobProps);
   const filteredKnobNames = allKnobNames.filter((name: string) => knobProps[name].hidden !== true);
@@ -51,29 +48,32 @@ const Knobs: React.FC<TKnobsProps> = ({knobProps, set, error}) => {
   const firstGroup = knobNames.slice(0, knobNames.length / 2);
   const secondGroup = knobNames.slice(knobNames.length / 2);
   return (
-    <React.Fragment>
-      <div
-        className={useCss({
-          display: 'flex',
-          [`@media screen and (max-width: ${theme.breakpoints.medium}px)`]: {
-            flexWrap: 'wrap',
-          },
-          margin: `0 -${theme.sizing.scale600}`,
-        })}
-      >
+    <Manager>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        @media screen and (max-width: 600px) {
+          .react-view-columns {
+            flex-wrap: wrap;
+          }
+        }
+        .react-view-columns {
+          display: flex;
+          margin: 0 -16px;
+        }
+      `,
+        }}
+      />
+      <div className="react-view-columns">
         <KnobColumn knobProps={knobProps} knobNames={firstGroup} set={set} error={error} />
         <KnobColumn knobProps={knobProps} knobNames={secondGroup} set={set} error={error} />
       </div>
       {filteredKnobNames.length !== allKnobNames.length && (
-        <Button
-          kind={KIND.tertiary}
-          size={SIZE.compact}
-          onClick={() => setShowAllKnobs(!showAllKnobs)}
-        >
+        <button onClick={() => setShowAllKnobs(!showAllKnobs)}>
           {showAllKnobs ? 'Show only basic props' : 'Show all props'}
-        </Button>
+        </button>
       )}
-    </React.Fragment>
+    </Manager>
   );
 };
 
