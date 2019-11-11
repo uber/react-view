@@ -117,7 +117,11 @@ const useView: TUseView = ({
         }
       },
     },
-    error,
+    errorProps: {
+      where: error.where,
+      msg: error.msg,
+      code: state.code,
+    },
     actions: {
       formatCode: () => {
         updateCode(dispatch, formatCode(state.code));

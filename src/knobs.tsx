@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Manager} from 'react-popper';
 import {TPropValue, TProp, TError} from './types';
 import Knob from './knob';
 
@@ -48,7 +47,7 @@ const Knobs: React.FC<TKnobsProps> = ({knobProps, set, error}) => {
   const firstGroup = knobNames.slice(0, knobNames.length / 2);
   const secondGroup = knobNames.slice(knobNames.length / 2);
   return (
-    <Manager>
+    <React.Fragment>
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -73,7 +72,7 @@ const Knobs: React.FC<TKnobsProps> = ({knobProps, set, error}) => {
           {showAllKnobs ? 'Show only basic props' : 'Show all props'}
         </button>
       )}
-    </Manager>
+    </React.Fragment>
   );
 };
 

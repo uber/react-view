@@ -12,7 +12,7 @@ ${description}`;
 const Spacing: React.FC<{children: React.ReactNode; title?: string}> = ({children, title}) => {
   return (
     <div
-      style={{margin: '10px 0', fontFamily: "'Helvetica Neue', Arial", fontSize: '14px'}}
+      style={{margin: '10px 0px', fontFamily: "'Helvetica Neue', Arial", fontSize: '14px'}}
       title={title}
     >
       {children}
@@ -89,7 +89,7 @@ const Knob: React.SFC<{
             <input
               id={name}
               type="checkbox"
-              style={{marginRight: '8px'}}
+              style={{marginRight: '8px', marginLeft: '0px'}}
               checked={Boolean(val)}
               onChange={() => {
                 globalSet(!val);
@@ -119,7 +119,7 @@ const Knob: React.SFC<{
                   key={opt}
                 >
                   <input
-                    style={{marginRight: '8px'}}
+                    style={{marginRight: '8px', marginLeft: '0px'}}
                     type="radio"
                     checked={`${enumName || name.toUpperCase()}.${opt}` === val}
                     key={opt}

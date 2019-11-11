@@ -7,6 +7,8 @@ import useView from '../src/view';
 import Compiler from '../src/compiler';
 import Knobs from '../src/knobs';
 import Editor from '../src/editor';
+import Error from '../src/error';
+import {ActionButtons} from '../src/action-buttons';
 
 const ButtonConfig: TConfig = {
   imports: {
@@ -35,7 +37,7 @@ const ButtonConfig: TConfig = {
     startEnhancer: {
       value: undefined,
       placeholder: 'Hey',
-      type: PropTypes.String,
+      type: PropTypes.Function,
       description: `A component rendered at the start of the button.`,
     },
     disabled: {
@@ -127,11 +129,13 @@ export const toStorybook = () => {
   console.log(params);
 
   return (
-    <div>
+    <React.Fragment>
       <Compiler {...params.compilerProps} />
       <Knobs {...params.knobProps} />
       <Editor {...params.editorProps} />
-    </div>
+      <Error {...params.errorProps} />
+      <ActionButtons actions={params.actions} />
+    </React.Fragment>
   );
 };
 

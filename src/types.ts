@@ -27,7 +27,7 @@ export type TUseView = (params: {
   knobProps: any;
   providerProps: any;
   editorProps: any;
-  error: any;
+  errorProps: any;
   actions: any;
 };
 
