@@ -6,7 +6,7 @@ import debounce from 'lodash/debounce';
 // transformations, code generation
 import {transformBeforeCompilation} from './ast';
 import {getCode, formatCode} from './code-generator';
-import {buildPropsObj, getThemeForCodeGenerator, countProps} from './utils';
+import {buildPropsObj, countProps} from './utils';
 import {TPropValue, TError, TUseView} from './types';
 
 // actions that can be dispatched
@@ -20,7 +20,10 @@ import {
 } from './actions';
 import reducer from './reducer';
 
-const themeState = getThemeForCodeGenerator([], {}, {colors: {}} as any);
+const themeState = {
+  themeValues: {},
+  themeName: '',
+};
 
 const useView: TUseView = ({
   componentName,

@@ -1,9 +1,8 @@
 import React from 'react';
 import {transformFromAstSync} from '@babel/core';
-import {parse} from './ast';
-import {useStyletron} from 'baseui';
 //@ts-ignore
 import presetReact from '@babel/preset-react';
+import {parse} from './ast';
 
 const errorBoundary = (
   Element: React.FC | React.ComponentClass | undefined,
@@ -75,7 +74,6 @@ const Compiler: React.FC<{
   const [output, setOutput] = React.useState<{
     component: React.ComponentClass | null;
   }>({component: null});
-  const [css, theme] = useStyletron();
 
   React.useEffect(() => {
     transpile(code, transformations, scope, setOutput, setError);
@@ -84,18 +82,18 @@ const Compiler: React.FC<{
   const Element = output.component;
   return (
     <div
-      className={css({
+      style={{
         minHeight: `${minHeight}px`,
-        paddingTop: minHeight ? theme.sizing.scale600 : 0,
-        paddingBottom: minHeight ? theme.sizing.scale600 : 0,
-      })}
+        paddingTop: minHeight ? '16px' : 0,
+        paddingBottom: minHeight ? '16px' : 0,
+      }}
     >
       <div
-        className={css({
+        style={{
           display: 'flex',
           justifyContent: 'center',
           flexWrap: 'wrap',
-        })}
+        }}
       >
         {Element ? <Element /> : PlaceholderElement ? <PlaceholderElement /> : null}
       </div>

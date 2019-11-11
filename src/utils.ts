@@ -1,4 +1,4 @@
-import {Theme} from 'baseui/theme';
+//import {Theme} from 'baseui/theme';
 import * as React from 'react';
 import {TProp, TThemeDiff, TPropValue} from './types';
 import {codeFrameColumns} from '@babel/code-frame';
@@ -68,35 +68,35 @@ export const buildPropsObj = (
   return newProps;
 };
 
-export const getComponentThemeFromContext = (theme: Theme, themeConfig: string[]) => {
-  const componentThemeObj: {[key: string]: string} = {};
-  themeConfig.forEach(key => {
-    componentThemeObj[key] = (theme.colors as any)[key];
-  });
-  return componentThemeObj;
-};
+// export const getComponentThemeFromContext = (theme: Theme, themeConfig: string[]) => {
+//   const componentThemeObj: {[key: string]: string} = {};
+//   themeConfig.forEach(key => {
+//     componentThemeObj[key] = (theme.colors as any)[key];
+//   });
+//   return componentThemeObj;
+//};
 
-export const getThemeForCodeGenerator = (
-  themeConfig: string[],
-  updatedThemeValues: {[key: string]: string},
-  theme: Theme
-) => {
-  const componentThemeValueDiff: {[key: string]: string} = {};
-  themeConfig.forEach(key => {
-    if (updatedThemeValues[key] && (theme.colors as any)[key] !== updatedThemeValues[key]) {
-      componentThemeValueDiff[key] = updatedThemeValues[key];
-    }
-  });
-  const componentThemeDiff: TThemeDiff = {
-    themeValues: {},
-    themeName: '',
-  };
-  if (Object.keys(componentThemeValueDiff).length > 0) {
-    componentThemeDiff.themeValues = componentThemeValueDiff;
-    componentThemeDiff.themeName = theme.name;
-  }
-  return componentThemeDiff;
-};
+// export const getThemeForCodeGenerator = (
+//   themeConfig: string[],
+//   updatedThemeValues: {[key: string]: string},
+//   theme: Theme
+// ) => {
+//   const componentThemeValueDiff: {[key: string]: string} = {};
+//   themeConfig.forEach(key => {
+//     if (updatedThemeValues[key] && (theme.colors as any)[key] !== updatedThemeValues[key]) {
+//       componentThemeValueDiff[key] = updatedThemeValues[key];
+//     }
+//   });
+//   const componentThemeDiff: TThemeDiff = {
+//     themeValues: {},
+//     themeName: '',
+//   };
+//   if (Object.keys(componentThemeValueDiff).length > 0) {
+//     componentThemeDiff.themeValues = componentThemeValueDiff;
+//     componentThemeDiff.themeName = theme.name;
+//   }
+//   return componentThemeDiff;
+// };
 
 export const countOverrides = (overrides: any) => {
   const existingOverrides = overrides.value ? Object.keys(overrides.value) : [];

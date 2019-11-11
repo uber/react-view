@@ -1,9 +1,9 @@
+import template from '@babel/template';
+import * as t from '@babel/types';
 import clone from 'just-clone';
 import {TProp, TImportsConfig} from './types';
 import {PropTypes} from './const';
 import {parse} from './ast';
-import template from '@babel/template';
-import * as t from '@babel/types';
 
 // forked prettier on a diet
 //@ts-ignore

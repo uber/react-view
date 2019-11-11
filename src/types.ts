@@ -1,6 +1,5 @@
 import * as t from '@babel/types';
-import {PropTypes} from './const';
-import {Action} from './const';
+import {PropTypes, Action} from './const';
 
 export type TUseView = (params: {
   componentName: string;
