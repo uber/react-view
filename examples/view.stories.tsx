@@ -131,6 +131,7 @@ export const toStorybook = () => {
   return (
     <React.Fragment>
       <Compiler {...params.compilerProps} />
+      <Error msg={params.errorProps.msg} isPopup />
       <Knobs {...params.knobProps} />
       <Editor {...params.editorProps} />
       <Error {...params.errorProps} />

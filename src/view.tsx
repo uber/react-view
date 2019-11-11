@@ -118,8 +118,7 @@ const useView: TUseView = ({
       },
     },
     errorProps: {
-      where: error.where,
-      msg: error.msg,
+      msg: error.where === '__compiler' ? error.msg : null,
       code: state.code,
     },
     actions: {

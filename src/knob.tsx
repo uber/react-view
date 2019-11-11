@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {assertUnreachable, useValueDebounce} from './utils';
 import {PropTypes} from './const';
-import PopupError from './popup-error';
+import Error from './error';
 import Editor from './editor';
 import {TPropValue} from './types';
 
@@ -74,7 +74,7 @@ const Knob: React.SFC<{
           >
             React Ref documentation
           </a>
-          <PopupError error={error} />
+          <Error msg={error} isPopup />
         </Spacing>
       );
     case PropTypes.Boolean:
@@ -97,7 +97,7 @@ const Knob: React.SFC<{
             />
             <label htmlFor={name}>{name}</label>
           </div>
-          <PopupError error={error} />
+          <Error msg={error} isPopup />
         </Spacing>
       );
     case PropTypes.Enum:
@@ -158,7 +158,7 @@ const Knob: React.SFC<{
             </select>
           )}
 
-          <PopupError error={error} />
+          <Error msg={error} isPopup />
         </Spacing>
       );
     case PropTypes.ReactNode:
@@ -179,7 +179,7 @@ const Knob: React.SFC<{
             placeholder={placeholder}
             small
           />
-          <PopupError error={error} />
+          <Error msg={error} isPopup />
         </Spacing>
       );
     case PropTypes.Overrides:

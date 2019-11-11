@@ -1,15 +1,20 @@
 import {Theme} from 'baseui/theme';
 import * as React from 'react';
 import {TProp, TThemeDiff, TPropValue} from './types';
+import {codeFrameColumns} from '@babel/code-frame';
 
 export function assertUnreachable(): never {
   throw new Error("Didn't expect to get here");
 }
 
 export const formatBabelError = (error: string) => {
+  const isTemplate = error.includes('/* @babel/template */');
   return error
     .replace('1 | /* @babel/template */;', '')
-    .replace(/\((\d+):(\d+)\)/, (_, line, col) => `(${parseInt(line, 10) - 1}:${col})`)
+    .replace(
+      /\((\d+):(\d+)\)/,
+      (_, line, col) => `(${parseInt(line, 10) - (isTemplate ? 1 : 0)}:${col})`
+    )
     .replace('<>', '')
     .replace('</>', '')
     .replace(/(\d+) \|/g, (_, line) => {
@@ -18,6 +23,19 @@ export const formatBabelError = (error: string) => {
       const lenDiff = line.length - `${newLineNum}`.length;
       return `${' '.repeat(lenDiff)}${newLineNum} |`;
     });
+};
+
+export const frameError = (error: string, code: string) => {
+  if (error) {
+    const found = error.match(/\((\d+)\:(\d+)\)$/);
+    if (found) {
+      const location = {
+        start: {line: parseInt(found[1], 10), column: parseInt(found[2], 10)},
+      };
+      return `${error}\n\n${codeFrameColumns(code, location)}`;
+    }
+  }
+  return error;
 };
 
 export const buildPropsObj = (

@@ -254,7 +254,7 @@ const Yard: React.FC<
           return <span {...tokenProps} />;
         }}
       />
-      <Error where={error.where} msg={error.msg} code={state.code} />
+      <Error msg={error.where === '__compiler' ? error.msg : null} code={state.code} />
       <ButtonGroup
         size={SIZE.compact}
         overrides={{
