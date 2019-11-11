@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {assertUnreachable, useValueDebounce} from './utils';
+import {useValueDebounce} from './utils';
 import {PropTypes} from './const';
 import Error from './error';
 import Editor from './editor';
@@ -182,10 +182,8 @@ const Knob: React.SFC<{
           <Error msg={error} isPopup />
         </Spacing>
       );
-    case PropTypes.Overrides:
-      return null;
     default:
-      return assertUnreachable();
+      return null;
   }
 };
 

@@ -66,11 +66,11 @@ const transpile = (
 const Compiler: React.FC<{
   scope: any;
   code: string;
-  minHeight: number;
+  minHeight?: number;
   setError: (error: string | null) => void;
   transformations: ((ast: babel.types.Node) => babel.types.Node)[];
-  PlaceholderElement: React.FC;
-}> = ({scope, code, setError, transformations, PlaceholderElement, minHeight}) => {
+  placeholder?: React.FC<{height: number}>;
+}> = ({scope, code, setError, transformations, placeholder, minHeight}) => {
   const [output, setOutput] = React.useState<{
     component: React.ComponentClass | null;
   }>({component: null});
@@ -80,10 +80,11 @@ const Compiler: React.FC<{
   }, [code]);
 
   const Element = output.component;
+  const Placeholder = placeholder;
   return (
     <div
       style={{
-        minHeight: `${minHeight}px`,
+        minHeight: `${minHeight || 0}px`,
         paddingTop: minHeight ? '16px' : 0,
         paddingBottom: minHeight ? '16px' : 0,
       }}
@@ -95,7 +96,7 @@ const Compiler: React.FC<{
           flexWrap: 'wrap',
         }}
       >
-        {Element ? <Element /> : PlaceholderElement ? <PlaceholderElement /> : null}
+        {Element ? <Element /> : Placeholder ? <Placeholder height={minHeight || 32} /> : null}
       </div>
     </div>
   );

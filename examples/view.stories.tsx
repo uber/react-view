@@ -9,6 +9,7 @@ import Knobs from '../src/knobs';
 import Editor from '../src/editor';
 import Error from '../src/error';
 import {ActionButtons} from '../src/action-buttons';
+import Placeholder from '../src/placeholder';
 
 const ButtonConfig: TConfig = {
   imports: {
@@ -130,7 +131,7 @@ export const toStorybook = () => {
 
   return (
     <React.Fragment>
-      <Compiler {...params.compilerProps} />
+      <Compiler {...params.compilerProps} minHeight={48} placeholder={Placeholder} />
       <Error msg={params.errorProps.msg} isPopup />
       <Knobs {...params.knobProps} />
       <Editor {...params.editorProps} />
