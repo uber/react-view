@@ -11,6 +11,8 @@ import Error from '../src/error';
 import {ActionButtons} from '../src/action-buttons';
 import Placeholder from '../src/placeholder';
 
+import * as t from '@babel/types';
+
 const ButtonConfig: TConfig = {
   imports: {
     'baseui/button': {
@@ -94,7 +96,7 @@ const ButtonConfig: TConfig = {
     },
     overrides: {
       value: undefined,
-      type: PropTypes.Overrides,
+      type: PropTypes.Custom,
       description: 'Lets you customize all aspects of the component.',
       names: [
         'BaseButton',
@@ -125,6 +127,14 @@ export const toStorybook = () => {
     props: ButtonConfig.props,
     scope: ButtonConfig.scope,
     imports: ButtonConfig.imports,
+    customPropTypes: {
+      overrides: {
+        parse: (attr: t.JSXAttribute) => {
+          console.log(attr);
+          return null;
+        },
+      },
+    },
   });
 
   console.log(params);

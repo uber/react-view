@@ -15,10 +15,10 @@ export type TUseView = (params: {
     generate: (params: {values: any; initialValues: any}) => any;
     imports: TImportsConfig;
   };
-  propTypes?: {
-    [key in PropTypes]: {
-      parse: (params: {astAttrValue: string}) => TPropValue;
-      generate: (params: {value: TPropValue}) => any;
+  customPropTypes?: {
+    [key: string]: {
+      parse?: (attr: t.JSXAttribute) => TPropValue | null;
+      generate?: (params: {value: TPropValue}) => any;
     };
   };
 }) => {

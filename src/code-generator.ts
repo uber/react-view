@@ -77,7 +77,7 @@ export const getAstPropValue = (prop: TProp) => {
         return t.stringLiteral(output.name);
       }
       return output;
-    case PropTypes.Overrides:
+    case PropTypes.Custom:
       const activeValues = Object.entries(value as {
         [key: string]: {active: boolean; style: string};
       }).filter(([, val]: any) => val.active);

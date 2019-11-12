@@ -279,7 +279,7 @@ describe('getAstPropValue', () => {
             style: `() => { color: 'pink'}`,
           },
         },
-        type: PropTypes.Overrides,
+        type: PropTypes.Custom,
         description: '',
       })
     ).toEqual({
@@ -489,7 +489,7 @@ describe('getCode', () => {
                 active: true,
               },
             },
-            type: PropTypes.Overrides,
+            type: PropTypes.Custom,
             description: '',
             names: ['Root'],
           },
