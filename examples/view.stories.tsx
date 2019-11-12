@@ -136,7 +136,7 @@ export const toStorybook = () => {
       <Knobs {...params.knobProps} />
       <Editor {...params.editorProps} />
       <Error {...params.errorProps} />
-      <ActionButtons actions={params.actions} />
+      <ActionButtons {...params.actions} />
     </React.Fragment>
   );
 };

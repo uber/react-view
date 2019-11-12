@@ -31,7 +31,7 @@ const useView: TUseView = ({
   scope: scopeConfig,
   imports: importsConfig,
   //provider: providerConfig,
-  //onUpdate,
+  onUpdate,
   initialCode,
   //providerValues,
   //propTypes: propTypesConfig,
@@ -67,7 +67,7 @@ const useView: TUseView = ({
       importsConfig
     );
     updatePropsAndCodeNoRecompile(dispatch, newCode, propName, propValue);
-    //updateUrl({ pathname, code: newCode, queryStringName })
+    onUpdate && onUpdate({code: newCode});
   }, 200);
 
   //const componentThemeDiff = getThemeForCodeGenerator(themeConfig, state.theme, theme);
@@ -101,7 +101,7 @@ const useView: TUseView = ({
           );
           setError({where: '', msg: null});
           updatePropsAndCode(dispatch, newCode, propName, propValue);
-          //updateUrl({ pathname, code: newCode, queryStringName })
+          onUpdate && onUpdate({code: newCode});
         } catch (e) {
           updateProps(dispatch, propName, propValue);
           setError({where: propName, msg: e.toString()});
@@ -114,7 +114,7 @@ const useView: TUseView = ({
       onChange: (newCode: string) => {
         try {
           updateAll(dispatch, newCode, componentName, propsConfig);
-          //updateUrl({ pathname, code: newCode, queryStringName })
+          onUpdate && onUpdate({code: newCode});
         } catch (e) {
           updateCode(dispatch, newCode);
         }

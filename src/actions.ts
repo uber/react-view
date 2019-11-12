@@ -48,28 +48,6 @@ export const updateAll = (
   });
 };
 
-// type TUpdateUrl = {
-//   pathname: string;
-//   code?: string;
-//   queryStringName?: string;
-//};
-export const updateUrl = () => {};
-// export const updateUrl = ({pathname, code, queryStringName}: TUpdateUrl) => {
-//   const query = queryStringName || 'code';
-//   Router.push(
-//     code
-//       ? {
-//           pathname: pathname,
-//           query: {
-//             [query]: code,
-//           },
-//         }
-//       : {
-//           pathname: pathname,
-//         },
-//   );
-// };
-
 export const updatePropsAndCodeNoRecompile = (
   dispatch: TDispatch,
   newCode: string,

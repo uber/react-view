@@ -7,13 +7,11 @@ export const ActionButton: React.FC<{
 }> = props => <button className="react-view-button" {...props} />;
 
 export const ActionButtons: React.FC<{
-  actions: {
-    formatCode: () => void;
-    copyCode: () => void;
-    copyUrl: () => void;
-    reset: () => void;
-  };
-}> = ({actions}) => (
+  formatCode: () => void;
+  copyCode: () => void;
+  copyUrl: () => void;
+  reset: () => void;
+}> = ({formatCode, copyCode, copyUrl, reset}) => (
   <React.Fragment>
     <style
       dangerouslySetInnerHTML={{
@@ -42,16 +40,16 @@ export const ActionButtons: React.FC<{
       }}
     />
     <div style={{margin: '10px 0px'}}>
-      <ActionButton style={{marginRight: '8px'}} onClick={actions.formatCode}>
+      <ActionButton style={{marginRight: '8px'}} onClick={formatCode}>
         Format code
       </ActionButton>
-      <ActionButton style={{marginRight: '8px'}} onClick={actions.copyCode}>
+      <ActionButton style={{marginRight: '8px'}} onClick={copyCode}>
         Copy code
       </ActionButton>
-      <ActionButton style={{marginRight: '8px'}} onClick={actions.copyUrl}>
+      <ActionButton style={{marginRight: '8px'}} onClick={copyUrl}>
         Copy URL
       </ActionButton>
-      <ActionButton style={{marginRight: '8px'}} onClick={actions.reset}>
+      <ActionButton style={{marginRight: '8px'}} onClick={reset}>
         Reset
       </ActionButton>
     </div>

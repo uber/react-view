@@ -8,7 +8,7 @@ export type TUseView = (params: {
   imports: TImportsConfig;
   scope: {[key: string]: any};
   props: {[key: string]: TProp};
-  onUpdate?: (params: {code: string; props: {[key: string]: TProp}}) => void;
+  onUpdate?: (params: {code: string}) => void;
   initialCode?: string;
   provider?: {
     parse: (params: {astRoot: any}) => {[key: string]: TPropValue};
