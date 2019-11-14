@@ -4,8 +4,6 @@ import {
   getAstReactHooks,
   getAstImport,
   getAstImports,
-  getAstThemeImport,
-  getAstThemeWrapper,
   getCode,
 } from '../code-generator';
 import {PropTypes} from '../const';
@@ -376,6 +374,7 @@ describe('getAstImports', () => {
   test('return multiple named and default imports', () => {
     expect(
       generate(t.program(
+        //@ts-ignore
         getAstImports(
           {
             'baseui/tabs': {
@@ -438,31 +437,23 @@ import { Motion } from "react-motion";`);
   });
 });
 
-describe('get theme AST primitives', () => {
-  test('getAstThemeImport', () => {
-    expect(
-      generate(
-        //@ts-ignore
-        t.program(getAstThemeImport(true, 'dark') as any)
-      ).code
-    ).toBe('import { ThemeProvider, createTheme, dark } from "baseui";');
-  });
+// describe('get theme AST primitives', () => {
 
-  test('getAstThemeWrapper', () => {
-    expect(
-      generate(getAstThemeWrapper(
-        {inputFill: 'yellow'},
-        'light-theme',
-        //@ts-ignore
-        t.jsxText('Hey')
-      ) as any).code
-    ).toBe(`<ThemeProvider theme={createTheme(light-theme, {
-  colors: {
-    inputFill: "yellow"
-  }
-})}>Hey</ThemeProvider>`);
-  });
-});
+//   test('getAstThemeWrapper', () => {
+//     expect(
+//       generate(getAstThemeWrapper(
+//         {inputFill: 'yellow'},
+//         'light-theme',
+//         //@ts-ignore
+//         t.jsxText('Hey')
+//       ) as any).code
+//     ).toBe(`<ThemeProvider theme={createTheme(light-theme, {
+//   colors: {
+//     inputFill: "yellow"
+//   }
+// })}>Hey</ThemeProvider>`);
+//   });
+// });
 
 describe('getCode', () => {
   test('stateful, hooks, overrides and theme enabled component', () => {

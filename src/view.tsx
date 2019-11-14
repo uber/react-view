@@ -7,7 +7,7 @@ import debounce from 'lodash/debounce';
 import {transformBeforeCompilation} from './ast';
 import {getCode, formatCode} from './code-generator';
 import {buildPropsObj, countProps} from './utils';
-import {TPropValue, TError, TUseView} from './types';
+import {TPropValue, TError, TUseView, TProvider} from './types';
 
 // actions that can be dispatched
 import {
@@ -20,29 +20,22 @@ import {
 } from './actions';
 import reducer from './reducer';
 
-const themeState = {
-  themeValues: {},
-  themeName: '',
-};
-
 const useView: TUseView = ({
   componentName,
   props: propsConfig,
   scope: scopeConfig,
   imports: importsConfig,
-  //provider: providerConfig,
+  initialProvider,
   onUpdate,
   initialCode,
-  //providerValues,
   //propTypes: propTypesConfig,
 }) => {
   const [hydrated, setHydrated] = React.useState(false);
   const [error, setError] = React.useState<TError>({where: '', msg: null});
   const [state, dispatch] = React.useReducer(reducer, {
-    code: initialCode || getCode(propsConfig, componentName, themeState, importsConfig),
+    code: initialCode || getCode(propsConfig, componentName, initialProvider, importsConfig),
     codeNoRecompile: '',
     props: propsConfig,
-    theme: {},
   });
 
   // initialize from the initialCode
@@ -50,7 +43,13 @@ const useView: TUseView = ({
     if (initialCode && !hydrated) {
       setHydrated(true);
       try {
-        updateAll(dispatch, initialCode, componentName, propsConfig);
+        updateAll(
+          dispatch,
+          initialCode,
+          componentName,
+          propsConfig,
+          initialProvider ? initialProvider.parse : undefined
+        );
       } catch (e) {}
     }
   }, [initialCode]);
@@ -63,14 +62,12 @@ const useView: TUseView = ({
     const newCode = getCode(
       buildPropsObj(state.props, {[propName]: propValue}),
       componentName,
-      themeState,
+      initialProvider,
       importsConfig
     );
     updatePropsAndCodeNoRecompile(dispatch, newCode, propName, propValue);
     onUpdate && onUpdate({code: newCode});
   }, 200);
-
-  //const componentThemeDiff = getThemeForCodeGenerator(themeConfig, state.theme, theme);
 
   const activeProps = countProps(state.props, propsConfig);
 
@@ -96,7 +93,7 @@ const useView: TUseView = ({
           const newCode = getCode(
             buildPropsObj(state.props, {[propName]: propValue}),
             componentName,
-            themeState,
+            initialProvider,
             importsConfig
           );
           setError({where: '', msg: null});
@@ -113,7 +110,13 @@ const useView: TUseView = ({
       code: state.codeNoRecompile !== '' ? state.codeNoRecompile : state.code,
       onChange: (newCode: string) => {
         try {
-          updateAll(dispatch, newCode, componentName, propsConfig);
+          updateAll(
+            dispatch,
+            newCode,
+            componentName,
+            propsConfig,
+            initialProvider ? initialProvider.parse : undefined
+          );
           onUpdate && onUpdate({code: newCode});
         } catch (e) {
           updateCode(dispatch, newCode);
@@ -137,10 +140,14 @@ const useView: TUseView = ({
       reset: () => {
         reset(
           dispatch,
-          getCode(propsConfig, componentName, themeState, importsConfig),
-          propsConfig,
-          {}
+          getCode(propsConfig, componentName, initialProvider, importsConfig),
+          propsConfig
         );
+      },
+      updateProvider: (newProvider: TProvider) => {
+        const newCode: string = getCode(propsConfig, componentName, newProvider, importsConfig);
+        updateCode(dispatch, newCode);
+        return newCode;
       },
     },
   };

@@ -176,26 +176,12 @@ export function toggleOverrideSharedProps(code: string, sharedProps: string[]) {
   return result;
 }
 
-export function parseCode(code: string, elementName: string) {
+export function parseCode(code: string, elementName: string, parseProvider?: (ast: any) => void) {
   const propValues: any = {};
   const stateValues: any = {};
-  let themeValues: any = {};
   try {
     const ast = parse(code) as any;
     traverse(ast, {
-      CallExpression(path) {
-        if (
-          //@ts-ignore
-          path.node.callee.name === 'createTheme' &&
-          path.node.arguments.length === 2 &&
-          //@ts-ignore
-          path.node.arguments[1].properties.length === 1
-        ) {
-          //@ts-ignore
-          const colors = path.node.arguments[1].properties[0].value;
-          colors.properties.forEach((prop: any) => (themeValues[prop.key.name] = prop.value.value));
-        }
-      },
       JSXElement(path) {
         if (
           Object.keys(propValues).length === 0 && // process just the first element
@@ -254,6 +240,9 @@ export function parseCode(code: string, elementName: string) {
         }
       },
     });
+    if (parseProvider) {
+      parseProvider(ast);
+    }
   } catch (e) {
     throw new Error("Code is not valid and can't be parsed.");
   }
@@ -267,5 +256,5 @@ export function parseCode(code: string, elementName: string) {
     });
   });
 
-  return {parsedProps: propValues, parsedTheme: themeValues};
+  return {parsedProps: propValues};
 }

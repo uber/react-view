@@ -1,6 +1,12 @@
 import * as t from '@babel/types';
 import {PropTypes, Action} from './const';
 
+export type TProvider = {
+  parse: (astRoot: any) => void;
+  ast: (childTree: t.JSXElement) => t.JSXElement;
+  imports: TImportsConfig;
+};
+
 export type TUseView = (params: {
   componentName: string;
   // componentPlaceholder: React.ReactNode;
@@ -10,11 +16,7 @@ export type TUseView = (params: {
   props: {[key: string]: TProp};
   onUpdate?: (params: {code: string}) => void;
   initialCode?: string;
-  provider?: {
-    parse: (params: {astRoot: any}) => {[key: string]: TPropValue};
-    generate: (params: {values: any; initialValues: any}) => any;
-    imports: TImportsConfig;
-  };
+  initialProvider?: TProvider;
   customPropTypes?: {
     [key: string]: {
       parse?: (attr: t.JSXAttribute) => TPropValue | null;
@@ -31,11 +33,6 @@ export type TUseView = (params: {
 };
 
 export type TDispatch = (value: {type: Action; payload: any}) => void;
-
-export type TThemeDiff = {
-  themeValues: {[key: string]: string};
-  themeName: string;
-};
 
 type TPropHookFn = (params: {
   getYardOnChange: (what: string, into: string) => t.CallExpression;
@@ -66,15 +63,6 @@ export type TYardProps = {
   minHeight: number;
   scope: {[key: string]: any};
   props: {[key: string]: TProp};
-  theme: string[];
-  imports: TImportsConfig;
-  mapTokensToProps?: {[key: string]: any};
-};
-
-export type TConfig = {
-  scope: {[key: string]: any};
-  props: {[key: string]: TProp};
-  theme: string[];
   imports: TImportsConfig;
   mapTokensToProps?: {[key: string]: any};
 };
@@ -107,9 +95,6 @@ export type TProp = {
 export type TState = {
   code: string;
   codeNoRecompile: string;
-  theme: {
-    [key: string]: string;
-  };
   props: {
     [key: string]: TProp;
   };

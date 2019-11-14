@@ -139,56 +139,33 @@ export const getAstJsxElement = (
   );
 };
 
-export const getAstThemeImport = (
-  isCustomTheme: boolean,
-  themePrimitives: string
-): t.Statement[] => {
-  if (!isCustomTheme) return [];
-  const buildImportTheme = template(
-    `import {ThemeProvider, createTheme, %%primitives%%} from "baseui"`
-  );
-  return [
-    buildImportTheme({
-      primitives: t.identifier(themePrimitives),
-    }) as t.Statement,
-  ];
-};
-
-export const getAstThemeWrapper = (
-  themeValues: {[key: string]: string},
-  themePrimitives: string,
-  children: t.JSXElement
-) => {
-  if (!themeValues || Object.keys(themeValues).length === 0) {
-    return children;
+const addToImportList = (importList: any, imports: TImportsConfig) => {
+  for (let [importFrom, importNames] of Object.entries(imports)) {
+    if (!importList.hasOwnProperty(importFrom)) {
+      importList[importFrom] = {
+        named: [],
+        default: '',
+      };
+    }
+    if (importNames.default) {
+      importList[importFrom].default = importNames.default;
+    }
+    if (importNames.named && importNames.named.length > 0) {
+      if (!importList[importFrom].hasOwnProperty('named')) {
+        importList[importFrom]['named'] = [];
+      }
+      importList[importFrom].named = [
+        ...new Set((importList[importFrom].named as string[]).concat(importNames.named)),
+      ];
+    }
   }
-  return getAstJsxElement(
-    'ThemeProvider',
-    [
-      t.jsxAttribute(
-        t.jsxIdentifier('theme'),
-        t.jsxExpressionContainer(
-          t.callExpression(t.identifier('createTheme'), [
-            t.identifier(themePrimitives),
-            t.objectExpression([
-              t.objectProperty(
-                t.identifier('colors'),
-                t.objectExpression(
-                  Object.entries(themeValues).map(([name, value]) =>
-                    t.objectProperty(t.identifier(name), t.stringLiteral(value as string))
-                  )
-                )
-              ),
-            ]),
-          ])
-        )
-      ),
-    ],
-    [children]
-  );
 };
 
-export const getAstImports = (importsConfig: TImportsConfig, props: {[key: string]: TProp}) => {
+export const getAstImports = (
+  importsConfig: TImportsConfig,
+  providerImports: TImportsConfig,
+  props: {[key: string]: TProp}
+) => {
   // global scoped import that are always displayed
   const importList = clone(importsConfig);
 
@@ -196,27 +173,11 @@ export const getAstImports = (importsConfig: TImportsConfig, props: {[key: strin
   // only when the prop is being used
   Object.values(props).forEach(prop => {
     if (prop.imports && prop.value && prop.value !== '' && prop.value !== prop.defaultValue) {
-      for (let [importFrom, importNames] of Object.entries(prop.imports)) {
-        if (!importList.hasOwnProperty(importFrom)) {
-          importList[importFrom] = {
-            named: [],
-            default: '',
-          };
-        }
-        if (importNames.default) {
-          importList[importFrom].default = importNames.default;
-        }
-        if (importNames.named && importNames.named.length > 0) {
-          if (!importList[importFrom].hasOwnProperty('named')) {
-            importList[importFrom]['named'] = [];
-          }
-          importList[importFrom].named = [
-            ...new Set((importList[importFrom].named as string[]).concat(importNames.named)),
-          ];
-        }
-      }
+      addToImportList(importList, prop.imports);
     }
   });
+
+  addToImportList(importList, providerImports);
 
   return Object.keys(importList).map(from =>
     getAstImport(importList[from].named || [], from, importList[from].default)
@@ -232,29 +193,20 @@ const getChildrenAst = (value: string) => {
 export const getAst = (
   props: {[key: string]: TProp},
   componentName: string,
-  theme: any,
+  providerConfig: any,
   importsConfig: TImportsConfig
 ) => {
   const {children, ...restProps} = props;
-  const isCustomTheme = theme && theme.themeValues && Object.keys(theme.themeValues).length > 0;
-  const themePrimitives =
-    theme.themeName && theme.themeName.startsWith('dark-theme')
-      ? 'darkThemePrimitives'
-      : 'lightThemePrimitives';
-
   const buildExport = template(`export default () => {%%body%%}`);
   return t.file(
     t.program([
       reactImport,
-      ...getAstImports(importsConfig, props),
-      ...getAstThemeImport(isCustomTheme, themePrimitives),
+      ...getAstImports(importsConfig, providerConfig ? providerConfig.imports : {}, props),
       buildExport({
         body: [
           ...getAstReactHooks(restProps),
           t.returnStatement(
-            getAstThemeWrapper(
-              theme.themeValues,
-              themePrimitives,
+            providerConfig.ast(
               getAstJsxElement(
                 componentName,
                 getAstPropsArray(restProps),
@@ -295,9 +247,9 @@ export const formatCode = (code: string): string => {
 export const getCode = (
   props: {[key: string]: TProp},
   componentName: string,
-  theme: {themeValues: {[key: string]: string}; themeName: string},
+  providerConfig: any,
   importsConfig: TImportsConfig
 ) => {
-  const ast = getAst(props, componentName, theme, importsConfig);
+  const ast = getAst(props, componentName, providerConfig, importsConfig);
   return formatAstAndPrint(ast as any);
 };

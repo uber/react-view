@@ -4,7 +4,6 @@ export enum Action {
   UpdatePropsAndCodeNoRecompile,
   UpdatePropsAndCode,
   UpdateProps,
-  UpdateThemeAndCode,
   Reset,
 }
 

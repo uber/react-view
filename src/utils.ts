@@ -1,6 +1,5 @@
-//import {Theme} from 'baseui/theme';
 import * as React from 'react';
-import {TProp, TThemeDiff, TPropValue} from './types';
+import {TProp, TPropValue} from './types';
 import {codeFrameColumns} from '@babel/code-frame';
 
 export function assertUnreachable(): never {
@@ -50,7 +49,7 @@ export const buildPropsObj = (
   });
   Object.keys(updatedPropValues).forEach(name => {
     newProps[name] = {
-      value: updatedPropValues[name],
+      value: updatedPropValues[name] || stateProps[name].defaultValue,
       type: stateProps[name].type,
       options: stateProps[name].options,
       enumName: stateProps[name].enumName,
@@ -67,36 +66,6 @@ export const buildPropsObj = (
   });
   return newProps;
 };
-
-// export const getComponentThemeFromContext = (theme: Theme, themeConfig: string[]) => {
-//   const componentThemeObj: {[key: string]: string} = {};
-//   themeConfig.forEach(key => {
-//     componentThemeObj[key] = (theme.colors as any)[key];
-//   });
-//   return componentThemeObj;
-//};
-
-// export const getThemeForCodeGenerator = (
-//   themeConfig: string[],
-//   updatedThemeValues: {[key: string]: string},
-//   theme: Theme
-// ) => {
-//   const componentThemeValueDiff: {[key: string]: string} = {};
-//   themeConfig.forEach(key => {
-//     if (updatedThemeValues[key] && (theme.colors as any)[key] !== updatedThemeValues[key]) {
-//       componentThemeValueDiff[key] = updatedThemeValues[key];
-//     }
-//   });
-//   const componentThemeDiff: TThemeDiff = {
-//     themeValues: {},
-//     themeName: '',
-//   };
-//   if (Object.keys(componentThemeValueDiff).length > 0) {
-//     componentThemeDiff.themeValues = componentThemeValueDiff;
-//     componentThemeDiff.themeName = theme.name;
-//   }
-//   return componentThemeDiff;
-// };
 
 export const countOverrides = (overrides: any) => {
   const existingOverrides = overrides.value ? Object.keys(overrides.value) : [];
@@ -117,10 +86,6 @@ export const countProps = (props: {[key: string]: TProp}, propsConfig: {[key: st
     }
   });
   return changedProps;
-};
-
-export const countThemeValues = (componentThemeDiff: TThemeDiff) => {
-  return Object.keys(componentThemeDiff.themeValues).length;
 };
 
 // creates a duplicate internal state, so we can preserve instant value editing

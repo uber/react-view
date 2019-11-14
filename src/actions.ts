@@ -14,10 +14,11 @@ export const updateAll = (
   dispatch: TDispatch,
   newCode: string,
   componentName: string,
-  propsConfig: {[key: string]: TProp}
+  propsConfig: {[key: string]: TProp},
+  parseProvider?: (ast: any) => void
 ) => {
   const propValues: {[key: string]: TPropValue} = {};
-  const {parsedProps, parsedTheme} = parseCode(newCode, componentName);
+  const {parsedProps} = parseCode(newCode, componentName, parseProvider);
   Object.keys(propsConfig).forEach(name => {
     propValues[name] = propsConfig[name].value;
     if (name === 'overrides') {
@@ -43,7 +44,6 @@ export const updateAll = (
     payload: {
       code: newCode,
       updatedPropValues: propValues,
-      theme: parsedTheme,
     },
   });
 };
@@ -85,32 +85,16 @@ export const updateProps = (dispatch: TDispatch, propName: string, propValue: TP
   });
 };
 
-export const updateThemeAndCode = (
-  dispatch: TDispatch,
-  newCode: string,
-  updatedThemeValues: {[key: string]: string}
-) => {
-  dispatch({
-    type: Action.UpdateThemeAndCode,
-    payload: {
-      code: newCode,
-      theme: updatedThemeValues,
-    },
-  });
-};
-
 export const reset = (
   dispatch: TDispatch,
   initialCode: string,
-  propsConfig: {[key: string]: TProp},
-  initialThemeObj: {[key: string]: string}
+  propsConfig: {[key: string]: TProp}
 ) => {
   dispatch({
     type: Action.Reset,
     payload: {
       code: initialCode,
       props: propsConfig,
-      theme: initialThemeObj,
     },
   });
 };
