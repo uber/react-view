@@ -11,7 +11,7 @@ import {
 } from 'baseui';
 
 // base yard
-import {getProvider, getThemeFromContext, getThemeDiff, getActiveTheme} from '../src/base/provider';
+import {getProvider, getThemeFromContext} from '../src/base/provider';
 import {customProps} from '../src/base/custom-props';
 import ThemeEditor from '../src/base/theme-editor';
 import Overrides from '../src/base/overrides';
@@ -134,20 +134,21 @@ const ButtonConfig = {
 };
 
 const ViewExample = () => {
-  // theme prep
+  // theme provider prep
   const [, theme] = useStyletron();
-  const initialThemeState = getThemeFromContext(theme, ButtonConfig.theme);
+  const componentTheme = getThemeFromContext(theme, ButtonConfig.theme);
   const themePrimitives =
     theme.name && theme.name.startsWith('dark-theme')
       ? 'darkThemePrimitives'
       : 'lightThemePrimitives';
+  const provider = getProvider(componentTheme, themePrimitives);
 
   const params = useView({
     componentName: 'Button',
     props: ButtonConfig.props,
     scope: ButtonConfig.scope,
     imports: ButtonConfig.imports,
-    provider: getProvider(initialThemeState, themePrimitives),
+    provider,
     customProps,
   });
   return (
@@ -165,12 +166,9 @@ const ViewExample = () => {
       />
       <div style={{margin: '10px 0px'}}>
         <ThemeEditor
-          theme={getActiveTheme(params.providerState, initialThemeState)}
-          themeInit={initialThemeState}
-          set={(themeValues: any) => {
-            const diff = getThemeDiff(themeValues, initialThemeState);
-            params.actions.updateProvider(Object.keys(diff).length > 0 ? diff : undefined);
-          }}
+          theme={params.providerState}
+          themeInit={componentTheme}
+          set={params.actions.updateProvider}
           componentName="Button"
         />
       </div>

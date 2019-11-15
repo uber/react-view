@@ -16,13 +16,12 @@ export type TUseView = (params: {
   onUpdate?: (params: {code: string}) => void;
   initialCode?: string;
   provider?: TProvider;
-  customProps?: any;
-  // customProps?: {
-  //   [key: string]: {
-  //     parse?: (attr: t.JSXAttribute) => TPropValue | null;
-  //     generate?: (params: {value: TPropValue}) => any;
-  //   };
-  // };
+  customProps?: {
+    [key: string]: {
+      parse: (code: string, knobProps: any) => any;
+      generate: (value: any) => any;
+    };
+  };
 }) => {
   compilerProps: any;
   knobProps: any;

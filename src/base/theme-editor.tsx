@@ -3,19 +3,20 @@ import {useValueDebounce} from '../utils';
 import {Input, SIZE} from 'baseui/input';
 import {useStyletron} from 'baseui';
 import {Caption1} from 'baseui/typography';
+import {getActiveTheme, getThemeDiff} from './provider';
 
 type ThemeEditorProps = {
   componentName: string;
   theme: {[key: string]: string};
   themeInit: {[key: string]: string};
-  set: (value: {[key: string]: string}) => void;
+  set: (value: {[key: string]: string} | undefined) => void;
 };
 
 type ColumnProps = {
   themeKeys: string[];
   theme: {[key: string]: string};
   themeInit: {[key: string]: string};
-  set: (value: {[key: string]: string}) => void;
+  set: (value: {[key: string]: string} | undefined) => void;
 };
 
 const ColorInput: React.FC<{
@@ -81,12 +82,16 @@ const Column: React.FC<ColumnProps> = ({themeKeys, themeInit, theme, set}) => {
             key={key}
             themeKey={key}
             globalColor={theme[key]}
-            globalSet={color =>
-              set({
-                ...theme,
-                [key]: color,
-              })
-            }
+            globalSet={color => {
+              const diff = getThemeDiff(
+                {
+                  ...theme,
+                  [key]: color,
+                },
+                themeInit
+              );
+              set(Object.keys(diff).length > 0 ? diff : undefined);
+            }}
             themeInit={themeInit}
           />
         );
@@ -97,7 +102,8 @@ const Column: React.FC<ColumnProps> = ({themeKeys, themeInit, theme, set}) => {
 
 const ThemeEditor: React.FC<ThemeEditorProps> = ({theme, themeInit, set, componentName}) => {
   const [useCss, currentTheme] = useStyletron();
-  const themeKeys = Object.keys(theme);
+  const activeTheme = getActiveTheme(theme, themeInit);
+  const themeKeys = Object.keys(activeTheme);
 
   const midPoint = themeKeys.length % 2 === 0 ? themeKeys.length / 2 : themeKeys.length / 2 + 1;
   const firstThemeKeys = themeKeys.slice(0, midPoint);
@@ -118,8 +124,8 @@ const ThemeEditor: React.FC<ThemeEditorProps> = ({theme, themeInit, set, compone
           },
         })}
       >
-        <Column themeKeys={firstThemeKeys} theme={theme} themeInit={themeInit} set={set} />
-        <Column themeKeys={secondThemeKeys} theme={theme} themeInit={themeInit} set={set} />
+        <Column themeKeys={firstThemeKeys} theme={activeTheme} themeInit={themeInit} set={set} />
+        <Column themeKeys={secondThemeKeys} theme={activeTheme} themeInit={themeInit} set={set} />
       </div>
     </React.Fragment>
   );
