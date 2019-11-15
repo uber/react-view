@@ -102,6 +102,7 @@ export const transformBeforeCompilation = (
 export function parseCode(code: string, elementName: string, parseProvider?: (ast: any) => void) {
   const propValues: any = {};
   const stateValues: any = {};
+  let parsedProvider: any = undefined;
   try {
     const ast = parse(code) as any;
     traverse(ast, {
@@ -164,7 +165,7 @@ export function parseCode(code: string, elementName: string, parseProvider?: (as
       },
     });
     if (parseProvider) {
-      parseProvider(ast);
+      parsedProvider = parseProvider(ast);
     }
   } catch (e) {
     throw new Error("Code is not valid and can't be parsed.");
@@ -179,5 +180,5 @@ export function parseCode(code: string, elementName: string, parseProvider?: (as
     });
   });
 
-  return {parsedProps: propValues};
+  return {parsedProps: propValues, parsedProvider};
 }

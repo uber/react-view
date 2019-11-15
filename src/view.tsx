@@ -7,13 +7,14 @@ import debounce from 'lodash/debounce';
 import {transformBeforeCompilation} from './ast';
 import {getCode, formatCode} from './code-generator';
 import {buildPropsObj} from './utils';
-import {TPropValue, TError, TUseView, TProvider} from './types';
+import {TPropValue, TError, TUseView} from './types';
 
 // actions that can be dispatched
 import {
   reset,
   updateAll,
   updateCode,
+  updateCodeAndProvider,
   updateProps,
   updatePropsAndCode,
   updatePropsAndCodeNoRecompile,
@@ -25,7 +26,7 @@ const useView: TUseView = ({
   props: propsConfig,
   scope: scopeConfig,
   imports: importsConfig,
-  initialProvider,
+  provider,
   onUpdate,
   initialCode,
   customProps,
@@ -35,9 +36,17 @@ const useView: TUseView = ({
   const [state, dispatch] = React.useReducer(reducer, {
     code:
       initialCode ||
-      getCode(propsConfig, componentName, initialProvider, importsConfig, customProps),
+      getCode(
+        propsConfig,
+        componentName,
+        provider,
+        provider ? provider.value : undefined,
+        importsConfig,
+        customProps
+      ),
     codeNoRecompile: '',
     props: propsConfig,
+    providerValue: provider ? provider.value : undefined,
   });
 
   // initialize from the initialCode
@@ -50,7 +59,7 @@ const useView: TUseView = ({
           initialCode,
           componentName,
           propsConfig,
-          initialProvider ? initialProvider.parse : undefined,
+          provider ? provider.parse : undefined,
           customProps
         );
       } catch (e) {}
@@ -65,7 +74,8 @@ const useView: TUseView = ({
     const newCode = getCode(
       buildPropsObj(state.props, {[propName]: propValue}),
       componentName,
-      initialProvider,
+      provider,
+      state.providerValue,
       importsConfig,
       customProps
     );
@@ -94,7 +104,8 @@ const useView: TUseView = ({
           const newCode = getCode(
             buildPropsObj(state.props, {[propName]: propValue}),
             componentName,
-            initialProvider,
+            provider,
+            state.providerValue,
             importsConfig,
             customProps
           );
@@ -107,6 +118,7 @@ const useView: TUseView = ({
         }
       },
     },
+    providerState: state.providerValue,
     editorProps: {
       code: state.codeNoRecompile !== '' ? state.codeNoRecompile : state.code,
       onChange: (newCode: string) => {
@@ -116,7 +128,7 @@ const useView: TUseView = ({
             newCode,
             componentName,
             propsConfig,
-            initialProvider ? initialProvider.parse : undefined,
+            provider ? provider.parse : undefined,
             customProps
           );
           onUpdate && onUpdate({code: newCode});
@@ -142,27 +154,35 @@ const useView: TUseView = ({
       reset: () => {
         reset(
           dispatch,
-          getCode(propsConfig, componentName, initialProvider, importsConfig, customProps),
+          getCode(
+            propsConfig,
+            componentName,
+            provider,
+            state.providerValue,
+            importsConfig,
+            customProps
+          ),
           propsConfig
         );
       },
-      updateProvider: (newProvider: TProvider) => {
+      updateProvider: (providerValue: any) => {
         const newCode: string = getCode(
           propsConfig,
           componentName,
-          newProvider,
+          provider,
+          providerValue,
           importsConfig,
           customProps
         );
-        updateCode(dispatch, newCode);
-        return newCode;
+        updateCodeAndProvider(dispatch, newCode, providerValue);
       },
       updateProp: (propName: string, propValue: any) => {
         try {
           const newCode = getCode(
             buildPropsObj(state.props, {[propName]: propValue}),
             componentName,
-            initialProvider,
+            provider,
+            state.providerValue,
             importsConfig,
             customProps
           );

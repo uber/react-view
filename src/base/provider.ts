@@ -12,6 +12,20 @@ export const getThemeFromContext = (theme: Theme, themeConfig: string[]) => {
   return componentThemeObj;
 };
 
+export const getActiveTheme = (
+  values: {[key: string]: string},
+  initialValues: {[key: string]: string}
+) => {
+  const activeValues: {[key: string]: string} = {};
+  Object.keys(initialValues).forEach(key => {
+    activeValues[key] = initialValues[key];
+    if (values && values[key]) {
+      activeValues[key] = values[key];
+    }
+  });
+  return activeValues;
+};
+
 export const getThemeDiff = (
   values: {[key: string]: string},
   initialValues: {[key: string]: string}
@@ -26,19 +40,13 @@ export const getThemeDiff = (
 };
 
 export const getProvider = (
-  themeValues: {[key: string]: string},
   initialThemeValues: {[key: string]: string},
-  themePrimitives: string,
-  setThemeState?: (theme: {[key: string]: string}) => void
+  themePrimitives: string
 ): TProvider => {
-  const themeDiff = getThemeDiff(themeValues, initialThemeValues);
-  const themeDiffNum = Object.keys(themeDiff).length;
   return {
+    value: undefined,
     parse: (astRoot: any) => {
       const newThemeValues: {[key: string]: string} = {};
-      Object.keys(initialThemeValues).forEach(key => {
-        newThemeValues[key] = initialThemeValues[key];
-      });
       traverse(astRoot, {
         CallExpression(path) {
           if (
@@ -50,25 +58,22 @@ export const getProvider = (
           ) {
             //@ts-ignore
             const colors = path.node.arguments[1].properties[0].value;
-            colors.properties.forEach(
-              (prop: any) => (newThemeValues[prop.key.name] = prop.value.value)
-            );
+            colors.properties.forEach((prop: any) => {
+              if (initialThemeValues[prop.key.name] !== prop.value.value) {
+                newThemeValues[prop.key.name] = prop.value.value;
+              }
+            });
           }
         },
       });
-      if (setThemeState) {
-        setThemeState(newThemeValues);
-      }
+      return Object.keys(newThemeValues).length > 0 ? newThemeValues : undefined;
     },
-    ast: (childTree: t.JSXElement) => generate(themeDiff, childTree, themePrimitives),
-    imports:
-      themeDiffNum > 0
-        ? {
-            baseui: {
-              named: ['ThemeProvider', 'createTheme', themePrimitives],
-            },
-          }
-        : {},
+    generate: (value: any, childTree: t.JSXElement) => generate(value, childTree, themePrimitives),
+    imports: {
+      baseui: {
+        named: ['ThemeProvider', 'createTheme', themePrimitives],
+      },
+    },
   };
 };
 

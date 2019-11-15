@@ -11,7 +11,7 @@ import {
 } from 'baseui';
 
 // base yard
-import {getProvider, getThemeFromContext} from '../src/base/provider';
+import {getProvider, getThemeFromContext, getThemeDiff, getActiveTheme} from '../src/base/provider';
 import {customProps} from '../src/base/custom-props';
 import ThemeEditor from '../src/base/theme-editor';
 import Overrides from '../src/base/overrides';
@@ -141,15 +141,13 @@ const ViewExample = () => {
     theme.name && theme.name.startsWith('dark-theme')
       ? 'darkThemePrimitives'
       : 'lightThemePrimitives';
-  // we baby-sit our own theme state
-  const [themeState, setThemeState] = React.useState(initialThemeState);
 
   const params = useView({
     componentName: 'Button',
     props: ButtonConfig.props,
     scope: ButtonConfig.scope,
     imports: ButtonConfig.imports,
-    initialProvider: getProvider(themeState, initialThemeState, themePrimitives, setThemeState),
+    provider: getProvider(initialThemeState, themePrimitives),
     customProps,
   });
   return (
@@ -162,19 +160,16 @@ const ViewExample = () => {
         componentConfig={ButtonConfig.props}
         overrides={params.knobProps.state.overrides}
         set={(propValue: any) => {
-          console.log(propValue);
           params.knobProps.set(propValue, 'overrides');
         }}
       />
       <div style={{margin: '10px 0px'}}>
         <ThemeEditor
-          theme={themeState}
+          theme={getActiveTheme(params.providerState, initialThemeState)}
           themeInit={initialThemeState}
           set={(themeValues: any) => {
-            setThemeState(themeValues);
-            params.actions.updateProvider(
-              getProvider(themeValues, initialThemeState, themePrimitives)
-            );
+            const diff = getThemeDiff(themeValues, initialThemeState);
+            params.actions.updateProvider(Object.keys(diff).length > 0 ? diff : undefined);
           }}
           componentName="Button"
         />

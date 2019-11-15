@@ -6,10 +6,18 @@ export default function reducer(state: TState, action: {type: Action; payload: a
   switch (action.type) {
     case Action.UpdateCode:
       return {...state, code: action.payload, codeNoRecompile: ''};
+    case Action.UpdateCodeAndProvider:
+      return {
+        ...state,
+        code: action.payload.code,
+        providerValue: action.payload.providerValue,
+        codeNoRecompile: '',
+      };
     case Action.Update:
       return {
         ...state,
         code: action.payload.code,
+        providerValue: action.payload.providerValue,
         codeNoRecompile: '',
         props: buildPropsObj(state.props, action.payload.updatedPropValues),
       };

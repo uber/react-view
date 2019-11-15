@@ -184,7 +184,8 @@ const getChildrenAst = (value: string) => {
 export const getAst = (
   props: {[key: string]: TProp},
   componentName: string,
-  providerConfig: any,
+  provider: any,
+  providerValue: any,
   importsConfig: TImportsConfig,
   customProps: any
 ) => {
@@ -193,12 +194,13 @@ export const getAst = (
   return t.file(
     t.program([
       reactImport,
-      ...getAstImports(importsConfig, providerConfig ? providerConfig.imports : {}, props),
+      ...getAstImports(importsConfig, providerValue ? provider.imports : {}, props),
       buildExport({
         body: [
           ...getAstReactHooks(restProps, customProps),
           t.returnStatement(
-            providerConfig.ast(
+            provider.generate(
+              providerValue,
               getAstJsxElement(
                 componentName,
                 getAstPropsArray(restProps, customProps),
@@ -239,10 +241,11 @@ export const formatCode = (code: string): string => {
 export const getCode = (
   props: {[key: string]: TProp},
   componentName: string,
-  providerConfig: any,
+  provider: any,
+  providerValue: any,
   importsConfig: TImportsConfig,
   customProps: any
 ) => {
-  const ast = getAst(props, componentName, providerConfig, importsConfig, customProps);
+  const ast = getAst(props, componentName, provider, providerValue, importsConfig, customProps);
   return formatAstAndPrint(ast as any);
 };

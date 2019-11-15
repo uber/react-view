@@ -1,9 +1,10 @@
 import * as t from '@babel/types';
 import {PropTypes, Action} from './const';
 
-export type TProvider = {
-  parse: (astRoot: any) => void;
-  ast: (childTree: t.JSXElement) => t.JSXElement;
+export type TProvider<T = any> = {
+  value: T;
+  parse: (astRoot: any) => T;
+  generate: (value: T, childTree: t.JSXElement) => t.JSXElement;
   imports: TImportsConfig;
 };
 
@@ -14,8 +15,8 @@ export type TUseView = (params: {
   props: {[key: string]: TProp};
   onUpdate?: (params: {code: string}) => void;
   initialCode?: string;
-  initialProvider?: TProvider;
-  customProps: any;
+  provider?: TProvider;
+  customProps?: any;
   // customProps?: {
   //   [key: string]: {
   //     parse?: (attr: t.JSXAttribute) => TPropValue | null;
@@ -27,6 +28,7 @@ export type TUseView = (params: {
   knobProps: any;
   editorProps: any;
   errorProps: any;
+  providerState: any;
   actions: any;
 };
 
@@ -89,4 +91,5 @@ export type TState = {
   props: {
     [key: string]: TProp;
   };
+  providerValue: any;
 };

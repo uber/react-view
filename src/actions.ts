@@ -10,6 +10,16 @@ export const updateCode = (dispatch: TDispatch, newCode: string) => {
   });
 };
 
+export const updateCodeAndProvider = (dispatch: TDispatch, newCode: string, providerValue: any) => {
+  dispatch({
+    type: Action.UpdateCodeAndProvider,
+    payload: {
+      code: newCode,
+      providerValue,
+    },
+  });
+};
+
 export const updateAll = (
   dispatch: TDispatch,
   newCode: string,
@@ -19,7 +29,7 @@ export const updateAll = (
   customProps?: any
 ) => {
   const propValues: {[key: string]: TPropValue} = {};
-  const {parsedProps} = parseCode(newCode, componentName, parseProvider);
+  const {parsedProps, parsedProvider} = parseCode(newCode, componentName, parseProvider);
   Object.keys(propsConfig).forEach(name => {
     propValues[name] = propsConfig[name].value;
     if (customProps && customProps[name] && customProps[name].parse) {
@@ -41,6 +51,7 @@ export const updateAll = (
     payload: {
       code: newCode,
       updatedPropValues: propValues,
+      providerValue: parsedProvider,
     },
   });
 };
