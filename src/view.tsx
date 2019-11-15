@@ -167,7 +167,7 @@ const useView: TUseView = ({
       },
       updateProvider: (providerValue: any) => {
         const newCode: string = getCode(
-          propsConfig,
+          buildPropsObj(state.props, {}),
           componentName,
           provider,
           providerValue,

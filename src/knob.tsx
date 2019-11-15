@@ -106,7 +106,7 @@ const Knob: React.SFC<{
       return (
         <Spacing>
           <Label tooltip={getTooltip(description, type, name)}>{name}</Label>
-          {numberOfOptions < 4 ? (
+          {numberOfOptions < 7 ? (
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
               {Object.keys(options).map(opt => (
                 <div
@@ -125,7 +125,7 @@ const Knob: React.SFC<{
                     key={opt}
                     id={`${name}_${opt}`}
                     value={`${enumName || name.toUpperCase()}.${opt}`}
-                    name="radio"
+                    name={`radio_${name}`}
                     onChange={e => globalSet(e.target.value)}
                   />
                   <label htmlFor={`${name}_${opt}`}>{opt}</label>

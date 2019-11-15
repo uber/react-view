@@ -53,12 +53,6 @@ const ButtonConfig = {
       type: PropTypes.Function,
       description: `Function called when button is clicked.`,
     },
-    startEnhancer: {
-      value: undefined,
-      placeholder: 'Hey',
-      type: PropTypes.Function,
-      description: `A component rendered at the start of the button.`,
-    },
     disabled: {
       value: false,
       type: PropTypes.Boolean,
@@ -152,7 +146,7 @@ const ViewExample = () => {
     customProps,
   });
   return (
-    <React.Fragment>
+    <div style={{maxWidth: '600px', margin: '0px auto'}}>
       <Compiler {...params.compilerProps} minHeight={48} placeholder={Placeholder} />
       <Error msg={params.errorProps.msg} isPopup />
       <Knobs {...params.knobProps} />
@@ -175,7 +169,7 @@ const ViewExample = () => {
       <Editor {...params.editorProps} />
       <Error {...params.errorProps} />
       <ActionButtons {...params.actions} />
-    </React.Fragment>
+    </div>
   );
 };
 
