@@ -67,27 +67,6 @@ export const buildPropsObj = (
   return newProps;
 };
 
-export const countOverrides = (overrides: any) => {
-  const existingOverrides = overrides.value ? Object.keys(overrides.value) : [];
-  return existingOverrides.filter(key => overrides.value[key].active).length;
-};
-
-export const countProps = (props: {[key: string]: TProp}, propsConfig: {[key: string]: TProp}) => {
-  let changedProps = 0;
-  Object.keys(props).forEach(prop => {
-    if (
-      prop !== 'overrides' &&
-      props[prop].value !== '' &&
-      typeof props[prop].value !== 'undefined' &&
-      //@ts-ignore
-      props[prop].value !== propsConfig[prop].value
-    ) {
-      changedProps++;
-    }
-  });
-  return changedProps;
-};
-
 // creates a duplicate internal state, so we can preserve instant value editing
 // while debouncing top-level state updates that are slow
 export function useValueDebounce<T>(

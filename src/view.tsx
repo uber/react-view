@@ -6,7 +6,7 @@ import debounce from 'lodash/debounce';
 // transformations, code generation
 import {transformBeforeCompilation} from './ast';
 import {getCode, formatCode} from './code-generator';
-import {buildPropsObj, countProps} from './utils';
+import {buildPropsObj} from './utils';
 import {TPropValue, TError, TUseView, TProvider} from './types';
 
 // actions that can be dispatched
@@ -28,12 +28,14 @@ const useView: TUseView = ({
   initialProvider,
   onUpdate,
   initialCode,
-  //propTypes: propTypesConfig,
+  customProps,
 }) => {
   const [hydrated, setHydrated] = React.useState(false);
   const [error, setError] = React.useState<TError>({where: '', msg: null});
   const [state, dispatch] = React.useReducer(reducer, {
-    code: initialCode || getCode(propsConfig, componentName, initialProvider, importsConfig),
+    code:
+      initialCode ||
+      getCode(propsConfig, componentName, initialProvider, importsConfig, customProps),
     codeNoRecompile: '',
     props: propsConfig,
   });
@@ -48,7 +50,8 @@ const useView: TUseView = ({
           initialCode,
           componentName,
           propsConfig,
-          initialProvider ? initialProvider.parse : undefined
+          initialProvider ? initialProvider.parse : undefined,
+          customProps
         );
       } catch (e) {}
     }
@@ -63,13 +66,12 @@ const useView: TUseView = ({
       buildPropsObj(state.props, {[propName]: propValue}),
       componentName,
       initialProvider,
-      importsConfig
+      importsConfig,
+      customProps
     );
     updatePropsAndCodeNoRecompile(dispatch, newCode, propName, propValue);
     onUpdate && onUpdate({code: newCode});
   }, 200);
-
-  const activeProps = countProps(state.props, propsConfig);
 
   return {
     compilerProps: {
@@ -84,8 +86,7 @@ const useView: TUseView = ({
       },
     },
     knobProps: {
-      activeProps,
-      knobProps: state.props,
+      state: state.props,
       error,
       set: (propValue: TPropValue, propName: string) => {
         try {
@@ -94,7 +95,8 @@ const useView: TUseView = ({
             buildPropsObj(state.props, {[propName]: propValue}),
             componentName,
             initialProvider,
-            importsConfig
+            importsConfig,
+            customProps
           );
           setError({where: '', msg: null});
           updatePropsAndCode(dispatch, newCode, propName, propValue);
@@ -105,7 +107,6 @@ const useView: TUseView = ({
         }
       },
     },
-    providerProps: {},
     editorProps: {
       code: state.codeNoRecompile !== '' ? state.codeNoRecompile : state.code,
       onChange: (newCode: string) => {
@@ -115,7 +116,8 @@ const useView: TUseView = ({
             newCode,
             componentName,
             propsConfig,
-            initialProvider ? initialProvider.parse : undefined
+            initialProvider ? initialProvider.parse : undefined,
+            customProps
           );
           onUpdate && onUpdate({code: newCode});
         } catch (e) {
@@ -140,14 +142,36 @@ const useView: TUseView = ({
       reset: () => {
         reset(
           dispatch,
-          getCode(propsConfig, componentName, initialProvider, importsConfig),
+          getCode(propsConfig, componentName, initialProvider, importsConfig, customProps),
           propsConfig
         );
       },
       updateProvider: (newProvider: TProvider) => {
-        const newCode: string = getCode(propsConfig, componentName, newProvider, importsConfig);
+        const newCode: string = getCode(
+          propsConfig,
+          componentName,
+          newProvider,
+          importsConfig,
+          customProps
+        );
         updateCode(dispatch, newCode);
         return newCode;
+      },
+      updateProp: (propName: string, propValue: any) => {
+        try {
+          const newCode = getCode(
+            buildPropsObj(state.props, {[propName]: propValue}),
+            componentName,
+            initialProvider,
+            importsConfig,
+            customProps
+          );
+          setError({where: '', msg: null});
+          updatePropsAndCode(dispatch, newCode, propName, propValue);
+        } catch (e) {
+          updateProps(dispatch, propName, propValue);
+          setError({where: propName, msg: e.toString()});
+        }
       },
     },
   };

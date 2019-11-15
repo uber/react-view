@@ -9,24 +9,22 @@ export type TProvider = {
 
 export type TUseView = (params: {
   componentName: string;
-  // componentPlaceholder: React.ReactNode;
-  // componentMinHeight: string;
   imports: TImportsConfig;
   scope: {[key: string]: any};
   props: {[key: string]: TProp};
   onUpdate?: (params: {code: string}) => void;
   initialCode?: string;
   initialProvider?: TProvider;
-  customPropTypes?: {
-    [key: string]: {
-      parse?: (attr: t.JSXAttribute) => TPropValue | null;
-      generate?: (params: {value: TPropValue}) => any;
-    };
-  };
+  customProps: any;
+  // customProps?: {
+  //   [key: string]: {
+  //     parse?: (attr: t.JSXAttribute) => TPropValue | null;
+  //     generate?: (params: {value: TPropValue}) => any;
+  //   };
+  // };
 }) => {
   compilerProps: any;
   knobProps: any;
-  providerProps: any;
   editorProps: any;
   errorProps: any;
   actions: any;
@@ -67,14 +65,7 @@ export type TYardProps = {
   mapTokensToProps?: {[key: string]: any};
 };
 
-type TPropValueOverrides = {
-  [key: string]: {
-    active: boolean;
-    style: string;
-  };
-};
-
-export type TPropValue = undefined | boolean | string | number | TPropValueOverrides;
+export type TPropValue = undefined | boolean | string | number;
 
 export type TProp = {
   value: TPropValue;

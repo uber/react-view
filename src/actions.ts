@@ -1,5 +1,5 @@
 // import Router from 'next/router';
-import {parseCode, parseOverrides} from './ast';
+import {parseCode} from './ast';
 import {Action, PropTypes} from './const';
 import {TProp, TDispatch, TPropValue} from './types';
 
@@ -15,19 +15,16 @@ export const updateAll = (
   newCode: string,
   componentName: string,
   propsConfig: {[key: string]: TProp},
-  parseProvider?: (ast: any) => void
+  parseProvider?: (ast: any) => void,
+  customProps?: any
 ) => {
   const propValues: {[key: string]: TPropValue} = {};
   const {parsedProps} = parseCode(newCode, componentName, parseProvider);
   Object.keys(propsConfig).forEach(name => {
     propValues[name] = propsConfig[name].value;
-    if (name === 'overrides') {
-      // overrides need a special treatment since the value needs to
-      // be further analyzed and parsed
-      propValues[name] = parseOverrides(
-        parsedProps[name],
-        propsConfig.overrides ? propsConfig.overrides.names || [] : []
-      );
+    if (customProps && customProps[name] && customProps[name].parse) {
+      // custom prop parser
+      propValues[name] = customProps[name].parse(parsedProps[name], propsConfig);
     } else if (propsConfig[name].type === PropTypes.Date) {
       const match = parsedProps[name].match(/^new\s*Date\(\s*"([0-9-T:.Z]+)"\s*\)$/);
       if (match) {

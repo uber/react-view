@@ -1,6 +1,5 @@
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
-import {formatCode} from './code-generator';
 import * as t from '@babel/types';
 import {TProp} from './types';
 import {parse as babelParse} from '@babel/parser';
@@ -100,82 +99,6 @@ export const transformBeforeCompilation = (
   return ast;
 };
 
-export function parseOverrides(code: string, names: string[]) {
-  const resultOverrides: any = {};
-  try {
-    // to make the AST root valid, let's add a const definition
-    const ast: any = parse(`const foo = ${code};`);
-    traverse(ast, {
-      ObjectProperty(path) {
-        const propertyName = path.node.key.name;
-        if (names.includes(propertyName)) {
-          //@ts-ignore
-          const overrideProps = path.node.value.properties;
-          overrideProps.forEach((prop: any) => {
-            if (prop.key.name === 'style') {
-              resultOverrides[propertyName] = {
-                style: formatCode(generate(prop.value).code),
-                active: true,
-              };
-            }
-          });
-        }
-      },
-    });
-  } catch (e) {
-    throw new Error("Overrides code is not valid and can't be parsed.");
-  }
-  return resultOverrides;
-}
-
-export function toggleOverrideSharedProps(code: string, sharedProps: string[]) {
-  let result: string = '';
-  try {
-    const ast = parse(code) as any;
-    traverse(ast, {
-      ArrowFunctionExpression(path) {
-        if (result !== '') return;
-        if (path.node.params.length !== 1) return;
-        const firstParam: any = path.node.params[0];
-        let newParams: string[] = [];
-        if (firstParam.type === 'ObjectPattern') {
-          const properties = firstParam.properties;
-          newParams = properties.map((prop: any) => prop.key.name);
-        }
-
-        const shoudlWeAddSharedProps = newParams.every(name => !sharedProps.includes(name));
-
-        if (shoudlWeAddSharedProps) {
-          sharedProps.forEach(param => {
-            if (!newParams.includes(param)) {
-              newParams.push(param);
-            }
-          });
-          path.node.params = [
-            //@ts-ignore
-            t.objectPattern(
-              newParams.map(param =>
-                t.objectProperty(t.identifier(param), t.identifier(param), false, true)
-              )
-            ),
-          ];
-        } else {
-          path.node.params = [
-            //@ts-ignore
-            t.objectPattern([
-              t.objectProperty(t.identifier('$theme'), t.identifier('$theme'), false, true),
-            ]),
-          ];
-        }
-        result = generate(path.node as any).code;
-      },
-    });
-  } catch (e) {
-    throw new Error('Override params transform was no good.');
-  }
-  return result;
-}
-
 export function parseCode(code: string, elementName: string, parseProvider?: (ast: any) => void) {
   const propValues: any = {};
   const stateValues: any = {};
@@ -205,7 +128,7 @@ export function parseCode(code: string, elementName: string, parseProvider?: (as
                   value = formatAstAndPrint(
                     //@ts-ignore
                     t.program([t.expressionStatement(attr.value.expression)]),
-                    name === 'overrides' ? 70 : 30
+                    30
                   );
                 }
               }

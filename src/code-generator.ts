@@ -20,7 +20,7 @@ type TJsxChild =
 
 const reactImport = template.ast(`import * as React from 'react';`);
 
-export const getAstPropsArray = (props: {[key: string]: TProp}) => {
+export const getAstPropsArray = (props: {[key: string]: TProp}, customProps: any) => {
   return Object.entries(props).map(([name, prop]) => {
     const {value, stateful, defaultValue} = prop;
     if (stateful)
@@ -38,7 +38,7 @@ export const getAstPropsArray = (props: {[key: string]: TProp}) => {
     ) {
       return null;
     }
-    const astValue = getAstPropValue(prop);
+    const astValue = getAstPropValue(prop, name, customProps);
     if (!astValue) return null;
     // shortcut render "isDisabled" vs "isDisabled={true}"
     if (astValue.type === 'BooleanLiteral' && astValue.value === true) {
@@ -51,7 +51,7 @@ export const getAstPropsArray = (props: {[key: string]: TProp}) => {
   });
 };
 
-export const getAstPropValue = (prop: TProp) => {
+export const getAstPropValue = (prop: TProp, name: string, customProps: any) => {
   const value = prop.value;
   switch (prop.type as PropTypes) {
     case PropTypes.String:
@@ -78,23 +78,14 @@ export const getAstPropValue = (prop: TProp) => {
       }
       return output;
     case PropTypes.Custom:
-      const activeValues = Object.entries(value as {
-        [key: string]: {active: boolean; style: string};
-      }).filter(([, val]: any) => val.active);
-      if (activeValues.length === 0) return null;
-      const keys = activeValues.map(([key, val]: [string, any]) =>
-        t.objectProperty(
-          t.identifier(key),
-          t.objectExpression([
-            t.objectProperty(t.identifier('style'), template.expression(val.style)({}) as any),
-          ])
-        )
-      );
-      return t.objectExpression(keys);
+      if (!customProps[name] || !customProps[name].generate) {
+        console.error(`Missing customProps.${name}.generate definition.`);
+      }
+      return customProps[name].generate(value);
   }
 };
 
-export const getAstReactHooks = (props: {[key: string]: TProp}) => {
+export const getAstReactHooks = (props: {[key: string]: TProp}, customProps: any) => {
   const hooks: t.ExpressionStatement[] = [];
   const buildReactHook = template(`const [%%name%%, %%setName%%] = React.useState(%%value%%);`);
   Object.keys(props).forEach(name => {
@@ -102,7 +93,7 @@ export const getAstReactHooks = (props: {[key: string]: TProp}) => {
       hooks.push(buildReactHook({
         name: t.identifier(name),
         setName: t.identifier(`set${name[0].toUpperCase() + name.slice(1)}`),
-        value: getAstPropValue(props[name]),
+        value: getAstPropValue(props[name], name, customProps),
       }) as any);
     }
   });
@@ -194,7 +185,8 @@ export const getAst = (
   props: {[key: string]: TProp},
   componentName: string,
   providerConfig: any,
-  importsConfig: TImportsConfig
+  importsConfig: TImportsConfig,
+  customProps: any
 ) => {
   const {children, ...restProps} = props;
   const buildExport = template(`export default () => {%%body%%}`);
@@ -204,12 +196,12 @@ export const getAst = (
       ...getAstImports(importsConfig, providerConfig ? providerConfig.imports : {}, props),
       buildExport({
         body: [
-          ...getAstReactHooks(restProps),
+          ...getAstReactHooks(restProps, customProps),
           t.returnStatement(
             providerConfig.ast(
               getAstJsxElement(
                 componentName,
-                getAstPropsArray(restProps),
+                getAstPropsArray(restProps, customProps),
                 children && children.value ? getChildrenAst(String(children.value)) : []
               )
             )
@@ -248,8 +240,9 @@ export const getCode = (
   props: {[key: string]: TProp},
   componentName: string,
   providerConfig: any,
-  importsConfig: TImportsConfig
+  importsConfig: TImportsConfig,
+  customProps: any
 ) => {
-  const ast = getAst(props, componentName, providerConfig, importsConfig);
+  const ast = getAst(props, componentName, providerConfig, importsConfig, customProps);
   return formatAstAndPrint(ast as any);
 };

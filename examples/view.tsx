@@ -12,9 +12,10 @@ import {
 
 // base yard
 import {getProvider, getThemeFromContext} from '../src/base/provider';
+import {customProps} from '../src/base/custom-props';
 import ThemeEditor from '../src/base/theme-editor';
+import Overrides from '../src/base/overrides';
 
-import {PropTypes} from '../src/const';
 import useView from '../src/view';
 import Compiler from '../src/compiler';
 import Knobs from '../src/knobs';
@@ -22,6 +23,7 @@ import Editor from '../src/editor';
 import Error from '../src/error';
 import {ActionButtons} from '../src/action-buttons';
 import Placeholder from '../src/placeholder';
+import {PropTypes} from '../src/const';
 
 const ButtonConfig = {
   imports: {
@@ -148,12 +150,22 @@ const ViewExample = () => {
     scope: ButtonConfig.scope,
     imports: ButtonConfig.imports,
     initialProvider: getProvider(themeState, initialThemeState, themePrimitives, setThemeState),
+    customProps,
   });
   return (
     <React.Fragment>
       <Compiler {...params.compilerProps} minHeight={48} placeholder={Placeholder} />
       <Error msg={params.errorProps.msg} isPopup />
       <Knobs {...params.knobProps} />
+      <Overrides
+        componentName="Button"
+        componentConfig={ButtonConfig.props}
+        overrides={params.knobProps.state.overrides}
+        set={(propValue: any) => {
+          console.log(propValue);
+          params.knobProps.set(propValue, 'overrides');
+        }}
+      />
       <div style={{margin: '10px 0px'}}>
         <ThemeEditor
           theme={themeState}
