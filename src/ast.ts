@@ -11,9 +11,12 @@ export const parse = (code: string) =>
     plugins: ['jsx', 'flow'],
   });
 
-// creates a call expression that synchronizes yard state
-const getYardOnChange = (what: string, into: string) =>
-  t.callExpression(t.identifier('__yard_onChange'), [t.identifier(what), t.stringLiteral(into)]);
+// creates a call expression that synchronizes view state
+const getInstrumentOnChange = (what: string, into: string) =>
+  t.callExpression(t.identifier('__react_view_onChange'), [
+    t.identifier(what),
+    t.stringLiteral(into),
+  ]);
 
 // appends a call expression to a function body
 const fnBodyAppend = (path: any, callExpression: t.CallExpression) => {
@@ -38,7 +41,7 @@ const fnBodyAppend = (path: any, callExpression: t.CallExpression) => {
 };
 
 // clean-up for react-live, removing all imports, exports and top level
-// variable declaration, add __yard_onChange instrumentation when needed
+// variable declaration, add __react_view_onChange instrumentation when needed
 export const transformBeforeCompilation = (
   ast: any,
   elementName: string,
@@ -65,7 +68,7 @@ export const transformBeforeCompilation = (
           path.remove();
         }
       },
-      // adds internal state instrumentation through __yard_onChange callback
+      // adds internal state instrumentation through __react_view_onChange callback
       JSXElement(path) {
         if (
           path.node.openingElement.type === 'JSXOpeningElement' &&
@@ -76,8 +79,8 @@ export const transformBeforeCompilation = (
             const propHook = propsConfig['children'].propHook;
             path.get('children').forEach(child => {
               typeof propHook === 'object'
-                ? fnBodyAppend(child, getYardOnChange(propHook.what, propHook.into))
-                : child.traverse(propHook({getYardOnChange, fnBodyAppend}));
+                ? fnBodyAppend(child, getInstrumentOnChange(propHook.what, propHook.into))
+                : child.traverse(propHook({getInstrumentOnChange, fnBodyAppend}));
             });
           }
           path
@@ -88,8 +91,11 @@ export const transformBeforeCompilation = (
               const propHook = propsConfig[name].propHook;
               if (typeof propHook !== 'undefined') {
                 typeof propHook === 'object'
-                  ? fnBodyAppend(attr.get('value'), getYardOnChange(propHook.what, propHook.into))
-                  : attr.traverse(propHook({getYardOnChange, fnBodyAppend}));
+                  ? fnBodyAppend(
+                      attr.get('value'),
+                      getInstrumentOnChange(propHook.what, propHook.into)
+                    )
+                  : attr.traverse(propHook({getInstrumentOnChange, fnBodyAppend}));
               }
             });
         }
@@ -137,13 +143,13 @@ export function parseCode(code: string, elementName: string, parseProvider?: (as
             propValues[name] = value;
           });
           propValues['children'] = formatAstAndPrint(
-            getAstJsxElement('YardRoot', [], path.node.children as any) as any,
+            getAstJsxElement('ViewRoot', [], path.node.children as any) as any,
             30
           )
             .replace(/\n  /g, '\n')
-            .replace(/^<YardRoot>\n?/, '')
-            .replace(/<\/YardRoot>$/, '')
-            .replace(/\s*<YardRoot \/>\s*/, '');
+            .replace(/^<ViewRoot>\n?/, '')
+            .replace(/<\/ViewRoot>$/, '')
+            .replace(/\s*<ViewRoot \/>\s*/, '');
         }
       },
       VariableDeclarator(path) {

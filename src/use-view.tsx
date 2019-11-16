@@ -77,7 +77,7 @@ const useView: TUseView = (config = {}) => {
   // this callback is secretely inserted into props marked with
   // "propHook" this way we can get notified when the internal
   // state of previewed component is changed by user
-  const __yard_onChange = debounce((propValue: TPropValue, propName: string) => {
+  const __react_view_onChange = debounce((propValue: TPropValue, propName: string) => {
     !hydrated && setHydrated(true);
     const newCode = getCode({
       props: buildPropsObj(state.props, {[propName]: propValue}),
@@ -100,7 +100,7 @@ const useView: TUseView = (config = {}) => {
       ],
       scope: {
         ...scopeConfig,
-        __yard_onChange,
+        __react_view_onChange,
       },
     },
     knobProps: {

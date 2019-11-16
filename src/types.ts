@@ -8,7 +8,7 @@ export type TProvider<T = any> = {
   imports: TImportsConfig;
 };
 
-export type TUseView = (params?: {
+export type TUseViewParams = {
   componentName?: string;
   imports?: TImportsConfig;
   scope?: {[key: string]: any};
@@ -22,7 +22,11 @@ export type TUseView = (params?: {
       generate: (value: any) => any;
     };
   };
-}) => {
+};
+
+export type TUseView = (
+  params?: TUseViewParams
+) => {
   compilerProps: any;
   knobProps: any;
   editorProps: any;
@@ -34,7 +38,7 @@ export type TUseView = (params?: {
 export type TDispatch = (value: {type: Action; payload: any}) => void;
 
 type TPropHookFn = (params: {
-  getYardOnChange: (what: string, into: string) => t.CallExpression;
+  getInstrumentOnChange: (what: string, into: string) => t.CallExpression;
   fnBodyAppend: (path: any, callExpression: t.CallExpression) => void;
 }) => any;
 
@@ -57,7 +61,7 @@ export type TError = {
   msg: string | null;
 };
 
-export type TYardProps = {
+export type TViewProps = {
   componentName: string;
   minHeight: number;
   scope: {[key: string]: any};

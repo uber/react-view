@@ -25,7 +25,7 @@ import {
   ActionButtons,
   Placeholder,
   PropTypes,
-} from '../src/';
+} from '../src';
 
 const ButtonConfig = {
   imports: {
@@ -129,7 +129,7 @@ const ButtonConfig = {
   },
 };
 
-const ViewExample = () => {
+const Baseweb = () => {
   // theme provider prep
   const [, theme] = useStyletron();
   const componentTheme = getThemeFromContext(theme, ButtonConfig.theme);
@@ -176,4 +176,4 @@ const ViewExample = () => {
   );
 };
 
-export default ViewExample;
+export default Baseweb;

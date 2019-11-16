@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {Layout} from './layout/';
+import {Layout} from './layout';
+import {Button, SIZE} from './showcase-components/button';
 
 import {
   useView,
@@ -10,52 +11,9 @@ import {
   ActionButtons,
   Placeholder,
   PropTypes,
-} from '../src/';
+} from '../src';
 
-const SIZE = {
-  default: 'default',
-  compact: 'compact',
-  large: 'large',
-};
-
-const Button: React.FC<any> = ({children, onClick, size, disabled}) => {
-  const getSizeStyle = (size: keyof typeof SIZE) => {
-    switch (size) {
-      case SIZE.compact:
-        return {
-          padding: '8px',
-          fontSize: '14px',
-        };
-      case SIZE.large:
-        return {
-          padding: '18px',
-          fontSize: '20px',
-        };
-      default:
-        return {
-          padding: '12px',
-          fontSize: '16px',
-        };
-    }
-  };
-  const btnStyle = {
-    ...getSizeStyle(size),
-    background: disabled ? '#CCC' : '#276EF1',
-    margin: '0px',
-    color: disabled ? '#000' : '#FFF',
-    borderRadius: '5px',
-    borderWidth: '2px',
-    borderStyle: 'solid',
-    borderColor: disabled ? '#CCC' : '#276EF1',
-  };
-  return (
-    <button onClick={onClick} style={btnStyle} disabled={disabled}>
-      {children}
-    </button>
-  );
-};
-
-const ViewExample = () => {
+const Basic = () => {
   const params = useView({
     componentName: 'Button',
     props: {
@@ -110,4 +68,4 @@ const ViewExample = () => {
   );
 };
 
-export default ViewExample;
+export default Basic;

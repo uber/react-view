@@ -23,7 +23,7 @@ describe('transformBeforeCompilation', () => {
     );
   });
 
-  test('instrument a callback with __yard_onChange', () => {
+  test('instrument a callback with __react_view_onChange', () => {
     const source = '<Input onChange={e => foo()} />';
     expect(
       formatAstAndPrint(
@@ -42,12 +42,12 @@ describe('transformBeforeCompilation', () => {
     ).toBe(`<Input
   onChange={e => {
     foo();
-    __yard_onChange(e.target.value, "value");
+    __react_view_onChange(e.target.value, "value");
   }}
 />`);
   });
 
-  test('instrument a callback with __yard_onChange (callback return a BlockStatement)', () => {
+  test('instrument a callback with __react_view_onChange (callback return a BlockStatement)', () => {
     const source = '<Input onChange={e => { foo(); baz(); }} />';
     expect(
       formatAstAndPrint(
@@ -67,12 +67,12 @@ describe('transformBeforeCompilation', () => {
   onChange={e => {
     foo();
     baz();
-    __yard_onChange(e.target.value, "value")
+    __react_view_onChange(e.target.value, "value")
   }}
 />`);
   });
 
-  test('instrument a children callback with __yard_onChange', () => {
+  test('instrument a children callback with __react_view_onChange', () => {
     const source = '<Foo>{e => foo()}</Foo>';
     expect(
       formatAstAndPrint(
@@ -91,7 +91,7 @@ describe('transformBeforeCompilation', () => {
     ).toBe(`<Foo>
   {e => {
     foo();
-    __yard_onChange(e.target.value, "value");
+    __react_view_onChange(e.target.value, "value");
   }}
 </Foo>`);
   });
@@ -105,10 +105,10 @@ describe('transformBeforeCompilation', () => {
             value: '',
             type: PropTypes.Function,
             description: '',
-            propHook: ({getYardOnChange, fnBodyAppend}) => ({
+            propHook: ({getInstrumentOnChange, fnBodyAppend}) => ({
               JSXAttribute(path: any) {
                 if (path.get('name').node.name === 'onClick') {
-                  fnBodyAppend(path.get('value'), getYardOnChange('e.target.value', 'value'));
+                  fnBodyAppend(path.get('value'), getInstrumentOnChange('e.target.value', 'value'));
                 }
               },
             }),
@@ -119,7 +119,7 @@ describe('transformBeforeCompilation', () => {
   <button
     onClick={e => {
       foo();
-      __yard_onChange(e.target.value, "value");
+      __react_view_onChange(e.target.value, "value");
     }}
   >
     Ha
@@ -136,10 +136,10 @@ describe('transformBeforeCompilation', () => {
             value: '',
             type: PropTypes.Function,
             description: '',
-            propHook: ({getYardOnChange, fnBodyAppend}) => ({
+            propHook: ({getInstrumentOnChange, fnBodyAppend}) => ({
               JSXAttribute(path: any) {
                 if (path.get('name').node.name === 'onClick') {
-                  fnBodyAppend(path.get('value'), getYardOnChange('e.target.value', 'value'));
+                  fnBodyAppend(path.get('value'), getInstrumentOnChange('e.target.value', 'value'));
                 }
               },
             }),
@@ -151,7 +151,7 @@ describe('transformBeforeCompilation', () => {
     <button
       onClick={e => {
         foo();
-        __yard_onChange(e.target.value, "value");
+        __react_view_onChange(e.target.value, "value");
       }}
     >
       Ha

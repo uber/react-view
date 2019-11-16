@@ -29,7 +29,7 @@ export const getAstPropsArray = (props: {[key: string]: TProp}, customProps: any
     // we don't add it to the list of props.
     // It handles boolean props where `defaultValue` set to true,
     // and enum props that have a `defaultValue` set to be displayed
-    // in the yard correctly (checked checkboxes and selected default value in radio groups)
+    // in the view correctly (checked checkboxes and selected default value in radio groups)
     // and not rendered in the component's props.
     if (
       (typeof value !== 'boolean' && !value) ||

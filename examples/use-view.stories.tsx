@@ -1,18 +1,23 @@
 import * as React from 'react';
-import FullExample from './full-example';
-import BasewebExample from './baseweb-example';
+import Basic from './basic';
+import StateHook from './state-hook';
+import Baseweb from './baseweb';
 import LiveCodeOnly from './live-code-only';
 
 export default {
   title: 'useView',
 };
 
-export const fullExample = () => {
-  return <FullExample />;
+export const basic = () => {
+  return <Basic />;
 };
 
-export const basewebExample = () => {
-  return <BasewebExample />;
+export const stateHook = () => {
+  return <StateHook />;
+};
+
+export const baseweb = () => {
+  return <Baseweb />;
 };
 
 export const liveCodeOnly = () => {
