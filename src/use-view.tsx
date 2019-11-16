@@ -21,29 +21,37 @@ import {
 } from './actions';
 import reducer from './reducer';
 
-const useView: TUseView = ({
-  componentName,
-  props: propsConfig,
-  scope: scopeConfig,
-  imports: importsConfig,
-  provider,
-  onUpdate,
-  initialCode,
-  customProps,
-}) => {
+const useView: TUseView = (config = {}) => {
+  // setting defaults
+  const componentName = config.componentName ? config.componentName : '';
+  const propsConfig = config.props ? config.props : {};
+  const scopeConfig = config.scope ? config.scope : {};
+  const importsConfig = config.imports ? config.imports : {};
+  const provider = config.provider
+    ? config.provider
+    : {
+        value: undefined,
+        parse: () => undefined,
+        generate: (_: any, child: any) => child,
+        imports: {},
+      };
+  const onUpdate = config.onUpdate ? config.onUpdate : () => {};
+  const customProps = config.customProps ? config.customProps : {};
+  const initialCode = config.initialCode;
+
   const [hydrated, setHydrated] = React.useState(false);
   const [error, setError] = React.useState<TError>({where: '', msg: null});
   const [state, dispatch] = React.useReducer(reducer, {
     code:
       initialCode ||
-      getCode(
-        propsConfig,
+      getCode({
+        props: propsConfig,
         componentName,
         provider,
-        provider ? provider.value : undefined,
+        providerValue: provider.value,
         importsConfig,
-        customProps
-      ),
+        customProps,
+      }),
     codeNoRecompile: '',
     props: propsConfig,
     providerValue: provider ? provider.value : undefined,
@@ -71,16 +79,16 @@ const useView: TUseView = ({
   // state of previewed component is changed by user
   const __yard_onChange = debounce((propValue: TPropValue, propName: string) => {
     !hydrated && setHydrated(true);
-    const newCode = getCode(
-      buildPropsObj(state.props, {[propName]: propValue}),
+    const newCode = getCode({
+      props: buildPropsObj(state.props, {[propName]: propValue}),
       componentName,
       provider,
-      state.providerValue,
+      providerValue: state.providerValue,
       importsConfig,
-      customProps
-    );
+      customProps,
+    });
     updatePropsAndCodeNoRecompile(dispatch, newCode, propName, propValue);
-    onUpdate && onUpdate({code: newCode});
+    onUpdate({code: newCode});
   }, 200);
 
   return {
@@ -101,17 +109,17 @@ const useView: TUseView = ({
       set: (propValue: TPropValue, propName: string) => {
         try {
           !hydrated && setHydrated(true);
-          const newCode = getCode(
-            buildPropsObj(state.props, {[propName]: propValue}),
+          const newCode = getCode({
+            props: buildPropsObj(state.props, {[propName]: propValue}),
             componentName,
             provider,
-            state.providerValue,
+            providerValue: state.providerValue,
             importsConfig,
-            customProps
-          );
+            customProps,
+          });
           setError({where: '', msg: null});
           updatePropsAndCode(dispatch, newCode, propName, propValue);
-          onUpdate && onUpdate({code: newCode});
+          onUpdate({code: newCode});
         } catch (e) {
           updateProps(dispatch, propName, propValue);
           setError({where: propName, msg: e.toString()});
@@ -131,7 +139,7 @@ const useView: TUseView = ({
             provider ? provider.parse : undefined,
             customProps
           );
-          onUpdate && onUpdate({code: newCode});
+          onUpdate({code: newCode});
         } catch (e) {
           updateCode(dispatch, newCode);
         }
@@ -154,38 +162,39 @@ const useView: TUseView = ({
       reset: () => {
         reset(
           dispatch,
-          getCode(
-            propsConfig,
-            componentName,
-            provider,
-            state.providerValue,
-            importsConfig,
-            customProps
-          ),
+          initialCode ||
+            getCode({
+              props: propsConfig,
+              componentName,
+              provider,
+              providerValue: state.providerValue,
+              importsConfig,
+              customProps,
+            }),
           propsConfig
         );
       },
       updateProvider: (providerValue: any) => {
-        const newCode: string = getCode(
-          buildPropsObj(state.props, {}),
+        const newCode: string = getCode({
+          props: buildPropsObj(state.props, {}),
           componentName,
           provider,
           providerValue,
           importsConfig,
-          customProps
-        );
+          customProps,
+        });
         updateCodeAndProvider(dispatch, newCode, providerValue);
       },
       updateProp: (propName: string, propValue: any) => {
         try {
-          const newCode = getCode(
-            buildPropsObj(state.props, {[propName]: propValue}),
+          const newCode = getCode({
+            props: buildPropsObj(state.props, {[propName]: propValue}),
             componentName,
             provider,
-            state.providerValue,
+            providerValue: state.providerValue,
             importsConfig,
-            customProps
-          );
+            customProps,
+          });
           setError({where: '', msg: null});
           updatePropsAndCode(dispatch, newCode, propName, propValue);
         } catch (e) {

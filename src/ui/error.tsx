@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Portal} from 'react-portal';
 import {Reference, Popper, Manager} from 'react-popper';
-import {formatBabelError, frameError} from './utils';
+import {formatBabelError, frameError} from '../utils';
 
 const PopupError: React.FC<{enabled: boolean; children: React.ReactNode}> = ({
   enabled,

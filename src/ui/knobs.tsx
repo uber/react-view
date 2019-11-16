@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {TPropValue, TProp, TError} from './types';
+import {TPropValue, TProp, TError} from '../types';
 import Knob from './knob';
 
 type TKnobsProps = {

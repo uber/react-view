@@ -226,7 +226,10 @@ export const formatAstAndPrint = (ast: t.Program, printWidth?: number) => {
   return (
     result.formatted
       // add a new line before export
-      .replace('export default', '\nexport default')
+      .replace(
+        'export default',
+        `${result.formatted.startsWith('import ') ? '\n' : ''}export default`
+      )
       // remove newline at the end of file
       .replace(/[\r\n]+$/, '')
       // remove ; at the end of file
@@ -238,14 +241,26 @@ export const formatCode = (code: string): string => {
   return formatAstAndPrint(parse(code) as any);
 };
 
-export const getCode = (
-  props: {[key: string]: TProp},
-  componentName: string,
-  provider: any,
-  providerValue: any,
-  importsConfig: TImportsConfig,
-  customProps: any
-) => {
+type TGetCodeParams = {
+  componentName: string;
+  props: {[key: string]: TProp};
+  importsConfig: TImportsConfig;
+  provider: any;
+  providerValue: any;
+  customProps: any;
+};
+
+export const getCode = ({
+  props,
+  componentName,
+  provider,
+  providerValue,
+  importsConfig,
+  customProps,
+}: TGetCodeParams) => {
+  if (Object.keys(props).length === 0) {
+    return '';
+  }
   const ast = getAst(props, componentName, provider, providerValue, importsConfig, customProps);
   return formatAstAndPrint(ast as any);
 };

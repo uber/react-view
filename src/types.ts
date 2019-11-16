@@ -8,11 +8,11 @@ export type TProvider<T = any> = {
   imports: TImportsConfig;
 };
 
-export type TUseView = (params: {
-  componentName: string;
-  imports: TImportsConfig;
-  scope: {[key: string]: any};
-  props: {[key: string]: TProp};
+export type TUseView = (params?: {
+  componentName?: string;
+  imports?: TImportsConfig;
+  scope?: {[key: string]: any};
+  props?: {[key: string]: TProp};
   onUpdate?: (params: {code: string}) => void;
   initialCode?: string;
   provider?: TProvider;

@@ -16,14 +16,16 @@ import {customProps} from '../src/base/custom-props';
 import ThemeEditor from '../src/base/theme-editor';
 import Overrides from '../src/base/overrides';
 
-import useView from '../src/view';
-import Compiler from '../src/compiler';
-import Knobs from '../src/knobs';
-import Editor from '../src/editor';
-import Error from '../src/error';
-import {ActionButtons} from '../src/action-buttons';
-import Placeholder from '../src/placeholder';
-import {PropTypes} from '../src/const';
+import {
+  useView,
+  Compiler,
+  Knobs,
+  Editor,
+  Error,
+  ActionButtons,
+  Placeholder,
+  PropTypes,
+} from '../src/';
 
 const ButtonConfig = {
   imports: {
@@ -145,6 +147,7 @@ const ViewExample = () => {
     provider,
     customProps,
   });
+
   return (
     <div style={{maxWidth: '600px', margin: '0px auto'}}>
       <Compiler {...params.compilerProps} minHeight={48} placeholder={Placeholder} />

@@ -49,7 +49,7 @@ export const customProps = {
       return t.objectExpression(keys);
     },
     parse: (code: string, knobProps: any) => {
-      const names = knobProps.overrides ? knobProps.overrides.names || [] : [];
+      const names = knobProps && knobProps.overrides ? knobProps.overrides.names || [] : [];
       return parseOverrides(code, names);
     },
   },

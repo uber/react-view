@@ -16,7 +16,7 @@ type TOverridesProps = {
 const Overrides: React.FC<TOverridesProps> = ({overrides, set, componentName, componentConfig}) => {
   const [, theme] = useStyletron();
   const isLightTheme = theme.name.startsWith('light-theme');
-  if (!overrides.names || overrides.names.length === 0) {
+  if (!overrides || !overrides.names || overrides.names.length === 0) {
     return null;
   }
 

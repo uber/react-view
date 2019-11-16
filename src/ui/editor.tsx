@@ -1,8 +1,8 @@
 import * as React from 'react';
 import SimpleEditor from 'react-simple-code-editor';
 import Highlight, {Prism} from 'prism-react-renderer';
-import lightTheme from './light-theme';
-import {useValueDebounce} from './utils';
+import lightTheme from '../light-theme';
+import {useValueDebounce} from '../utils';
 
 type TransformTokenT = (tokenProps: {
   // https://github.com/FormidableLabs/prism-react-renderer/blob/86c05728b6cbea735480a8354546da77ae8b00d9/src/types.js#L64

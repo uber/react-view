@@ -2,7 +2,7 @@ import React from 'react';
 import {transformFromAstSync} from '@babel/core';
 //@ts-ignore
 import presetReact from '@babel/preset-react';
-import {parse} from './ast';
+import {parse} from '../ast';
 
 const errorBoundary = (
   Element: React.FC | React.ComponentClass | undefined,

@@ -8,7 +8,7 @@ import {Button, KIND, SIZE} from 'baseui/button';
 import {ButtonGroup} from 'baseui/button-group';
 import {parse} from '../ast';
 import {formatCode} from '../code-generator';
-import Editor from '../editor';
+import Editor from '../ui/editor';
 
 function toggleOverrideSharedProps(code: string, sharedProps: string[]) {
   let result: string = '';
