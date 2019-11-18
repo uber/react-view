@@ -61,15 +61,6 @@ export type TError = {
   msg: string | null;
 };
 
-export type TViewProps = {
-  componentName: string;
-  minHeight: number;
-  scope: {[key: string]: any};
-  props: {[key: string]: TProp};
-  imports: TImportsConfig;
-  mapTokensToProps?: {[key: string]: any};
-};
-
 export type TPropValue = undefined | boolean | string | number;
 
 export type TProp = {

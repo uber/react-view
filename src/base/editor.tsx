@@ -1,9 +1,10 @@
 import * as React from 'react';
 import SimpleEditor from 'react-simple-code-editor';
 import Highlight, {Prism} from 'prism-react-renderer';
-import {useValueDebounce, lightTheme} from '../index';
+import {useStyletron} from 'baseui';
 
-type TLanguage = 'javascript' | 'jsx' | 'typescript' | 'tsx';
+import {lightTheme, useValueDebounce} from '../index';
+import darkTheme from './dark-theme';
 
 type TransformTokenT = (tokenProps: {
   // https://github.com/FormidableLabs/prism-react-renderer/blob/86c05728b6cbea735480a8354546da77ae8b00d9/src/types.js#L64
@@ -13,18 +14,12 @@ type TransformTokenT = (tokenProps: {
   [key: string]: any;
 }) => React.ReactNode;
 
-const highlightCode = ({
-  code,
-  theme,
-  transformToken,
-  language,
-}: {
-  code: string;
-  theme: typeof lightTheme;
-  transformToken?: TransformTokenT;
-  language?: TLanguage;
-}) => (
-  <Highlight Prism={Prism} code={code} theme={theme} language={language || 'jsx'}>
+const highlightCode = (
+  code: string,
+  theme: typeof lightTheme,
+  transformToken?: TransformTokenT
+) => (
+  <Highlight Prism={Prism} code={code} theme={theme} language="jsx">
     {({tokens, getLineProps, getTokenProps}) => (
       <React.Fragment>
         {tokens.map((line, i) => (
@@ -48,17 +43,19 @@ const Editor: React.FC<{
   code: string;
   transformToken?: TransformTokenT;
   placeholder?: string;
-  language?: TLanguage;
   onChange: (code: string) => void;
   small?: boolean;
-  theme?: typeof lightTheme;
-}> = ({code: globalCode, transformToken, onChange, placeholder, language, theme}) => {
+}> = ({code: globalCode, transformToken, onChange, placeholder, small}) => {
+  const [css, theme] = useStyletron();
   const [focused, setFocused] = React.useState(false);
+  const plainStyles = theme.name.startsWith('light-theme') ? lightTheme : darkTheme;
   const editorTheme = {
-    ...(theme || lightTheme),
+    ...plainStyles,
     plain: {
+      ...plainStyles.plain,
+      fontSize: small ? '13px' : '14px',
       whiteSpace: 'break-spaces',
-      ...(theme || lightTheme).plain,
+      backgroundColor: focused ? theme.colors.inputFillActive : theme.colors.inputFill,
     },
   };
 
@@ -66,15 +63,18 @@ const Editor: React.FC<{
 
   return (
     <div
-      style={{
+      className={css({
         boxSizing: 'border-box',
+        backgroundColor: editorTheme.plain.backgroundColor,
         paddingLeft: '4px',
         paddingRight: '4px',
-        maxWidth: 'auto',
+        height: small && !focused ? '36px' : 'auto',
+        maxWidth: small ? '255px' : 'auto',
         overflow: 'hidden',
-        border: focused ? '1px solid #276EF1' : '1px solid #CCC',
-        borderRadius: '5px',
-      }}
+        border: focused
+          ? `2px solid ${theme.colors.borderFocus}`
+          : `2px solid ${theme.colors.inputFill}`,
+      })}
     >
       <style
         dangerouslySetInnerHTML={{
@@ -84,11 +84,11 @@ const Editor: React.FC<{
       <SimpleEditor
         value={code || ''}
         placeholder={placeholder}
-        highlight={code => highlightCode({code, theme: editorTheme, transformToken, language})}
+        highlight={code => highlightCode(code, editorTheme, transformToken)}
         onValueChange={code => setCode(code)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        padding={8}
+        padding={small ? 4 : 12}
         style={editorTheme.plain as any}
       />
     </div>

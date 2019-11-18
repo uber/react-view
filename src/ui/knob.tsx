@@ -1,9 +1,5 @@
 import * as React from 'react';
-import {useValueDebounce} from '../utils';
-import {PropTypes} from '../const';
-import Error from './error';
-import Editor from './editor';
-import {TPropValue} from '../types';
+import {useValueDebounce, PropTypes, Error, Editor, TPropValue} from '../index';
 
 const getTooltip = (description: string, type: string, name: string) => `${name}: ${type}
 

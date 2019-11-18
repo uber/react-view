@@ -9,23 +9,19 @@ import {
   darkThemePrimitives,
   ThemeProvider,
 } from 'baseui';
+import {Card} from 'baseui/card';
 
 // base yard
 import {getProvider, getThemeFromContext} from '../src/base/provider';
 import {customProps} from '../src/base/custom-props';
 import ThemeEditor from '../src/base/theme-editor';
 import Overrides from '../src/base/overrides';
+import Editor from '../src/base/editor';
+import ActionButtons from '../src/base/action-buttons';
+import Knobs from '../src/base/knobs';
+import {YardTabs, YardTab} from '../src/base/styled-components';
 
-import {
-  useView,
-  Compiler,
-  Knobs,
-  Editor,
-  Error,
-  ActionButtons,
-  Placeholder,
-  PropTypes,
-} from '../src';
+import {useView, Compiler, Error, Placeholder, PropTypes} from '../src';
 
 const ButtonConfig = {
   imports: {
@@ -148,31 +144,49 @@ const Baseweb = () => {
     customProps,
   });
 
+  const activeProps = 0;
+  const activeThemeValues = 0;
+  const activeOverrides = 0;
   return (
-    <div style={{maxWidth: '600px', margin: '0px auto'}}>
+    <Card overrides={{Root: {style: {maxWidth: '600px', margin: '0px auto'}}}}>
       <Compiler {...params.compilerProps} minHeight={48} placeholder={Placeholder} />
       <Error msg={params.errorProps.msg} isPopup />
-      <Knobs {...params.knobProps} />
-      <Overrides
-        componentName="Button"
-        componentConfig={ButtonConfig.props}
-        overrides={params.knobProps.state.overrides}
-        set={(propValue: any) => {
-          params.knobProps.set(propValue, 'overrides');
-        }}
-      />
-      <div style={{margin: '10px 0px'}}>
-        <ThemeEditor
-          theme={params.providerState}
-          themeInit={componentTheme}
-          set={params.actions.updateProvider}
-          componentName="Button"
-        />
-      </div>
+      <YardTabs>
+        <YardTab title={`Props${activeProps > 0 ? ` (${activeProps})` : ''}`}>
+          <Knobs {...params.knobProps} />
+        </YardTab>
+        {ButtonConfig.props.overrides.names && ButtonConfig.props.overrides.names.length > 0 && (
+          <YardTab title={`Style Overrides${activeOverrides > 0 ? ` (${activeOverrides})` : ''}`}>
+            <Overrides
+              componentName="Button"
+              componentConfig={ButtonConfig.props}
+              overrides={params.knobProps.state.overrides}
+              set={(propValue: any) => {
+                params.knobProps.set(propValue, 'overrides');
+              }}
+            />
+          </YardTab>
+        )}
+        {ButtonConfig.theme.length > 0 && (
+          <YardTab title={`Theme ${activeThemeValues > 0 ? `(${activeThemeValues})` : ''}`}>
+            <ThemeEditor
+              theme={params.providerState}
+              themeInit={componentTheme}
+              set={params.actions.updateProvider}
+              componentName="Button"
+            />
+          </YardTab>
+        )}
+      </YardTabs>
       <Editor {...params.editorProps} />
       <Error {...params.errorProps} />
-      <ActionButtons {...params.actions} />
-    </div>
+      <ActionButtons
+        {...params.actions}
+        code={params.editorProps.code}
+        componentName="Button"
+        importsConfig={ButtonConfig.imports}
+      />
+    </Card>
   );
 };
 
