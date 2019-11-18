@@ -4,6 +4,8 @@ import Highlight, {Prism} from 'prism-react-renderer';
 import lightTheme from '../light-theme';
 import {useValueDebounce} from '../utils';
 
+type TLanguage = 'javascript' | 'jsx' | 'typescript' | 'tsx';
+
 type TransformTokenT = (tokenProps: {
   // https://github.com/FormidableLabs/prism-react-renderer/blob/86c05728b6cbea735480a8354546da77ae8b00d9/src/types.js#L64
   style?: {[key: string]: string | number | null};
@@ -12,12 +14,18 @@ type TransformTokenT = (tokenProps: {
   [key: string]: any;
 }) => React.ReactNode;
 
-const highlightCode = (
-  code: string,
-  theme: typeof lightTheme,
-  transformToken?: TransformTokenT
-) => (
-  <Highlight Prism={Prism} code={code} theme={theme} language="jsx">
+const highlightCode = ({
+  code,
+  theme,
+  transformToken,
+  language,
+}: {
+  code: string;
+  theme: typeof lightTheme;
+  transformToken?: TransformTokenT;
+  language?: TLanguage;
+}) => (
+  <Highlight Prism={Prism} code={code} theme={theme} language={language || 'jsx'}>
     {({tokens, getLineProps, getTokenProps}) => (
       <React.Fragment>
         {tokens.map((line, i) => (
@@ -41,11 +49,12 @@ const Editor: React.FC<{
   code: string;
   transformToken?: TransformTokenT;
   placeholder?: string;
+  language?: TLanguage;
   onChange: (code: string) => void;
   small?: boolean;
-}> = ({code: globalCode, transformToken, onChange, placeholder}) => {
+}> = ({code: globalCode, transformToken, onChange, placeholder, language}) => {
   const [focused, setFocused] = React.useState(false);
-  const editorTheme = {
+  const theme = {
     ...lightTheme,
     plain: {
       ...lightTheme.plain,
@@ -76,12 +85,12 @@ const Editor: React.FC<{
       <SimpleEditor
         value={code || ''}
         placeholder={placeholder}
-        highlight={code => highlightCode(code, editorTheme, transformToken)}
+        highlight={code => highlightCode({code, theme, transformToken, language})}
         onValueChange={code => setCode(code)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         padding={8}
-        style={editorTheme.plain as any}
+        style={theme.plain as any}
       />
     </div>
   );

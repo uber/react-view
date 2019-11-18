@@ -1,5 +1,5 @@
 import React from 'react';
-import {transformFromAstSync} from '@babel/core';
+import {transformFromAstSync, PluginItem} from '@babel/core';
 //@ts-ignore
 import presetReact from '@babel/preset-react';
 import {parse} from '../ast';
@@ -20,11 +20,14 @@ const errorBoundary = (
   return ErrorBoundary;
 };
 
-const evalCode = (ast: babel.types.Node, scope: any) => {
+const evalCode = (ast: babel.types.Node, scope: any, presets?: PluginItem) => {
   const transformedCode = transformFromAstSync(ast as babel.types.Node, undefined, {
-    presets: [presetReact],
+    presets: presets ? [presetReact, ...presets] : [presetReact],
     inputSourceMap: false as any,
     sourceMaps: false,
+    // TS preset needs this and it doesn't seem to matter when TS preset
+    // is not used, so let's keep it here?
+    filename: 'file.tsx',
   });
   const resultCode = transformedCode ? transformedCode.code : '';
   const scopeKeys = Object.keys(scope);
@@ -37,9 +40,10 @@ const evalCode = (ast: babel.types.Node, scope: any) => {
 const generateElement = (
   ast: babel.types.Node,
   scope: any,
-  errorCallback: (error: Error) => void
+  errorCallback: (error: Error) => void,
+  presets?: PluginItem
 ) => {
-  return errorBoundary(evalCode(ast, scope), errorCallback);
+  return errorBoundary(evalCode(ast, scope, presets), errorCallback);
 };
 
 const transpile = (
@@ -47,15 +51,21 @@ const transpile = (
   transformations: ((ast: babel.types.Node) => babel.types.Node)[],
   scope: any,
   setOutput: (params: {component: React.ComponentClass | null}) => void,
-  setError: (error: string | null) => void
+  setError: (error: string | null) => void,
+  presets?: PluginItem
 ) => {
   try {
     const ast = transformations.reduce((result, transformation) => transformation(result), parse(
       code
     ) as babel.types.Node);
-    const component = generateElement(ast, scope, (error: Error) => {
-      setError(error.toString());
-    });
+    const component = generateElement(
+      ast,
+      scope,
+      (error: Error) => {
+        setError(error.toString());
+      },
+      presets
+    );
     setOutput({component});
     setError(null);
   } catch (error) {
@@ -70,13 +80,14 @@ const Compiler: React.FC<{
   setError: (error: string | null) => void;
   transformations: ((ast: babel.types.Node) => babel.types.Node)[];
   placeholder?: React.FC<{height: number}>;
-}> = ({scope, code, setError, transformations, placeholder, minHeight}) => {
+  presets?: PluginItem[];
+}> = ({scope, code, setError, transformations, placeholder, minHeight, presets}) => {
   const [output, setOutput] = React.useState<{
     component: React.ComponentClass | null;
   }>({component: null});
 
   React.useEffect(() => {
-    transpile(code, transformations, scope, setOutput, setError);
+    transpile(code, transformations, scope, setOutput, setError, presets);
   }, [code]);
 
   const Element = output.component;

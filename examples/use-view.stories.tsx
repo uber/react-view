@@ -3,6 +3,7 @@ import Basic from './basic';
 import StateHook from './state-hook';
 import Baseweb from './baseweb';
 import LiveCodeOnly from './live-code-only';
+import Typescript from './typescript';
 
 export default {
   title: 'useView',
@@ -22,4 +23,8 @@ export const baseweb = () => {
 
 export const liveCodeOnly = () => {
   return <LiveCodeOnly />;
+};
+
+export const typescript = () => {
+  return <Typescript />;
 };

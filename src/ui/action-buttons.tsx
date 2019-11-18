@@ -18,7 +18,7 @@ export const ActionButtons: React.FC<{
         __html: `
     .react-view-button {
       font-size: 14px;
-      font-family: "'Helvetica Neue', Arial";
+      font-family: 'Helvetica Neue', Arial;
       padding: 8px;
       margin: 0px;
       border-radius: 5px;

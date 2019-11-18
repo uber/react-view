@@ -88,6 +88,7 @@
     "react-simple-code-editor": "^0.10.0"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.7.2",
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@storybook/addon-actions": "^5.2.5",
