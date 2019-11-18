@@ -7,7 +7,6 @@ module.exports = ({config}) => {
       },
     ],
   });
-  config['node'] = {fs: 'empty'};
   config.resolve.extensions.push('.ts', '.tsx');
   return config;
 };
