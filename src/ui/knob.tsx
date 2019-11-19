@@ -1,16 +1,29 @@
 import * as React from 'react';
+import Popover from '@miksu/react-tiny-popover';
 import {useValueDebounce, PropTypes, Error, Editor, TPropValue} from '../index';
+import {useHover} from '../utils';
 
-const getTooltip = (description: string, type: string, name: string) => `${name}: ${type}
+const getTooltip = (description: string, type: string, name: string) => (
+  <div
+    style={{
+      backgroundColor: 'white',
+      border: '1px solid #CCC',
+      padding: '8px',
+      borderRadius: '5px',
+      fontFamily: "'Helvetica Neue', Arial",
+      fontSize: '14px',
+    }}
+  >
+    <b>{name}</b>: <i>{type}</i>
+    <br />
+    <br />
+    {description}
+  </div>
+);
 
-${description}`;
-
-const Spacing: React.FC<{children: React.ReactNode; title?: string}> = ({children, title}) => {
+const Spacing: React.FC<{children: React.ReactNode}> = ({children}) => {
   return (
-    <div
-      style={{margin: '10px 0px', fontFamily: "'Helvetica Neue', Arial", fontSize: '14px'}}
-      title={title}
-    >
+    <div style={{margin: '10px 0px', fontFamily: "'Helvetica Neue', Arial", fontSize: '14px'}}>
       {children}
     </div>
   );
@@ -18,18 +31,55 @@ const Spacing: React.FC<{children: React.ReactNode; title?: string}> = ({childre
 
 const Label: React.FC<{
   children: React.ReactNode;
-  tooltip: string;
+  tooltip: React.ReactNode;
 }> = ({children, tooltip}) => {
+  const [hoverRef, isHover] = useHover();
   return (
-    <label
-      title={tooltip}
-      style={{
-        fontWeight: 500,
-        lineHeight: '20px',
-      }}
-    >
-      {children}
-    </label>
+    <Popover isOpen={Boolean(isHover)} position={'top'} content={<div>{tooltip}</div>}>
+      <label
+        ref={hoverRef as any}
+        style={{
+          fontWeight: 500,
+          lineHeight: '20px',
+        }}
+      >
+        {children} <span style={{fontSize: '12px', fontWeight: 400}}>[?]</span>
+      </label>
+    </Popover>
+  );
+};
+
+const BooleanKnob: React.FC<{
+  tooltip: React.ReactNode;
+  name: string;
+  val: boolean;
+  globalSet: (val: boolean) => void;
+}> = ({tooltip, name, val, globalSet}) => {
+  const [hoverRef, isHover] = useHover();
+  return (
+    <Popover isOpen={Boolean(isHover)} position={'top'} content={<div>{tooltip}</div>}>
+      <div
+        ref={hoverRef as any}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          fontWeight: 500,
+        }}
+      >
+        <input
+          id={name}
+          type="checkbox"
+          style={{marginRight: '8px', marginLeft: '0px'}}
+          checked={Boolean(val)}
+          onChange={() => {
+            globalSet(!val);
+          }}
+        />
+        <label htmlFor={name}>
+          {name} <span style={{fontSize: '12px', fontWeight: 400}}>[?]</span>
+        </label>
+      </div>
+    </Popover>
   );
 };
 
@@ -75,24 +125,13 @@ const Knob: React.SFC<{
       );
     case PropTypes.Boolean:
       return (
-        <Spacing title={getTooltip(description, type, name)}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <input
-              id={name}
-              type="checkbox"
-              style={{marginRight: '8px', marginLeft: '0px'}}
-              checked={Boolean(val)}
-              onChange={() => {
-                globalSet(!val);
-              }}
-            />
-            <label htmlFor={name}>{name}</label>
-          </div>
+        <Spacing>
+          <BooleanKnob
+            tooltip={getTooltip(description, type, name)}
+            val={Boolean(val)}
+            globalSet={globalSet}
+            name={name}
+          />
           <Error msg={error} isPopup />
         </Spacing>
       );

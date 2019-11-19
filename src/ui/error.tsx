@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {Portal} from 'react-portal';
-import {Reference, Popper, Manager} from 'react-popper';
+import Popover from '@miksu/react-tiny-popover';
 import {formatBabelError, frameError} from '../utils';
 
 const PopupError: React.FC<{enabled: boolean; children: React.ReactNode}> = ({
@@ -9,18 +8,9 @@ const PopupError: React.FC<{enabled: boolean; children: React.ReactNode}> = ({
 }) => {
   if (!enabled) return <React.Fragment>{children}</React.Fragment>;
   return (
-    <Manager>
-      <Reference>{({ref}) => <div ref={ref} />}</Reference>
-      <Portal>
-        <Popper placement="bottom">
-          {({ref, style, placement}) => (
-            <div ref={ref} style={style} data-placement={placement}>
-              {children}
-            </div>
-          )}
-        </Popper>
-      </Portal>
-    </Manager>
+    <Popover isOpen={enabled} position={'bottom'} content={<div>{children}</div>}>
+      <div />
+    </Popover>
   );
 };
 
