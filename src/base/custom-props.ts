@@ -2,8 +2,12 @@ import * as t from '@babel/types';
 import template from '@babel/template';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
-import {formatCode} from '../code-generator';
-import {parse} from '../ast';
+import {formatCode, parse} from '../index';
+
+export type TCustomPropFields = {
+  names: string[];
+  sharedProps: {[key: string]: string | {type: string; description: string}};
+};
 
 function parseOverrides(code: string, names: string[]) {
   const resultOverrides: any = {};

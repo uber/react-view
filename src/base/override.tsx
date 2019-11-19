@@ -6,9 +6,9 @@ import {useStyletron} from 'baseui';
 import {StatefulTooltip} from 'baseui/tooltip';
 import {Button, KIND, SIZE} from 'baseui/button';
 import {ButtonGroup} from 'baseui/button-group';
-import {parse} from '../ast';
-import {formatCode} from '../code-generator';
-import Editor from '../ui/editor';
+import Editor from './editor';
+
+import {formatCode, parse} from '../index';
 
 function toggleOverrideSharedProps(code: string, sharedProps: string[]) {
   let result: string = '';
@@ -84,13 +84,13 @@ const SharedPropsTooltip: React.FC<{
   componentConfig: any;
   children: React.ReactNode;
 }> = ({componentConfig, children}) => {
-  const sharedProps = Object.keys(componentConfig.overrides.sharedProps);
+  const sharedProps = Object.keys(componentConfig.overrides.custom.sharedProps);
   const getDescription = (name: string) => {
     let metaObj: any = {};
-    if (typeof componentConfig.overrides.sharedProps[name] === 'string') {
-      metaObj = componentConfig[componentConfig.overrides.sharedProps[name]];
+    if (typeof componentConfig.overrides.custom.sharedProps[name] === 'string') {
+      metaObj = componentConfig[componentConfig.overrides.custom.sharedProps[name]];
     } else {
-      metaObj = componentConfig.overrides.sharedProps[name];
+      metaObj = componentConfig.overrides.custom.sharedProps[name];
     }
     return (
       <React.Fragment>
@@ -177,7 +177,7 @@ const Override: React.FC<TProps> = ({
             const newCode = formatCode(
               toggleOverrideSharedProps(
                 overrides.value[overrideKey].style,
-                Object.keys(overrides.sharedProps)
+                Object.keys(overrides.custom.sharedProps)
               )
             );
             set({

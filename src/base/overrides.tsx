@@ -16,7 +16,12 @@ type TOverridesProps = {
 const Overrides: React.FC<TOverridesProps> = ({overrides, set, componentName, componentConfig}) => {
   const [, theme] = useStyletron();
   const isLightTheme = theme.name.startsWith('light-theme');
-  if (!overrides || !overrides.names || overrides.names.length === 0) {
+  if (
+    !overrides ||
+    !overrides.custom ||
+    !overrides.custom.names ||
+    overrides.custom.names.length === 0
+  ) {
     return null;
   }
 
@@ -26,7 +31,7 @@ const Overrides: React.FC<TOverridesProps> = ({overrides, set, componentName, co
     };
   } = {};
 
-  overrides.names.forEach((key: string) => {
+  overrides.custom.names.forEach((key: string) => {
     if (overrides.value && overrides.value[key]) {
       overridesObj[key] = overrides.value[key];
     } else {

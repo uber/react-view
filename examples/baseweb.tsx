@@ -13,13 +13,14 @@ import {Card} from 'baseui/card';
 
 // base yard
 import {getProvider, getThemeFromContext, TProviderValue} from '../src/base/provider';
-import {customProps} from '../src/base/custom-props';
+import {customProps, TCustomPropFields} from '../src/base/custom-props';
 import ThemeEditor from '../src/base/theme-editor';
 import Overrides from '../src/base/overrides';
 import Editor from '../src/base/editor';
 import ActionButtons from '../src/base/action-buttons';
 import Knobs from '../src/base/knobs';
 import {YardTabs, YardTab} from '../src/base/styled-components';
+import {countProps, countOverrides, countThemeValues} from '../src/base/utils';
 
 import {useView, Compiler, Error, Placeholder, PropTypes} from '../src';
 
@@ -106,20 +107,22 @@ const ButtonConfig = {
       value: undefined,
       type: PropTypes.Custom,
       description: 'Lets you customize all aspects of the component.',
-      names: [
-        'BaseButton',
-        'EndEnhancer',
-        'LoadingSpinner',
-        'LoadingSpinnerContainer',
-        'StartEnhancer',
-      ],
-      sharedProps: {
-        $kind: 'kind',
-        $isSelected: 'isSelected',
-        $shape: 'shape',
-        $size: 'size',
-        $isLoading: 'isLoading',
-        $disabled: 'disabled',
+      custom: {
+        names: [
+          'BaseButton',
+          'EndEnhancer',
+          'LoadingSpinner',
+          'LoadingSpinnerContainer',
+          'StartEnhancer',
+        ],
+        sharedProps: {
+          $kind: 'kind',
+          $isSelected: 'isSelected',
+          $shape: 'shape',
+          $size: 'size',
+          $isLoading: 'isLoading',
+          $disabled: 'disabled',
+        },
       },
     },
   },
@@ -135,7 +138,7 @@ const Baseweb = () => {
       : 'lightThemePrimitives';
   const provider = getProvider(componentTheme, themePrimitives);
 
-  const params = useView<TProviderValue>({
+  const params = useView<TProviderValue, TCustomPropFields>({
     componentName: 'Button',
     props: ButtonConfig.props,
     scope: ButtonConfig.scope,
@@ -144,9 +147,10 @@ const Baseweb = () => {
     customProps,
   });
 
-  const activeProps = 0;
-  const activeThemeValues = 0;
-  const activeOverrides = 0;
+  const activeProps = countProps(params.knobProps.state, ButtonConfig.props);
+  const activeOverrides = countOverrides(params.knobProps.state.overrides);
+  const activeThemeValues = countThemeValues(params.providerValue);
+
   return (
     <Card overrides={{Root: {style: {maxWidth: '600px', margin: '0px auto'}}}}>
       <Compiler {...params.compilerProps} minHeight={48} placeholder={Placeholder} />
@@ -155,18 +159,19 @@ const Baseweb = () => {
         <YardTab title={`Props${activeProps > 0 ? ` (${activeProps})` : ''}`}>
           <Knobs {...params.knobProps} />
         </YardTab>
-        {ButtonConfig.props.overrides.names && ButtonConfig.props.overrides.names.length > 0 && (
-          <YardTab title={`Style Overrides${activeOverrides > 0 ? ` (${activeOverrides})` : ''}`}>
-            <Overrides
-              componentName="Button"
-              componentConfig={ButtonConfig.props}
-              overrides={params.knobProps.state.overrides}
-              set={(propValue: any) => {
-                params.knobProps.set(propValue, 'overrides');
-              }}
-            />
-          </YardTab>
-        )}
+        {ButtonConfig.props.overrides.custom.names &&
+          ButtonConfig.props.overrides.custom.names.length > 0 && (
+            <YardTab title={`Style Overrides${activeOverrides > 0 ? ` (${activeOverrides})` : ''}`}>
+              <Overrides
+                componentName="Button"
+                componentConfig={ButtonConfig.props}
+                overrides={params.knobProps.state.overrides}
+                set={(propValue: any) => {
+                  params.knobProps.set(propValue, 'overrides');
+                }}
+              />
+            </YardTab>
+          )}
         {ButtonConfig.theme.length > 0 && (
           <YardTab title={`Theme ${activeThemeValues > 0 ? `(${activeThemeValues})` : ''}`}>
             <ThemeEditor

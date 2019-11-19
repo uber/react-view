@@ -1,4 +1,12 @@
-import {TProp} from '../types';
+import {TProp} from '../index';
+import {TProviderValue} from './provider';
+
+export type TPropValueOverrides = {
+  [key: string]: {
+    active: boolean;
+    style: string;
+  };
+};
 
 export const countProps = (props: {[key: string]: TProp}, propsConfig: {[key: string]: TProp}) => {
   let changedProps = 0;
@@ -16,14 +24,12 @@ export const countProps = (props: {[key: string]: TProp}, propsConfig: {[key: st
   return changedProps;
 };
 
-export type TPropValueOverrides = {
-  [key: string]: {
-    active: boolean;
-    style: string;
-  };
-};
-
 export const countOverrides = (overrides: any) => {
   const existingOverrides = overrides.value ? Object.keys(overrides.value) : [];
   return existingOverrides.filter(key => overrides.value[key].active).length;
+};
+
+export const countThemeValues = (themeState: TProviderValue) => {
+  if (!themeState) return 0;
+  return Object.keys(themeState).length;
 };

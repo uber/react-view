@@ -1,6 +1,7 @@
 import * as t from '@babel/types';
 import traverse from '@babel/traverse';
 import {Theme} from 'baseui/theme';
+
 import {TProvider, getAstJsxElement} from '../index';
 
 export const getThemeFromContext = (theme: Theme, themeConfig: string[]) => {

@@ -19,11 +19,11 @@ export type TTransformToken = (tokenProps: {
   [key: string]: any;
 }) => React.ReactNode;
 
-export type TUseViewParams = {
+export type TUseViewParams<CustomPropFields = any> = {
   componentName?: string;
   imports?: TImportsConfig;
   scope?: {[key: string]: any};
-  props?: {[key: string]: TProp};
+  props?: {[key: string]: TProp<CustomPropFields>};
   onUpdate?: (params: {code: string}) => void;
   initialCode?: string;
   provider?: TProvider;
@@ -67,8 +67,8 @@ export type TErrorProps = {
   isPopup?: boolean;
 };
 
-export type TUseView = <ProviderValue = any>(
-  params?: TUseViewParams
+export type TUseView = <ProviderValue = any, CustomPropFields = any>(
+  params?: TUseViewParams<CustomPropFields>
 ) => {
   compilerProps: Omit<TCompilerProps, 'minHeight' | 'placeholder' | 'presets'>;
   knobProps: TKnobsProps;
@@ -112,7 +112,7 @@ export type TError = {
 
 export type TPropValue = undefined | boolean | string | number;
 
-export type TProp = {
+export type TProp<CustomPropFields = any> = {
   value: TPropValue;
   type: PropTypes;
   description: string;
@@ -121,18 +121,17 @@ export type TProp = {
   defaultValue?: TPropValue;
   enumName?: string;
   hidden?: boolean;
-  names?: string[];
-  sharedProps?: {[key: string]: string | {type: string; description: string}};
   stateful?: boolean;
   propHook?: TPropHook;
   imports?: TImportsConfig;
+  custom?: CustomPropFields;
 };
 
-export type TState = {
+export type TState<CustomPropFields = any> = {
   code: string;
   codeNoRecompile: string;
   props: {
-    [key: string]: TProp;
+    [key: string]: TProp<CustomPropFields>;
   };
   providerValue: any;
 };
