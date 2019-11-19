@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Popover from '@miksu/react-tiny-popover';
 import {formatBabelError, frameError} from '../utils';
+import {TErrorProps} from '../index';
 
 const PopupError: React.FC<{enabled: boolean; children: React.ReactNode}> = ({
   enabled,
@@ -14,11 +15,7 @@ const PopupError: React.FC<{enabled: boolean; children: React.ReactNode}> = ({
   );
 };
 
-const Error: React.FC<{msg: string | null; code?: string; isPopup?: boolean}> = ({
-  msg,
-  code,
-  isPopup,
-}) => {
+const Error: React.FC<TErrorProps> = ({msg, code, isPopup}) => {
   if (msg === null) return null;
   return (
     <PopupError enabled={Boolean(isPopup)}>

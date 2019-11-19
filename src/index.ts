@@ -12,6 +12,8 @@ import Placeholder from './ui/placeholder';
 import {PropTypes} from './const';
 import lightTheme from './light-theme';
 
+import {getAstJsxElement} from './code-generator';
+
 // hooks, utils
 export {useView, useValueDebounce, assertUnreachable};
 
@@ -20,6 +22,10 @@ export {View, Compiler, Knobs, Editor, Error, ActionButtons, Placeholder};
 
 // constants
 export {PropTypes, lightTheme};
+
+// ast helpers
+
+export {getAstJsxElement};
 
 // types
 export * from './types';

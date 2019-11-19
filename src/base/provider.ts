@@ -1,8 +1,7 @@
 import * as t from '@babel/types';
 import traverse from '@babel/traverse';
 import {Theme} from 'baseui/theme';
-import {getAstJsxElement} from '../code-generator';
-import {TProvider} from '../types';
+import {TProvider, getAstJsxElement} from '../index';
 
 export const getThemeFromContext = (theme: Theme, themeConfig: string[]) => {
   const componentThemeObj: {[key: string]: string} = {};
@@ -39,13 +38,15 @@ export const getThemeDiff = (
   return diff;
 };
 
+export type TProviderValue = {[key: string]: string} | undefined;
+
 export const getProvider = (
   initialThemeValues: {[key: string]: string},
   themePrimitives: string
 ): TProvider => {
   return {
     value: undefined,
-    parse: (astRoot: any) => {
+    parse: (astRoot: t.File): TProviderValue => {
       const newThemeValues: {[key: string]: string} = {};
       traverse(astRoot, {
         CallExpression(path) {
@@ -58,9 +59,9 @@ export const getProvider = (
           ) {
             //@ts-ignore
             const colors = path.node.arguments[1].properties[0].value;
-            colors.properties.forEach((prop: any) => {
-              if (initialThemeValues[prop.key.name] !== prop.value.value) {
-                newThemeValues[prop.key.name] = prop.value.value;
+            colors.properties.forEach((prop: t.ObjectProperty) => {
+              if (initialThemeValues[prop.key.name] !== (prop.value as t.StringLiteral).value) {
+                newThemeValues[prop.key.name] = (prop.value as t.StringLiteral).value;
               }
             });
           }
@@ -68,7 +69,8 @@ export const getProvider = (
       });
       return Object.keys(newThemeValues).length > 0 ? newThemeValues : undefined;
     },
-    generate: (value: any, childTree: t.JSXElement) => generate(value, childTree, themePrimitives),
+    generate: (value: TProviderValue, childTree: t.JSXElement) =>
+      generate(value, childTree, themePrimitives),
     imports: {
       baseui: {
         named: ['ThemeProvider', 'createTheme', themePrimitives],
@@ -78,7 +80,7 @@ export const getProvider = (
 };
 
 export const generate = (
-  values: {[key: string]: string},
+  values: {[key: string]: string} | undefined,
   childTree: t.JSXElement,
   themePrimitives: string
 ) => {

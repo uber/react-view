@@ -2,14 +2,8 @@ import * as React from 'react';
 import {useStyletron} from 'baseui';
 import {Button, KIND, SIZE} from 'baseui/button';
 
-import {TPropValue, TProp, TError} from '../index';
+import {TPropValue, TKnobsProps} from '../index';
 import Knob from './knob';
-
-type TKnobsProps = {
-  state: {[key: string]: TProp};
-  set: (propValue: TPropValue, propName: string) => void;
-  error: TError;
-};
 
 const KnobColumn: React.FC<TKnobsProps & {knobNames: string[]}> = ({
   state,

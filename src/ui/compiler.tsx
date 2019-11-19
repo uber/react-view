@@ -1,8 +1,10 @@
 import React from 'react';
 import {transformFromAstSync, PluginItem} from '@babel/core';
+import * as t from '@babel/types';
 //@ts-ignore
 import presetReact from '@babel/preset-react';
 import {parse} from '../ast';
+import {TCompilerProps} from '../index';
 
 const errorBoundary = (
   Element: React.FC | React.ComponentClass | undefined,
@@ -48,16 +50,17 @@ const generateElement = (
 
 const transpile = (
   code: string,
-  transformations: ((ast: babel.types.Node) => babel.types.Node)[],
+  transformations: ((ast: t.File) => t.File)[],
   scope: any,
   setOutput: (params: {component: React.ComponentClass | null}) => void,
   setError: (error: string | null) => void,
   presets?: PluginItem
 ) => {
   try {
-    const ast = transformations.reduce((result, transformation) => transformation(result), parse(
-      code
-    ) as babel.types.Node);
+    const ast = transformations.reduce(
+      (result, transformation) => transformation(result),
+      parse(code)
+    );
     const component = generateElement(
       ast,
       scope,
@@ -73,15 +76,15 @@ const transpile = (
   }
 };
 
-const Compiler: React.FC<{
-  scope: any;
-  code: string;
-  minHeight?: number;
-  setError: (error: string | null) => void;
-  transformations: ((ast: babel.types.Node) => babel.types.Node)[];
-  placeholder?: React.FC<{height: number}>;
-  presets?: PluginItem[];
-}> = ({scope, code, setError, transformations, placeholder, minHeight, presets}) => {
+const Compiler: React.FC<TCompilerProps> = ({
+  scope,
+  code,
+  setError,
+  transformations,
+  placeholder,
+  minHeight,
+  presets,
+}) => {
   const [output, setOutput] = React.useState<{
     component: React.ComponentClass | null;
   }>({component: null});

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import copy from 'copy-to-clipboard';
-
 import debounce from 'lodash/debounce';
+import * as t from '@babel/types';
 
 // transformations, code generation
 import {transformBeforeCompilation} from './ast';
@@ -94,9 +94,9 @@ const useView: TUseView = (config = {}) => {
   return {
     compilerProps: {
       code: state.code,
-      setError: (msg: string) => setError({where: '__compiler', msg}),
+      setError: (msg: string | null) => setError({where: '__compiler', msg}),
       transformations: [
-        (code: string) => transformBeforeCompilation(code, componentName, propsConfig),
+        (ast: t.File) => transformBeforeCompilation(ast, componentName, propsConfig),
       ],
       scope: {
         ...scopeConfig,
@@ -126,7 +126,7 @@ const useView: TUseView = (config = {}) => {
         }
       },
     },
-    providerState: state.providerValue,
+    providerValue: state.providerValue,
     editorProps: {
       code: state.codeNoRecompile !== '' ? state.codeNoRecompile : state.code,
       onChange: (newCode: string) => {

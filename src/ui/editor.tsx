@@ -1,17 +1,13 @@
 import * as React from 'react';
 import SimpleEditor from 'react-simple-code-editor';
 import Highlight, {Prism} from 'prism-react-renderer';
-import {useValueDebounce, lightTheme} from '../index';
-
-type TLanguage = 'javascript' | 'jsx' | 'typescript' | 'tsx';
-
-type TransformTokenT = (tokenProps: {
-  // https://github.com/FormidableLabs/prism-react-renderer/blob/86c05728b6cbea735480a8354546da77ae8b00d9/src/types.js#L64
-  style?: {[key: string]: string | number | null};
-  className: string;
-  children: string;
-  [key: string]: any;
-}) => React.ReactNode;
+import {
+  useValueDebounce,
+  lightTheme,
+  TEditorProps,
+  TEditorLanguage,
+  TTransformToken,
+} from '../index';
 
 const highlightCode = ({
   code,
@@ -21,8 +17,8 @@ const highlightCode = ({
 }: {
   code: string;
   theme: typeof lightTheme;
-  transformToken?: TransformTokenT;
-  language?: TLanguage;
+  transformToken?: TTransformToken;
+  language?: TEditorLanguage;
 }) => (
   <Highlight Prism={Prism} code={code} theme={theme} language={language || 'jsx'}>
     {({tokens, getLineProps, getTokenProps}) => (
@@ -44,15 +40,14 @@ const highlightCode = ({
   </Highlight>
 );
 
-const Editor: React.FC<{
-  code: string;
-  transformToken?: TransformTokenT;
-  placeholder?: string;
-  language?: TLanguage;
-  onChange: (code: string) => void;
-  small?: boolean;
-  theme?: typeof lightTheme;
-}> = ({code: globalCode, transformToken, onChange, placeholder, language, theme}) => {
+const Editor: React.FC<TEditorProps> = ({
+  code: globalCode,
+  transformToken,
+  onChange,
+  placeholder,
+  language,
+  theme,
+}) => {
   const [focused, setFocused] = React.useState(false);
   const editorTheme = {
     ...(theme || lightTheme),

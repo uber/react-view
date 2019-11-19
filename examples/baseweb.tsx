@@ -12,7 +12,7 @@ import {
 import {Card} from 'baseui/card';
 
 // base yard
-import {getProvider, getThemeFromContext} from '../src/base/provider';
+import {getProvider, getThemeFromContext, TProviderValue} from '../src/base/provider';
 import {customProps} from '../src/base/custom-props';
 import ThemeEditor from '../src/base/theme-editor';
 import Overrides from '../src/base/overrides';
@@ -135,7 +135,7 @@ const Baseweb = () => {
       : 'lightThemePrimitives';
   const provider = getProvider(componentTheme, themePrimitives);
 
-  const params = useView({
+  const params = useView<TProviderValue>({
     componentName: 'Button',
     props: ButtonConfig.props,
     scope: ButtonConfig.scope,
@@ -170,7 +170,7 @@ const Baseweb = () => {
         {ButtonConfig.theme.length > 0 && (
           <YardTab title={`Theme ${activeThemeValues > 0 ? `(${activeThemeValues})` : ''}`}>
             <ThemeEditor
-              theme={params.providerState}
+              theme={params.providerValue || {}}
               themeInit={componentTheme}
               set={params.actions.updateProvider}
               componentName="Button"

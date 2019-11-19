@@ -1,4 +1,4 @@
-import traverse from '@babel/traverse';
+import traverse, {NodePath} from '@babel/traverse';
 import generate from '@babel/generator';
 import * as t from '@babel/types';
 import {TProp} from './types';
@@ -19,11 +19,11 @@ const getInstrumentOnChange = (what: string, into: string) =>
   ]);
 
 // appends a call expression to a function body
-const fnBodyAppend = (path: any, callExpression: t.CallExpression) => {
+const fnBodyAppend = (path: NodePath<any>, callExpression: t.CallExpression) => {
   if (path.node.type !== 'JSXExpressionContainer') {
     return;
   }
-  const callbackBody = path.get('expression').get('body');
+  const callbackBody = (path.get('expression') as any).get('body');
   if (callbackBody.type === 'BlockStatement') {
     // when the callback body is a block
     // e.g.: e => { setValue(e.target.value) }
@@ -43,7 +43,7 @@ const fnBodyAppend = (path: any, callExpression: t.CallExpression) => {
 // clean-up for react-live, removing all imports, exports and top level
 // variable declaration, add __react_view_onChange instrumentation when needed
 export const transformBeforeCompilation = (
-  ast: any,
+  ast: t.File,
   elementName: string,
   propsConfig: {[key: string]: TProp}
 ) => {
@@ -92,7 +92,7 @@ export const transformBeforeCompilation = (
               if (typeof propHook !== 'undefined') {
                 typeof propHook === 'object'
                   ? fnBodyAppend(
-                      attr.get('value'),
+                      attr.get('value') as any,
                       getInstrumentOnChange(propHook.what, propHook.into)
                     )
                   : attr.traverse(propHook({getInstrumentOnChange, fnBodyAppend}));
@@ -106,8 +106,8 @@ export const transformBeforeCompilation = (
 };
 
 export function parseCode(code: string, elementName: string, parseProvider?: (ast: any) => void) {
-  const propValues: any = {};
-  const stateValues: any = {};
+  const propValues: {[key: string]: string} = {};
+  const stateValues: {[key: string]: string} = {};
   let parsedProvider: any = undefined;
   try {
     const ast = parse(code) as any;

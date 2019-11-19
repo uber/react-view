@@ -3,21 +3,13 @@ import SimpleEditor from 'react-simple-code-editor';
 import Highlight, {Prism} from 'prism-react-renderer';
 import {useStyletron} from 'baseui';
 
-import {lightTheme, useValueDebounce} from '../index';
+import {lightTheme, useValueDebounce, TTransformToken, TEditorProps} from '../index';
 import darkTheme from './dark-theme';
-
-type TransformTokenT = (tokenProps: {
-  // https://github.com/FormidableLabs/prism-react-renderer/blob/86c05728b6cbea735480a8354546da77ae8b00d9/src/types.js#L64
-  style?: {[key: string]: string | number | null};
-  className: string;
-  children: string;
-  [key: string]: any;
-}) => React.ReactNode;
 
 const highlightCode = (
   code: string,
   theme: typeof lightTheme,
-  transformToken?: TransformTokenT
+  transformToken?: TTransformToken
 ) => (
   <Highlight Prism={Prism} code={code} theme={theme} language="jsx">
     {({tokens, getLineProps, getTokenProps}) => (
@@ -39,13 +31,13 @@ const highlightCode = (
   </Highlight>
 );
 
-const Editor: React.FC<{
-  code: string;
-  transformToken?: TransformTokenT;
-  placeholder?: string;
-  onChange: (code: string) => void;
-  small?: boolean;
-}> = ({code: globalCode, transformToken, onChange, placeholder, small}) => {
+const Editor: React.FC<TEditorProps> = ({
+  code: globalCode,
+  transformToken,
+  onChange,
+  placeholder,
+  small,
+}) => {
   const [css, theme] = useStyletron();
   const [focused, setFocused] = React.useState(false);
   const plainStyles = theme.name.startsWith('light-theme') ? lightTheme : darkTheme;

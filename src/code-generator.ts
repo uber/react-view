@@ -216,7 +216,7 @@ export const getAst = (
   );
 };
 
-export const formatAstAndPrint = (ast: t.Program, printWidth?: number) => {
+export const formatAstAndPrint = (ast: t.File, printWidth?: number) => {
   const result = (prettier as any).__debug.formatAST(ast, {
     originalText: '',
     parser: 'babel',
