@@ -14,6 +14,10 @@ export const H2: React.FC<{children: React.ReactNode}> = ({children}) => (
   <h2 style={{fontFamily: "'Helvetica Neue', Arial"}}>{children}</h2>
 );
 
+export const H3: React.FC<{children: React.ReactNode}> = ({children}) => (
+  <h3 style={{fontFamily: "'Helvetica Neue', Arial"}}>{children}</h3>
+);
+
 export const CompilerBox: React.FC<{children: React.ReactNode}> = ({children}) => (
   <div style={{marginBottom: '16px', minHeight: '52px'}}>{children}</div>
 );

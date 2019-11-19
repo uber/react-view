@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {ThemeContext} from './theme-provider';
 
 type TButtonProps = {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ export const SIZE = {
 };
 
 export const Button: React.FC<TButtonProps> = ({children, onClick, size, disabled}) => {
+  const colors = React.useContext(ThemeContext);
   const getSizeStyle = (size: keyof typeof SIZE) => {
     switch (size) {
       case SIZE.compact:
@@ -35,13 +37,13 @@ export const Button: React.FC<TButtonProps> = ({children, onClick, size, disable
   };
   const btnStyle = {
     ...getSizeStyle(size),
-    background: disabled ? '#CCC' : '#276EF1',
+    background: disabled ? '#CCC' : colors.background,
     margin: '0px',
-    color: disabled ? '#000' : '#FFF',
+    color: disabled ? '#000' : colors.text,
     borderRadius: '5px',
     borderWidth: '2px',
     borderStyle: 'solid',
-    borderColor: disabled ? '#CCC' : '#276EF1',
+    borderColor: disabled ? '#CCC' : colors.background,
   };
   return (
     <button onClick={onClick} style={btnStyle} disabled={disabled}>

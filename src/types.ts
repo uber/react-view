@@ -10,7 +10,7 @@ export type TProvider<T = any> = {
   imports: TImportsConfig;
 };
 
-export type TEditorLanguage = 'javascript' | 'jsx' | 'typescript' | 'tsx';
+export type TEditorLanguage = 'javascript' | 'jsx' | 'typescript' | 'tsx' | 'css';
 
 export type TTransformToken = (tokenProps: {
   style?: {[key: string]: string | number | null};
