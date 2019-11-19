@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useStyletron} from 'baseui';
 import {Button, KIND, SIZE} from 'baseui/button';
 
-import {TPropValue, TKnobsProps} from '../index';
+import {TPropValue, TKnobsProps, PropTypes} from '../index';
 import Knob from './knob';
 
 const KnobColumn: React.FC<TKnobsProps & {knobNames: string[]}> = ({
@@ -40,11 +40,11 @@ const KnobColumn: React.FC<TKnobsProps & {knobNames: string[]}> = ({
 const Knobs: React.FC<TKnobsProps> = ({state, set, error}) => {
   const [useCss, theme] = useStyletron();
   const [showAllKnobs, setShowAllKnobs] = React.useState(false);
-  const allKnobNames = Object.keys(state);
+  const allKnobNames = Object.keys(state).filter(name => state[name].type !== PropTypes.Custom);
   const filteredKnobNames = allKnobNames.filter((name: string) => state[name].hidden !== true);
   const knobNames = showAllKnobs ? allKnobNames : filteredKnobNames;
-  const firstGroup = knobNames.slice(0, knobNames.length / 2);
-  const secondGroup = knobNames.slice(knobNames.length / 2);
+  const firstGroup = knobNames.slice(0, Math.round(knobNames.length / 2));
+  const secondGroup = knobNames.slice(Math.round(knobNames.length / 2));
   return (
     <React.Fragment>
       <div
