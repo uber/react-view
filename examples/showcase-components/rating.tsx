@@ -39,6 +39,7 @@ const Heart: React.FC<THeartProps> = ({active, setHovered, index, onClick}) => {
       aria-checked={active}
       aria-posinset={index}
       ref={ref}
+      title={`${index}/5`}
       onClick={onClick}
       style={{
         listStyle: 'none',

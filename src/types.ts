@@ -10,6 +10,13 @@ export type TProvider<T = any> = {
   imports: TImportsConfig;
 };
 
+export type TCustomProps = {
+  [key: string]: {
+    parse: (code: string, knobProps: any) => any;
+    generate: (value: any) => any;
+  };
+};
+
 export type TEditorLanguage = 'javascript' | 'jsx' | 'typescript' | 'tsx' | 'css';
 
 export type TTransformToken = (tokenProps: {
@@ -27,16 +34,11 @@ export type TUseViewParams<CustomPropFields = any> = {
   onUpdate?: (params: {code: string}) => void;
   initialCode?: string;
   provider?: TProvider;
-  customProps?: {
-    [key: string]: {
-      parse: (code: string, knobProps: any) => any;
-      generate: (value: any) => any;
-    };
-  };
+  customProps?: TCustomProps;
 };
 
 export type TCompilerProps = {
-  scope: any;
+  scope: {[key: string]: any};
   code: string;
   minHeight?: number;
   setError: (error: string | null) => void;

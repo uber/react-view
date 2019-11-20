@@ -1,7 +1,7 @@
 // import Router from 'next/router';
 import {parseCode} from './ast';
 import {Action, PropTypes} from './const';
-import {TProp, TDispatch, TPropValue} from './types';
+import {TProp, TDispatch, TPropValue, TCustomProps} from './types';
 
 export const updateCode = (dispatch: TDispatch, newCode: string) => {
   dispatch({
@@ -25,8 +25,8 @@ export const updateAll = (
   newCode: string,
   componentName: string,
   propsConfig: {[key: string]: TProp},
-  parseProvider?: (ast: any) => void,
-  customProps?: any
+  parseProvider?: (astRoot: any) => any,
+  customProps?: TCustomProps
 ) => {
   const propValues: {[key: string]: TPropValue} = {};
   const {parsedProps, parsedProvider} = parseCode(newCode, componentName, parseProvider);

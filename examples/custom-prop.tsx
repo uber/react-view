@@ -32,7 +32,7 @@ const Slider: React.FC<{value: number; set: (val: number, propName: string) => v
           fontFamily: "'Helvetica Neue', Arial",
         }}
       >
-        <p>Custom knob for the value prop</p>
+        <p>Custom knob for the custom value prop</p>
         <input
           style={{width: '284px'}}
           list="tickmarks"

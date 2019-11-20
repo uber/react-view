@@ -1,7 +1,7 @@
 import template from '@babel/template';
 import * as t from '@babel/types';
 import clone from 'just-clone';
-import {TProp, TImportsConfig} from './types';
+import {TProp, TImportsConfig, TCustomProps, TProvider} from './types';
 import {PropTypes} from './const';
 import {parse} from './ast';
 
@@ -18,9 +18,15 @@ type TJsxChild =
   | t.JSXElement
   | t.JSXFragment;
 
+type TBuildReactHook = (params: {
+  name: t.Identifier;
+  setName: t.Identifier;
+  value: any;
+}) => t.ExpressionStatement;
+
 const reactImport = template.ast(`import * as React from 'react';`);
 
-export const getAstPropsArray = (props: {[key: string]: TProp}, customProps: any) => {
+export const getAstPropsArray = (props: {[key: string]: TProp}, customProps: TCustomProps) => {
   return Object.entries(props).map(([name, prop]) => {
     const {value, stateful, defaultValue} = prop;
     if (stateful)
@@ -51,7 +57,7 @@ export const getAstPropsArray = (props: {[key: string]: TProp}, customProps: any
   });
 };
 
-export const getAstPropValue = (prop: TProp, name: string, customProps: any) => {
+export const getAstPropValue = (prop: TProp, name: string, customProps: TCustomProps) => {
   const value = prop.value;
   switch (prop.type as PropTypes) {
     case PropTypes.String:
@@ -61,7 +67,7 @@ export const getAstPropValue = (prop: TProp, name: string, customProps: any) => 
     case PropTypes.Enum:
       return t.identifier(String(value));
     case PropTypes.Date:
-      return t.newExpression(t.identifier('Date'), value ? [t.stringLiteral(value as any)] : []);
+      return t.newExpression(t.identifier('Date'), value ? [t.stringLiteral(String(value))] : []);
     case PropTypes.Ref:
       return null;
     case PropTypes.Object:
@@ -85,16 +91,20 @@ export const getAstPropValue = (prop: TProp, name: string, customProps: any) => 
   }
 };
 
-export const getAstReactHooks = (props: {[key: string]: TProp}, customProps: any) => {
+export const getAstReactHooks = (props: {[key: string]: TProp}, customProps: TCustomProps) => {
   const hooks: t.ExpressionStatement[] = [];
-  const buildReactHook = template(`const [%%name%%, %%setName%%] = React.useState(%%value%%);`);
+  const buildReactHook = template(
+    `const [%%name%%, %%setName%%] = React.useState(%%value%%);`
+  ) as TBuildReactHook;
   Object.keys(props).forEach(name => {
     if (props[name].stateful === true) {
-      hooks.push(buildReactHook({
-        name: t.identifier(name),
-        setName: t.identifier(`set${name[0].toUpperCase() + name.slice(1)}`),
-        value: getAstPropValue(props[name], name, customProps),
-      }) as any);
+      hooks.push(
+        buildReactHook({
+          name: t.identifier(name),
+          setName: t.identifier(`set${name[0].toUpperCase() + name.slice(1)}`),
+          value: getAstPropValue(props[name], name, customProps),
+        })
+      );
     }
   });
   return hooks;
@@ -130,7 +140,7 @@ export const getAstJsxElement = (
   );
 };
 
-const addToImportList = (importList: any, imports: TImportsConfig) => {
+const addToImportList = (importList: TImportsConfig, imports: TImportsConfig) => {
   for (let [importFrom, importNames] of Object.entries(imports)) {
     if (!importList.hasOwnProperty(importFrom)) {
       importList[importFrom] = {
@@ -184,10 +194,10 @@ const getChildrenAst = (value: string) => {
 export const getAst = (
   props: {[key: string]: TProp},
   componentName: string,
-  provider: any,
+  provider: TProvider,
   providerValue: any,
   importsConfig: TImportsConfig,
-  customProps: any
+  customProps: TCustomProps
 ) => {
   const {children, ...restProps} = props;
   const buildExport = template(`export default () => {%%body%%}`);
@@ -210,7 +220,7 @@ export const getAst = (
           ),
         ],
       }),
-    ] as any),
+    ] as t.Statement[]),
     [],
     []
   );
@@ -238,16 +248,16 @@ export const formatAstAndPrint = (ast: t.File, printWidth?: number) => {
 };
 
 export const formatCode = (code: string): string => {
-  return formatAstAndPrint(parse(code) as any);
+  return formatAstAndPrint(parse(code));
 };
 
 type TGetCodeParams = {
   componentName: string;
   props: {[key: string]: TProp};
   importsConfig: TImportsConfig;
-  provider: any;
+  provider: TProvider;
   providerValue: any;
-  customProps: any;
+  customProps: TCustomProps;
 };
 
 export const getCode = ({
@@ -262,5 +272,5 @@ export const getCode = ({
     return '';
   }
   const ast = getAst(props, componentName, provider, providerValue, importsConfig, customProps);
-  return formatAstAndPrint(ast as any);
+  return formatAstAndPrint(ast);
 };

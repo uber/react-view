@@ -100,9 +100,8 @@ const Knob: React.SFC<{
         <Spacing>
           <Label tooltip={getTooltip(description, type, name)}>{name}</Label>
           <Input
-            //@ts-ignore
             error={Boolean(error)}
-            onChange={event => set((event.target as any).value)}
+            onChange={event => set((event.target as HTMLInputElement).value)}
             placeholder={placeholder}
             size="compact"
             value={val ? String(val) : undefined}
@@ -164,7 +163,7 @@ const Knob: React.SFC<{
                 },
               }}
               onChange={e => {
-                globalSet((e.target as any).value);
+                globalSet((e.target as HTMLInputElement).value);
               }}
               value={String(val)}
             >

@@ -32,7 +32,7 @@ const useView: TUseView = (config = {}) => {
     : {
         value: undefined,
         parse: () => undefined,
-        generate: (_: any, child: any) => child,
+        generate: (_: any, child: t.JSXElement) => child,
         imports: {},
       };
   const onUpdate = config.onUpdate ? config.onUpdate : () => {};
