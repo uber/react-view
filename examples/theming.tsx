@@ -105,6 +105,63 @@ const ThemeEditor: React.FC<TThemeEditorProps> = ({theme, set}) => {
   );
 };
 
+export const provider = {
+  // define initial provider value
+  value: undefined,
+  // write a visitor that gets the provider value out of the AST tree
+  parse: (astRoot: t.File): TProviderValue => {
+    const newThemeValues: Partial<TTheme> = {};
+    traverse(astRoot, {
+      JSXOpeningElement(path) {
+        const identifier = path.node.name as t.JSXIdentifier;
+        const attrs = path.node.attributes as t.JSXAttribute[];
+        if (identifier.name === 'ThemeProvider' && attrs.length > 0) {
+          const colorsAttr = attrs.find(attr => attr.name.name === 'colors');
+          if (colorsAttr) {
+            const colors = (colorsAttr.value as any).expression.properties;
+            colors.forEach((prop: t.ObjectProperty) => {
+              const name: keyof typeof defaultTheme = prop.key.name;
+              const value = (prop.value as t.StringLiteral).value;
+              if (defaultTheme[name] !== value) {
+                newThemeValues[name] = value;
+              }
+            });
+          }
+        }
+      },
+    });
+    return Object.keys(newThemeValues).length > 0 ? newThemeValues : undefined;
+  },
+  // write a code generator aka turn the provider value + child subtree into a resulting AST
+  generate: (value: TProviderValue, childTree: t.JSXElement) => {
+    if (!value || Object.keys(value).length === 0) {
+      return childTree;
+    }
+    return getAstJsxElement(
+      'ThemeProvider',
+      [
+        t.jsxAttribute(
+          t.jsxIdentifier('colors'),
+          t.jsxExpressionContainer(
+            t.objectExpression(
+              Object.entries(value).map(([name, value]) =>
+                t.objectProperty(t.identifier(name), t.stringLiteral(value as string))
+              )
+            )
+          )
+        ),
+      ],
+      [childTree]
+    );
+  },
+  // import statement that will be displayed when provider value is not undefined
+  imports: {
+    'your-component-library': {
+      named: ['ThemeProvider'],
+    },
+  },
+};
+
 const Theming = () => {
   const params = useView({
     componentName: 'Button',
@@ -137,62 +194,7 @@ const Theming = () => {
         named: ['Button'],
       },
     },
-    provider: {
-      // define initial provider value
-      value: undefined,
-      // write a visitor that gets the provider value out of the AST tree
-      parse: (astRoot: t.File): TProviderValue => {
-        const newThemeValues: Partial<TTheme> = {};
-        traverse(astRoot, {
-          JSXOpeningElement(path) {
-            const identifier = path.node.name as t.JSXIdentifier;
-            const attrs = path.node.attributes as t.JSXAttribute[];
-            if (identifier.name === 'ThemeProvider' && attrs.length > 0) {
-              const colorsAttr = attrs.find(attr => attr.name.name === 'colors');
-              if (colorsAttr) {
-                const colors = (colorsAttr.value as any).expression.properties;
-                colors.forEach((prop: t.ObjectProperty) => {
-                  const name: keyof typeof defaultTheme = prop.key.name;
-                  const value = (prop.value as t.StringLiteral).value;
-                  if (defaultTheme[name] !== value) {
-                    newThemeValues[name] = value;
-                  }
-                });
-              }
-            }
-          },
-        });
-        return Object.keys(newThemeValues).length > 0 ? newThemeValues : undefined;
-      },
-      // write a code generator aka turn the provider value + child subtree into a resulting AST
-      generate: (value: TProviderValue, childTree: t.JSXElement) => {
-        if (!value || Object.keys(value).length === 0) {
-          return childTree;
-        }
-        return getAstJsxElement(
-          'ThemeProvider',
-          [
-            t.jsxAttribute(
-              t.jsxIdentifier('colors'),
-              t.jsxExpressionContainer(
-                t.objectExpression(
-                  Object.entries(value).map(([name, value]) =>
-                    t.objectProperty(t.identifier(name), t.stringLiteral(value as string))
-                  )
-                )
-              )
-            ),
-          ],
-          [childTree]
-        );
-      },
-      // import statement that will be displayed when provider value is not undefined
-      imports: {
-        'your-component-library': {
-          named: ['ThemeProvider'],
-        },
-      },
-    },
+    provider,
   });
 
   return (

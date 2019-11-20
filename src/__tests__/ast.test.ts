@@ -2,6 +2,9 @@ import {transformBeforeCompilation, parse, parseCode} from '../ast';
 import {formatAstAndPrint} from '../code-generator';
 import {PropTypes} from '../const';
 
+// testing optional provider parser, taken from this example
+import {provider} from '../../examples/theming';
+
 describe('transformBeforeCompilation', () => {
   test('remove imports', () => {
     const source = `
@@ -236,57 +239,30 @@ describe('parseCode', () => {
   test('extract props and theme', () => {
     const fixture = `
       import { Input } from "baseui/input";
-      import {
-        ThemeProvider,
-        createTheme,
-        lightThemePrimitives
-      } from "baseui";
-
+      
       export default () => {
         const [value, setValue] = React.useState("Hello");
         return (
           <ThemeProvider
-            theme={createTheme(lightThemePrimitives, {
-              colors: { inputFill: "yellow" }
-            })}
+            colors={{ inputFill: "yellow" }}
           >
             <Input
               value={value}
               onChange={e => setValue(e.target.value)}
               placeholder="Controlled Input"
-              overrides={{
-                Root: {
-                  style: ({ $theme }) => {
-                    return {
-                      outline: \`\${$theme.colors.warning200} solid\`,
-                      backgroundColor: $theme.colors.warning200
-                    };
-                  }
-                }
-              }}
             />
           </ThemeProvider>
         );
       }
     `;
-    expect(parseCode(fixture, 'Input')).toEqual({
+    expect(parseCode(fixture, 'Input', provider.parse)).toEqual({
       parsedProps: {
         children: '',
         onChange: 'e => setValue(e.target.value)',
-        overrides: `({
-  Root: {
-    style: ({ $theme }) => {
-      return {
-        outline: \`\${$theme.colors.warning200} solid\`,
-        backgroundColor: $theme.colors.warning200
-      };
-    }
-  }
-})`,
         placeholder: 'Controlled Input',
         value: 'Hello',
       },
-      parsedTheme: {
+      parsedProvider: {
         inputFill: 'yellow',
       },
     });
