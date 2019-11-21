@@ -160,19 +160,19 @@ const useView: TUseView = (config = {}) => {
         copy(window.location.href);
       },
       reset: () => {
-        reset(
-          dispatch,
-          initialCode ||
-            getCode({
+        const editorOnlyMode = Object.keys(propsConfig).length === 0;
+        const newCode = editorOnlyMode
+          ? initialCode
+          : getCode({
               props: propsConfig,
               componentName,
               provider,
               providerValue: state.providerValue,
               importsConfig,
               customProps,
-            }),
-          propsConfig
-        );
+            });
+        reset(dispatch, newCode, propsConfig);
+        onUpdate({code: newCode});
       },
       updateProvider: (providerValue: any) => {
         const newCode: string = getCode({
