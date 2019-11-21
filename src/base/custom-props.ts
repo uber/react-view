@@ -9,7 +9,7 @@ export type TCustomPropFields = {
   sharedProps: {[key: string]: string | {type: string; description: string}};
 };
 
-function parseOverrides(code: string, names: string[]) {
+export function parseOverrides(code: string, names: string[]) {
   const resultOverrides: any = {};
   try {
     // to make the AST root valid, let's add a const definition

@@ -16,6 +16,19 @@ import {
   useValueDebounce,
 } from '../src';
 
+export const customProps = {
+  value: {
+    // define how to convert value into an AST tree
+    generate: (value: number) => {
+      return (template.ast(String(value), {plugins: ['jsx']}) as any).expression;
+    },
+    // define how to convert the JSX attribute value into value
+    parse: (code: string) => {
+      return parseInt(code, 10);
+    },
+  },
+};
+
 // custom knob component
 const Slider: React.FC<{value: number; set: (val: number, propName: string) => void}> = ({
   value,
@@ -86,18 +99,7 @@ const StateHook = () => {
         named: ['Rating'],
       },
     },
-    customProps: {
-      value: {
-        // define how to convert value into an AST tree
-        generate: (value: number) => {
-          return (template.ast(String(value), {plugins: ['jsx']}) as any).expression;
-        },
-        // define how to convert the JSX attribute value into value
-        parse: (code: string) => {
-          return parseInt(code, 10);
-        },
-      },
-    },
+    customProps,
   });
 
   return (

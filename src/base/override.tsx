@@ -10,7 +10,7 @@ import Editor from './editor';
 
 import {formatCode, parse} from '../index';
 
-function toggleOverrideSharedProps(code: string, sharedProps: string[]) {
+export function toggleOverrideSharedProps(code: string, sharedProps: string[]) {
   let result: string = '';
   try {
     const ast = parse(code) as any;

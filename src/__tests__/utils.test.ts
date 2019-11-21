@@ -1,10 +1,10 @@
 import {formatBabelError} from '../utils';
 
 describe('formatBabelError', () => {
-  test('decrease the line number by one', () => {
+  test('preserve', () => {
     const source = `SyntaxError: Unexpected token, expected "jsxTagEnd" (10:5)`;
     expect(formatBabelError(source)).toBe(
-      `SyntaxError: Unexpected token, expected "jsxTagEnd" (9:5)`
+      `SyntaxError: Unexpected token, expected "jsxTagEnd" (10:5)`
     );
   });
 
