@@ -10,7 +10,7 @@ const pkg = require('./package.json');
 const libraryName = 'react-view';
 
 export default {
-  input: `src/${libraryName}.ts`,
+  input: `src/index.ts`,
   output: [
     {file: pkg.main, name: camelCase(libraryName), format: 'umd', sourcemap: true},
     {file: pkg.module, format: 'es', sourcemap: true},
@@ -30,8 +30,7 @@ export default {
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
-    resolve(),
-
+    //resolve(),
     // Resolve source maps to the original source
     sourceMaps(),
   ],
