@@ -1,11 +1,11 @@
 {
   "name": "react-view",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "keywords": [],
-  "main": "dist/react-view.umd.js",
-  "module": "dist/react-view.es5.js",
-  "typings": "dist/types/react-view.d.ts",
+  "main": "dist/lib/index.js",
+  "module": "dist/es/index.js",
+  "typings": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],
@@ -20,8 +20,7 @@
   },
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
-    "start": "rollup -c rollup.config.ts -w",
+    "build": "tsc --p tsconfig.lib.json && tsc --p tsconfig.es.json",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:prod": "npm run test -- --no-cache",
@@ -32,7 +31,7 @@
     "travis-deploy-once": "travis-deploy-once",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -129,6 +128,7 @@
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^5.0.3",
     "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript": "^1.0.1",
     "rollup-plugin-typescript2": "^0.25.2",
     "semantic-release": "^15.13.30",
     "shelljs": "^0.8.3",
@@ -137,6 +137,7 @@
     "travis-deploy-once": "^5.0.9",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
+    "tslib": "^1.10.0",
     "typescript": "^3.7.2"
   },
   "volta": {

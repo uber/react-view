@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig",
+  "exclude": ["src/__tests__"],
+  "include": ["src", "@types"],
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": false,
+    "rootDir": "src",
+    "outDir": "dist/lib"
+  }
+}

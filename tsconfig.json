@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "target": "es5",
+    "target": "es6",
     "lib": ["esnext", "dom"],
     "jsx": "react",
     "checkJs": false,
@@ -17,7 +17,7 @@
     "alwaysStrict": true /* Parse in strict mode and emit "use strict" for each source file. */,
 
     "sourceMap": true,
-    "declaration": true,
+    "declaration": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -30,8 +30,6 @@
     "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
     "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
 
-    "declarationDir": "dist/types",
-    "outDir": "dist/lib",
     "baseUrl": "./",
     "typeRoots": ["node_modules/@types"]
   },

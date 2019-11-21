@@ -22,7 +22,7 @@ const errorBoundary = (
   return ErrorBoundary;
 };
 
-const evalCode = (ast: babel.types.Node, scope: any, presets?: PluginItem) => {
+const evalCode = (ast: babel.types.Node, scope: any, presets?: PluginItem[]) => {
   const transformedCode = transformFromAstSync(ast as babel.types.Node, undefined, {
     presets: presets ? [presetReact, ...presets] : [presetReact],
     inputSourceMap: false as any,
@@ -43,7 +43,7 @@ const generateElement = (
   ast: babel.types.Node,
   scope: any,
   errorCallback: (error: Error) => void,
-  presets?: PluginItem
+  presets?: PluginItem[]
 ) => {
   return errorBoundary(evalCode(ast, scope, presets), errorCallback);
 };
@@ -54,7 +54,7 @@ const transpile = (
   scope: any,
   setOutput: (params: {component: React.ComponentClass | null}) => void,
   setError: (error: string | null) => void,
-  presets?: PluginItem
+  presets?: PluginItem[]
 ) => {
   try {
     const ast = transformations.reduce(
