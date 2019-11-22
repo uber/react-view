@@ -153,7 +153,7 @@ const Basic = () => {
         <b>useView</b> expects a configuration describing your component and returns a
         data-structure that nicely fits into multiple UI components such as Compiler, Error, Knobs,
         Editor and Action Buttons. That gives you the maximum flexibility since you can swap any of
-        these components for yours.
+        these components for your own.
       </P>
       <P>
         <b>

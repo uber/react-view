@@ -21,7 +21,8 @@ const TypescriptCodeOnly = () => {
       <P>
         We use babel to compile the code that user passes to the editor. By default, we apply only{' '}
         <a href="https://babeljs.io/docs/en/babel-preset-react">@babel/preset-react</a> but you can
-        import and use additional babel plugins. Do you want to suppot Flow instead? Add{' '}
+        import and use additional babel plugins. Do you want to support{' '}
+        <a href="https://flow.org/">Flow</a>? Add{' '}
         <a href="@babel/preset-flow">@babel/preset-flow</a> instead.
       </P>
       <P>

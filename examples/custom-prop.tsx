@@ -132,10 +132,13 @@ const StateHook = () => {
       <P>
         However, you can go much further. For example, our Base Web component library has this
         concept of <a href="https://baseweb.design/guides/understanding-overrides/">overrides</a>.
-        It's a fairly complicated prop that exists on each component and lets you customize every
+        It's a fairly complicated prop that exists on each component and lets you to customize every
         aspect of our components. So we have created a whole sub-playground to just better control
         the value of this single prop. Check the{' '}
-        <a href="https://baseweb.design/components/button/">Style Override</a> tab on this page.{' '}
+        <a href="https://baseweb.design/components/button/">
+          Style Overrides tab on the Button page
+        </a>
+        .{' '}
       </P>
       <P>
         <b>This is an advanced and very flexible API</b>. For example, you have to be familiar with{' '}

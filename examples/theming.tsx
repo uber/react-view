@@ -220,9 +220,11 @@ const Theming = () => {
       <ThemeEditor theme={params.providerValue || {}} set={params.actions.updateProvider} />
       <ActionButtons {...params.actions} />
       <P>
-        The <Inline>ThemeEditor</Inline> is a custom built UI. You can see the default values that
-        our <Inline>Button</Inline> component consumes. If you change any of those, the code
-        generator will wrap the component with the <Inline>ThemeProvider</Inline> component.
+        The <Inline>ThemeEditor</Inline> is a custom built UI and utilizes the{' '}
+        <Inline>provider</Inline> setting. You can see the default values that our{' '}
+        <Inline>Button</Inline> component consumes. If you change any of those, the code generator
+        will wrap the component with the <Inline>ThemeProvider</Inline> component and also add
+        related imports.
       </P>
       <P>
         <b>This is an advanced and very flexible API</b>. For example, you have to be familiar with{' '}

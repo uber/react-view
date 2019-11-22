@@ -99,9 +99,9 @@ const StateHook = () => {
       <Error {...params.errorProps} />
       <ActionButtons {...params.actions} />
       <P>
-        The code example now has its <b>own internal value state</b> (using{' '}
+        The example above has its <b>own internal value state</b> (using{' '}
         <a href="https://reactjs.org/docs/hooks-reference.html#usestate">React.useState</a>) and the
-        value knob is now translated into the initial internal state. Now you can interact with the
+        value knob is now translated into its initial internal state. Now you can interact with the
         component itself and <b>everything is still synchronized</b>. Moreover, the code snippet now
         also better demonstrates the real-world usage.
       </P>

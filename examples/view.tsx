@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Layout, H1, P, H2, Code} from './layout';
+import {Layout, H1, P, H2, Code, Inline} from './layout';
 
 import {Button, SIZE} from './showcase-components/button';
 
@@ -9,7 +9,7 @@ const ViewExample = () => (
   <Layout>
     <H1>View Component</H1>
     <P>
-      A single component that does it all. It is a tiny wrapper around the{' '}
+      <b>A single component that does it all</b>. It is a tiny wrapper around the{' '}
       <a href="/?path=/story/useview--basic">useView</a> hook and composes all UI components into
       one thing. This might be an ideal solution if you don't want to visually tweak anything and
       just get started as quick as possible.
@@ -103,6 +103,10 @@ export default () => <View
 />;
 `}
     </Code>
+    <P>
+      If you are building your own playground based on <Inline>useView</Inline>, having component
+      like this can be a good way how to share it with others.
+    </P>
   </Layout>
 );
 

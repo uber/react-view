@@ -74,12 +74,11 @@ export default () => {
         <b>They don't do anything.</b> Our compiler doesn't understand modules (we don't have a
         bundler in our flow). So feel free to add them if benefical for your users. All dependencies
         need to be passed through the <Inline>scope</Inline> prop (React is included automatically).
-        Compiler can also handle a naked JSX element or any JavaScript expression.
       </P>
       <H2>Accepted Code</H2>
       <P>
-        The code snippet can be also just a <b>React element</b> or class (but we don't really use
-        those anymore, do we?).
+        The compiler can also handle a <b>React element</b> or class (but we don't really use those
+        anymore, do we?).
       </P>
       <CompilerBox>
         <Compiler {...paramsEl.compilerProps} />
