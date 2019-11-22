@@ -22,5 +22,10 @@ addDecorator(story => (
   </StyletronProvider>
 ));
 
-// automatically import all files ending in *.stories.tsx
-configure(require.context('../examples', true, /\.stories\.tsx$/), module);
+const loaderFn = () => [
+  require('../examples/use-view.stories.tsx'),
+  require('../examples/view.stories.tsx'),
+  require('../examples/advanced.stories.tsx'),
+];
+
+configure(loaderFn, module);

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import template from '@babel/template';
 
-import {Layout} from './layout';
+import {Layout, H1, P, Inline} from './layout/';
 import {Rating} from './showcase-components/rating';
 
 import {
@@ -104,6 +104,24 @@ const StateHook = () => {
 
   return (
     <Layout>
+      <H1>Custom Props and Knobs</H1>
+      <P>
+        <b>React View supports many basic prop types out of the box</b>. Obviously, any prop value
+        can be always editted through an input (or a tiny code editor). That's no different than
+        writing an actual code. Boring.
+      </P>
+      <P>
+        <b>However, many prop types can be more accessible with a specilized UI</b>. For example,{' '}
+        <Inline>boolean</Inline> is always translated into a checkbox and <Inline>enum</Inline> into
+        an input radio or select (if we have too many options). Those are much nicer and faster to
+        use than inputs.
+      </P>
+      <P>
+        But what if you want to add something custom that we don't support yet? There is a{' '}
+        <Inline>customProp</Inline> API that you can use. You can control both the knob and also the
+        internal representation of the value. In this example, we add a pretty simple custom knob.
+        We want to represent the <Inline>value</Inline> with an input slider.
+      </P>
       <Compiler {...params.compilerProps} minHeight={62} placeholder={Placeholder} />
       <Error msg={params.errorProps.msg} isPopup />
       <Slider value={params.knobProps.state.value.value as number} set={params.knobProps.set} />
@@ -111,6 +129,20 @@ const StateHook = () => {
       <Editor {...params.editorProps} />
       <Error {...params.errorProps} />
       <ActionButtons {...params.actions} />
+      <P>
+        However, you can go much further. For example, our Base Web component library has this
+        concept of <a href="https://baseweb.design/guides/understanding-overrides/">overrides</a>.
+        It's a fairly complicated prop that exists on each component and lets you customize every
+        aspect of our components. So we have created a whole sub-playground to just better control
+        the value of this single prop. Check the{' '}
+        <a href="https://baseweb.design/components/button/">Style Override</a> tab on this page.{' '}
+      </P>
+      <P>
+        <b>This is an advanced and very flexible API</b>. For example, you have to be familiar with{' '}
+        the concept of <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a> to use
+        it. Check the source code of this page or main README for more details. We will add more
+        docs over time.
+      </P>
     </Layout>
   );
 };

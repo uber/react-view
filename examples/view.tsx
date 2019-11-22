@@ -9,9 +9,10 @@ const ViewExample = () => (
   <Layout>
     <H1>View Component</H1>
     <P>
-      A single component that does it all. It composes <code>useView</code> and all UI components
-      into one thing. This might be the ideal solution if you don't want to visually tweak anything
-      and get started as quick as possible.
+      A single component that does it all. It is a tiny wrapper around the{' '}
+      <a href="/?path=/story/useview--basic">useView</a> hook and composes all UI components into
+      one thing. This might be an ideal solution if you don't want to visually tweak anything and
+      just get started as quick as possible.
     </P>
     <View
       componentName="Button"

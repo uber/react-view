@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as t from '@babel/types';
 import traverse from '@babel/traverse';
-import {Layout, H3} from './layout';
+import {Layout, H1, H3, P, Inline} from './layout/';
 import {Button, SIZE} from './showcase-components/button';
 import ThemeProvider, {defaultTheme} from './showcase-components/theme-provider';
 
@@ -199,6 +199,19 @@ const Theming = () => {
 
   return (
     <Layout>
+      <H1>Theming aka the provider API</H1>
+      <P>
+        Component libraries often have some theming system. It usually uses the{' '}
+        <a href="https://reactjs.org/docs/context.html">React.Context</a> and Provider/Consumer
+        APIs. <b>How that works?</b> There is a list of global values (colors, fonts, spacing)
+        propagated through the context and each component consumes these values through a consumer
+        attached to that context.
+      </P>
+      <P>
+        Often, you can also override these context values by adding an aditional nested provider.
+        Since this is a way how components can be visually adjusted,{' '}
+        <b>React View has a support for this Consumer/Provider pattern</b>:
+      </P>
       <Compiler {...params.compilerProps} minHeight={62} placeholder={Placeholder} />
       <Error msg={params.errorProps.msg} isPopup />
       <Knobs {...params.knobProps} />
@@ -206,6 +219,17 @@ const Theming = () => {
       <Error {...params.errorProps} />
       <ThemeEditor theme={params.providerValue || {}} set={params.actions.updateProvider} />
       <ActionButtons {...params.actions} />
+      <P>
+        The <Inline>ThemeEditor</Inline> is a custom built UI. You can see the default values that
+        our <Inline>Button</Inline> component consumes. If you change any of those, the code
+        generator will wrap the component with the <Inline>ThemeProvider</Inline> component.
+      </P>
+      <P>
+        <b>This is an advanced and very flexible API</b>. For example, you have to be familiar with{' '}
+        the concept of <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a> to use
+        it. Check the source code of this page or main README for more details. We will add more
+        docs over time.
+      </P>
     </Layout>
   );
 };

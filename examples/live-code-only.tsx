@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Layout, H1, H2, P, Code, CompilerBox} from './layout/';
+import {Layout, H1, H2, P, Code, CompilerBox, Inline} from './layout/';
 
 // baseui imports
 import {Button, KIND, SIZE, SHAPE} from 'baseui/button';
@@ -12,8 +12,13 @@ const initialCode = `export default () => {
   );
 }`;
 
+const initialCodeEl = `<Button onClick={() => alert("click")}>Hello</Button>`;
+const initialCodeSum = `2 + 5`;
+
 const CodeOnly = () => {
   const params = useView({initialCode, scope: {Button, KIND, SIZE, SHAPE}});
+  const paramsEl = useView({initialCode: initialCodeEl, scope: {Button, KIND, SIZE, SHAPE}});
+  const paramsSum = useView({initialCode: initialCodeSum});
   return (
     <Layout>
       <H1>Live Code Editor</H1>
@@ -32,6 +37,11 @@ const CodeOnly = () => {
         you can also add the action buttons:
       </P>
       <ActionButtons {...params.actions} />
+      <P>
+        <b>This time you don't need to configure a list of props</b>. There are no knobs. However,
+        since no code is auto-generated, you should probably set the <Inline>intialCode</Inline> so
+        the user sees something besides an empty box.
+      </P>
       <H2>Usage</H2>
       <Code>
         {`import {
@@ -60,11 +70,33 @@ export default () => {
 }`}
       </Code>
       <P>
-        <b>Note:</b> All import statements are always taken out before compilation.{' '}
-        <b>They don't do anything.</b> So feel free to add them if benefical for your users. All
-        dependencies need to be passed through the <code>scope</code> prop (React is included
-        automatically). Compiler can also handle a naked JSX element or any JavaScript expression.
+        <b>Note:</b> All import statements in the editor are always taken out before compilation.{' '}
+        <b>They don't do anything.</b> Our compiler doesn't understand modules (we don't have a
+        bundler in our flow). So feel free to add them if benefical for your users. All dependencies
+        need to be passed through the <Inline>scope</Inline> prop (React is included automatically).
+        Compiler can also handle a naked JSX element or any JavaScript expression.
       </P>
+      <H2>Accepted Code</H2>
+      <P>
+        The code snippet can be also just a <b>React element</b> or class (but we don't really use
+        those anymore, do we?).
+      </P>
+      <CompilerBox>
+        <Compiler {...paramsEl.compilerProps} />
+      </CompilerBox>
+      <Editor {...paramsEl.editorProps} />
+      <Error {...paramsEl.errorProps} />
+      <P>
+        ...or pretty much anything that{' '}
+        <b>
+          could be executed after the <Inline>return</Inline> statement of JS function.
+        </b>
+      </P>
+      <CompilerBox>
+        <Compiler {...paramsSum.compilerProps} />
+      </CompilerBox>
+      <Editor {...paramsSum.editorProps} />
+      <Error {...paramsSum.errorProps} />
     </Layout>
   );
 };
