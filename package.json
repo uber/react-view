@@ -19,17 +19,20 @@
     "node": ">=10.0.0"
   },
   "scripts": {
+    "test": "jest",
+    "test:ci": "yarn test:unit --runInBand && yarn test:e2e:ci",
+    "test:e2e": "jest e2e --runInBand",
+    "test:e2e:ci": "start-server-and-test storybook http://localhost:6006 test:e2e",
+    "test:unit": "jest src",
     "prebuild": "rimraf dist",
     "build": "tsc --p tsconfig.lib.json && tsc --p tsconfig.es.json",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:prod": "npm run test -- --no-cache",
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "commit": "git-cz",
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "travis-deploy-once": "travis-deploy-once",
     "storybook": "start-storybook -p 6006",
+    "storybook-ci": "start-storybook --ci",
     "build-storybook": "build-storybook",
     "typecheck": "tsc"
   },
@@ -48,14 +51,14 @@
     "transform": {
       ".(ts|tsx)": "ts-jest"
     },
-    "testEnvironment": "node",
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
       "js",
       "json"
-    ]
+    ],
+    "preset": "jest-puppeteer"
   },
   "prettier": {
     "semi": true,
@@ -97,9 +100,12 @@
     "@types/babel__generator": "^7.6.0",
     "@types/babel__template": "^7.0.2",
     "@types/babel__traverse": "^7.0.7",
+    "@types/expect-puppeteer": "^3.3.3",
     "@types/jest": "^24.0.15",
+    "@types/jest-environment-puppeteer": "^4.3.1",
     "@types/lodash": "^4.14.144",
     "@types/node": "^12.0.8",
+    "@types/puppeteer": "^2.0.0",
     "@types/react-portal": "^4.0.2",
     "@types/styletron-engine-atomic": "^1.1.0",
     "@types/styletron-react": "^5.0.2",
@@ -113,10 +119,12 @@
     "husky": "^3.0.0",
     "jest": "^24.8.0",
     "jest-config": "^24.8.0",
+    "jest-puppeteer": "^4.3.0",
     "lint-staged": "^9.0.0",
     "lodash.camelcase": "^4.3.0",
     "prettier": "^1.14.3",
     "prompt": "^1.0.0",
+    "puppeteer": "^2.0.0",
     "react": "^16.11.0",
     "react-codesandboxer": "^3.1.5",
     "react-dom": "^16.11.0",
@@ -132,6 +140,7 @@
     "rollup-plugin-typescript2": "^0.25.2",
     "semantic-release": "^15.13.30",
     "shelljs": "^0.8.3",
+    "start-server-and-test": "^1.10.6",
     "styletron-engine-atomic": "^1.4.4",
     "styletron-react": "^5.2.5",
     "travis-deploy-once": "^5.0.9",
