@@ -78,7 +78,7 @@ const Editor: React.FC<TEditorProps> = ({
     >
       <style
         dangerouslySetInnerHTML={{
-          __html: `.npm__react-simple-code-editor__textarea { outline: none !important }`,
+          __html: `.npm__reactViewOnChange-simple-code-editor__textarea { outline: none !important }`,
         }}
       />
       <SimpleEditor

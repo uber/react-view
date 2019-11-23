@@ -13,7 +13,7 @@ export const parse = (code: string) =>
 
 // creates a call expression that synchronizes view state
 const getInstrumentOnChange = (what: string, into: string) =>
-  t.callExpression(t.identifier('__react_view_onChange'), [
+  t.callExpression(t.identifier('__reactViewOnChange'), [
     t.identifier(what),
     t.stringLiteral(into),
   ]);
@@ -44,7 +44,7 @@ const fnBodyAppend = (
 };
 
 // clean-up for react-live, removing all imports, exports and top level
-// variable declaration, add __react_view_onChange instrumentation when needed
+// variable declaration, add __reactViewOnChange instrumentation when needed
 export const transformBeforeCompilation = (
   ast: t.File,
   elementName: string,
@@ -71,7 +71,7 @@ export const transformBeforeCompilation = (
           path.remove();
         }
       },
-      // adds internal state instrumentation through __react_view_onChange callback
+      // adds internal state instrumentation through __reactViewOnChange callback
       JSXElement(path) {
         if (
           path.node.openingElement.type === 'JSXOpeningElement' &&

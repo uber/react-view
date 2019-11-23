@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 import * as React from 'react';
 import copy from 'copy-to-clipboard';
 import debounce from 'lodash/debounce';
@@ -79,7 +77,7 @@ const useView: TUseView = (config = {}) => {
   // this callback is secretely inserted into props marked with
   // "propHook" this way we can get notified when the internal
   // state of previewed component is changed by user
-  const __react_view_onChange = debounce(
+  const __reactViewOnChange = debounce(
     (propValue: TPropValue, propName: string) => {
       !hydrated && setHydrated(true);
       const newCode = getCode({
@@ -106,7 +104,7 @@ const useView: TUseView = (config = {}) => {
       ],
       scope: {
         ...scopeConfig,
-        __react_view_onChange,
+        __reactViewOnChange,
       },
     },
     knobProps: {

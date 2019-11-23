@@ -26,7 +26,7 @@ describe('transformBeforeCompilation', () => {
     ).toBe('() => <Input value="Hello" />');
   });
 
-  test('instrument a callback with __react_view_onChange', () => {
+  test('instrument a callback with __reactViewOnChange', () => {
     const source = '<Input onChange={e => foo()} />';
     expect(
       formatAstAndPrint(
@@ -45,12 +45,12 @@ describe('transformBeforeCompilation', () => {
     ).toBe(`<Input
   onChange={e => {
     foo();
-    __react_view_onChange(e.target.value, "value");
+    __reactViewOnChange(e.target.value, "value");
   }}
 />`);
   });
 
-  test('instrument a callback with __react_view_onChange (callback return a BlockStatement)', () => {
+  test('instrument a callback with __reactViewOnChange (callback return a BlockStatement)', () => {
     const source = '<Input onChange={e => { foo(); baz(); }} />';
     expect(
       formatAstAndPrint(
@@ -70,12 +70,12 @@ describe('transformBeforeCompilation', () => {
   onChange={e => {
     foo();
     baz();
-    __react_view_onChange(e.target.value, "value")
+    __reactViewOnChange(e.target.value, "value")
   }}
 />`);
   });
 
-  test('instrument a children callback with __react_view_onChange', () => {
+  test('instrument a children callback with __reactViewOnChange', () => {
     const source = '<Foo>{e => foo()}</Foo>';
     expect(
       formatAstAndPrint(
@@ -94,7 +94,7 @@ describe('transformBeforeCompilation', () => {
     ).toBe(`<Foo>
   {e => {
     foo();
-    __react_view_onChange(e.target.value, "value");
+    __reactViewOnChange(e.target.value, "value");
   }}
 </Foo>`);
   });
@@ -125,7 +125,7 @@ describe('transformBeforeCompilation', () => {
   <button
     onClick={e => {
       foo();
-      __react_view_onChange(e.target.value, "value");
+      __reactViewOnChange(e.target.value, "value");
     }}
   >
     Ha
@@ -161,7 +161,7 @@ describe('transformBeforeCompilation', () => {
     <button
       onClick={e => {
         foo();
-        __react_view_onChange(e.target.value, "value");
+        __reactViewOnChange(e.target.value, "value");
       }}
     >
       Ha
