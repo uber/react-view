@@ -21,8 +21,8 @@ const CodeOnly = () => {
     <Layout>
       <H1>Live Code Editor</H1>
       <P>
-        The useView hook can be also used as a live editor only (no prop knobs or code generation).
-        In this mode, it's very similar to{' '}
+        The useView hook can be also used as a live editor only (no prop knobs
+        or code generation). In this mode, it is very similar to{' '}
         <a href="https://github.com/FormidableLabs/react-live">react-live</a>.{' '}
       </P>
       <CompilerBox>
@@ -31,14 +31,15 @@ const CodeOnly = () => {
       <Editor {...params.editorProps} />
       <Error {...params.errorProps} />
       <P>
-        You can create your UI or re-use components from react-view (Editor, Error...). Optionally
-        you can also add the action buttons:
+        You can create your UI or re-use components from react-view (Editor,
+        Error...). Optionally you can also add the action buttons:
       </P>
       <ActionButtons {...params.actions} />
       <P>
-        <b>This time you don't need to configure a list of props</b>. There are no knobs. However,
-        since no code is auto-generated, you should probably set the <Inline>intialCode</Inline> so
-        the user sees something besides an empty box.
+        <b>This time you do not need to configure a list of props</b>. There are
+        no knobs. However, since no code is auto-generated, you should probably
+        set the <Inline>intialCode</Inline> so the user sees something besides
+        an empty box.
       </P>
       <H2>Usage</H2>
       <Code>
@@ -68,15 +69,17 @@ export default () => {
 }`}
       </Code>
       <P>
-        <b>Note:</b> All import statements in the editor are always taken out before compilation.{' '}
-        <b>They don't do anything.</b> Our compiler doesn't understand modules (we don't have a
-        bundler in our flow). So feel free to add them if benefical for your users. All dependencies
-        need to be passed through the <Inline>scope</Inline> prop (React is included automatically).
+        <b>Note:</b> All import statements in the editor are always taken out
+        before compilation. <b>They do not do anything.</b> Our compiler does
+        not understand modules (we do not have a bundler in our flow). So feel
+        free to add them if benefical for your users. All dependencies need to
+        be passed through the <Inline>scope</Inline> prop (React is included
+        automatically).
       </P>
       <H2>Accepted Code</H2>
       <P>
-        The compiler can also handle a <b>React element</b> or class (but we don't really use those
-        anymore, do we?).
+        The compiler can also handle a <b>React element</b> or class (but we do
+        not really use those anymore, do we?).
       </P>
       <CompilerBox>
         <Compiler {...paramsEl.compilerProps} />
@@ -86,7 +89,8 @@ export default () => {
       <P>
         ...or pretty much anything that{' '}
         <b>
-          could be executed after the <Inline>return</Inline> statement of JS function.
+          could be executed after the <Inline>return</Inline> statement of JS
+          function.
         </b>
       </P>
       <CompilerBox>

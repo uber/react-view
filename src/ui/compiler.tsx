@@ -22,15 +22,23 @@ const errorBoundary = (
   return ErrorBoundary;
 };
 
-const evalCode = (ast: babel.types.Node, scope: any, presets?: PluginItem[]) => {
-  const transformedCode = transformFromAstSync(ast as babel.types.Node, undefined, {
-    presets: presets ? [presetReact, ...presets] : [presetReact],
-    inputSourceMap: false as any,
-    sourceMaps: false,
-    // TS preset needs this and it doesn't seem to matter when TS preset
-    // is not used, so let's keep it here?
-    filename: 'file.tsx',
-  });
+const evalCode = (
+  ast: babel.types.Node,
+  scope: any,
+  presets?: PluginItem[]
+) => {
+  const transformedCode = transformFromAstSync(
+    ast as babel.types.Node,
+    undefined,
+    {
+      presets: presets ? [presetReact, ...presets] : [presetReact],
+      inputSourceMap: false as any,
+      sourceMaps: false,
+      // TS preset needs this and it doesn't seem to matter when TS preset
+      // is not used, so let's keep it here?
+      filename: 'file.tsx',
+    }
+  );
   const resultCode = transformedCode ? transformedCode.code : '';
   const scopeKeys = Object.keys(scope);
   const scopeValues = Object.values(scope);
@@ -110,10 +118,17 @@ const Compiler: React.FC<TCompilerProps> = ({
           flexWrap: 'wrap',
         }}
       >
-        {Element ? <Element /> : Placeholder ? <Placeholder height={minHeight || 32} /> : null}
+        {Element ? (
+          <Element />
+        ) : Placeholder ? (
+          <Placeholder height={minHeight || 32} />
+        ) : null}
       </div>
     </div>
   );
 };
 
-export default React.memo(Compiler, (prevProps, nextProps) => prevProps.code === nextProps.code);
+export default React.memo(
+  Compiler,
+  (prevProps, nextProps) => prevProps.code === nextProps.code
+);

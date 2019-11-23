@@ -26,11 +26,59 @@ type TBuildReactHook = (params: {
 
 const reactImport = template.ast(`import * as React from 'react';`);
 
-export const getAstPropsArray = (props: {[key: string]: TProp}, customProps: TCustomProps) => {
+export const getAstPropValue = (
+  prop: TProp,
+  name: string,
+  customProps: TCustomProps
+) => {
+  const value = prop.value;
+  switch (prop.type as PropTypes) {
+    case PropTypes.String:
+      return t.stringLiteral(String(value));
+    case PropTypes.Boolean:
+      return t.booleanLiteral(Boolean(value));
+    case PropTypes.Enum:
+      return t.identifier(String(value));
+    case PropTypes.Date:
+      return t.newExpression(
+        t.identifier('Date'),
+        value ? [t.stringLiteral(String(value))] : []
+      );
+    case PropTypes.Ref:
+      return null;
+    case PropTypes.Object:
+      return template.ast(`${value}`, {plugins: ['jsx']}) as any;
+    case PropTypes.Array:
+    case PropTypes.Number:
+    case PropTypes.Function:
+    case PropTypes.ReactNode:
+      const output = (template.ast(String(value), {plugins: ['jsx']}) as any)
+        .expression;
+      // we never expect that user would input a variable as the value
+      // treat it as a string instead
+      if (output.type === 'Identifier') {
+        return t.stringLiteral(output.name);
+      }
+      return output;
+    case PropTypes.Custom:
+      if (!customProps[name] || !customProps[name].generate) {
+        console.error(`Missing customProps.${name}.generate definition.`);
+      }
+      return customProps[name].generate(value);
+  }
+};
+
+export const getAstPropsArray = (
+  props: {[key: string]: TProp},
+  customProps: TCustomProps
+) => {
   return Object.entries(props).map(([name, prop]) => {
     const {value, stateful, defaultValue} = prop;
     if (stateful)
-      return t.jsxAttribute(t.jsxIdentifier(name), t.jsxExpressionContainer(t.identifier(name)));
+      return t.jsxAttribute(
+        t.jsxIdentifier(name),
+        t.jsxExpressionContainer(t.identifier(name))
+      );
     // When the `defaultValue` is set and `value` is the same as the `defaultValue`
     // we don't add it to the list of props.
     // It handles boolean props where `defaultValue` set to true,
@@ -52,46 +100,17 @@ export const getAstPropsArray = (props: {[key: string]: TProp}, customProps: TCu
     }
     return t.jsxAttribute(
       t.jsxIdentifier(name),
-      astValue.type === 'StringLiteral' ? astValue : t.jsxExpressionContainer(astValue)
+      astValue.type === 'StringLiteral'
+        ? astValue
+        : t.jsxExpressionContainer(astValue)
     );
   });
 };
 
-export const getAstPropValue = (prop: TProp, name: string, customProps: TCustomProps) => {
-  const value = prop.value;
-  switch (prop.type as PropTypes) {
-    case PropTypes.String:
-      return t.stringLiteral(String(value));
-    case PropTypes.Boolean:
-      return t.booleanLiteral(Boolean(value));
-    case PropTypes.Enum:
-      return t.identifier(String(value));
-    case PropTypes.Date:
-      return t.newExpression(t.identifier('Date'), value ? [t.stringLiteral(String(value))] : []);
-    case PropTypes.Ref:
-      return null;
-    case PropTypes.Object:
-      return template.ast(`${value}`, {plugins: ['jsx']}) as any;
-    case PropTypes.Array:
-    case PropTypes.Number:
-    case PropTypes.Function:
-    case PropTypes.ReactNode:
-      const output = (template.ast(String(value), {plugins: ['jsx']}) as any).expression;
-      // we never expect that user would input a variable as the value
-      // treat it as a string instead
-      if (output.type === 'Identifier') {
-        return t.stringLiteral(output.name);
-      }
-      return output;
-    case PropTypes.Custom:
-      if (!customProps[name] || !customProps[name].generate) {
-        console.error(`Missing customProps.${name}.generate definition.`);
-      }
-      return customProps[name].generate(value);
-  }
-};
-
-export const getAstReactHooks = (props: {[key: string]: TProp}, customProps: TCustomProps) => {
+export const getAstReactHooks = (
+  props: {[key: string]: TProp},
+  customProps: TCustomProps
+) => {
   const hooks: t.ExpressionStatement[] = [];
   const buildReactHook = template(
     `const [%%name%%, %%setName%%] = React.useState(%%value%%);`
@@ -110,10 +129,16 @@ export const getAstReactHooks = (props: {[key: string]: TProp}, customProps: TCu
   return hooks;
 };
 
-export const getAstImport = (identifiers: string[], source: string, defaultIdentifier?: string) => {
+export const getAstImport = (
+  identifiers: string[],
+  source: string,
+  defaultIdentifier?: string
+) => {
   return t.importDeclaration(
     [
-      ...(defaultIdentifier ? [t.importDefaultSpecifier(t.identifier(defaultIdentifier))] : []),
+      ...(defaultIdentifier
+        ? [t.importDefaultSpecifier(t.identifier(defaultIdentifier))]
+        : []),
       ...identifiers.map(identifier =>
         t.importSpecifier(t.identifier(identifier), t.identifier(identifier))
       ),
@@ -140,8 +165,11 @@ export const getAstJsxElement = (
   );
 };
 
-const addToImportList = (importList: TImportsConfig, imports: TImportsConfig) => {
-  for (let [importFrom, importNames] of Object.entries(imports)) {
+const addToImportList = (
+  importList: TImportsConfig,
+  imports: TImportsConfig
+) => {
+  for (const [importFrom, importNames] of Object.entries(imports)) {
     if (!importList.hasOwnProperty(importFrom)) {
       importList[importFrom] = {
         named: [],
@@ -156,7 +184,9 @@ const addToImportList = (importList: TImportsConfig, imports: TImportsConfig) =>
         importList[importFrom]['named'] = [];
       }
       importList[importFrom].named = [
-        ...new Set((importList[importFrom].named as string[]).concat(importNames.named)),
+        ...new Set(
+          (importList[importFrom].named as string[]).concat(importNames.named)
+        ),
       ];
     }
   }
@@ -173,7 +203,12 @@ export const getAstImports = (
   // prop level imports (typically enums related) that are displayed
   // only when the prop is being used
   Object.values(props).forEach(prop => {
-    if (prop.imports && prop.value && prop.value !== '' && prop.value !== prop.defaultValue) {
+    if (
+      prop.imports &&
+      prop.value &&
+      prop.value !== '' &&
+      prop.value !== prop.defaultValue
+    ) {
       addToImportList(importList, prop.imports);
     }
   });
@@ -204,7 +239,11 @@ export const getAst = (
   return t.file(
     t.program([
       reactImport,
-      ...getAstImports(importsConfig, providerValue ? provider.imports : {}, props),
+      ...getAstImports(
+        importsConfig,
+        providerValue ? provider.imports : {},
+        props
+      ),
       buildExport({
         body: [
           ...getAstReactHooks(restProps, customProps),
@@ -214,7 +253,9 @@ export const getAst = (
               getAstJsxElement(
                 componentName,
                 getAstPropsArray(restProps, customProps),
-                children && children.value ? getChildrenAst(String(children.value)) : []
+                children && children.value
+                  ? getChildrenAst(String(children.value))
+                  : []
               )
             )
           ),
@@ -271,6 +312,13 @@ export const getCode = ({
   if (Object.keys(props).length === 0) {
     return '';
   }
-  const ast = getAst(props, componentName, provider, providerValue, importsConfig, customProps);
+  const ast = getAst(
+    props,
+    componentName,
+    provider,
+    providerValue,
+    importsConfig,
+    customProps
+  );
   return formatAstAndPrint(ast);
 };

@@ -3,7 +3,9 @@ import * as t from '@babel/types';
 import traverse from '@babel/traverse';
 import {Layout, H1, H3, P, Inline} from './layout/';
 import {Button, SIZE} from './showcase-components/button';
-import ThemeProvider, {defaultTheme} from './showcase-components/theme-provider';
+import ThemeProvider, {
+  defaultTheme,
+} from './showcase-components/theme-provider';
 
 import {
   useView,
@@ -31,7 +33,42 @@ type TColorInputProps = {
   globalSet: (color: string) => void;
 };
 
-const ColorInput: React.FC<TColorInputProps> = ({themeKey, globalSet, globalColor}) => {
+export const getActiveTheme = (
+  values: {[key: string]: string},
+  initialValues: {[key: string]: string}
+) => {
+  const activeValues: {[key: string]: string} = {};
+  Object.keys(initialValues).forEach(key => {
+    activeValues[key] = initialValues[key];
+    if (values && values[key]) {
+      activeValues[key] = values[key];
+    }
+  });
+  return activeValues;
+};
+
+export const getThemeDiff = (
+  values: {[key: string]: string},
+  initialValues: {[key: string]: string}
+) => {
+  const diff: {[key: string]: string} = {};
+  Object.keys(values).forEach(key => {
+    if (
+      initialValues[key] &&
+      values[key] &&
+      initialValues[key] !== values[key]
+    ) {
+      diff[key] = values[key];
+    }
+  });
+  return diff;
+};
+
+const ColorInput: React.FC<TColorInputProps> = ({
+  themeKey,
+  globalSet,
+  globalColor,
+}) => {
   const [color, setColor] = useValueDebounce<string>(globalColor, globalSet);
   return (
     <label
@@ -145,7 +182,10 @@ export const provider = {
           t.jsxExpressionContainer(
             t.objectExpression(
               Object.entries(value).map(([name, value]) =>
-                t.objectProperty(t.identifier(name), t.stringLiteral(value as string))
+                t.objectProperty(
+                  t.identifier(name),
+                  t.stringLiteral(value as string)
+                )
               )
             )
           )
@@ -202,65 +242,48 @@ const Theming = () => {
       <H1>Theming aka the provider API</H1>
       <P>
         Component libraries often have some theming system. It usually uses the{' '}
-        <a href="https://reactjs.org/docs/context.html">React.Context</a> and Provider/Consumer
-        APIs. <b>How that works?</b> There is a list of global values (colors, fonts, spacing)
-        propagated through the context and each component consumes these values through a consumer
-        attached to that context.
+        <a href="https://reactjs.org/docs/context.html">React.Context</a> and
+        Provider/Consumer APIs. <b>How that works?</b> There is a list of global
+        values (colors, fonts, spacing) propagated through the context and each
+        component consumes these values through a consumer attached to that
+        context.
       </P>
       <P>
-        Often, you can also override these context values by adding an aditional nested provider.
-        Since this is a way how components can be visually adjusted,{' '}
+        Often, you can also override these context values by adding an aditional
+        nested provider. Since this is a way how components can be visually
+        adjusted,{' '}
         <b>React View has a support for this Consumer/Provider pattern</b>:
       </P>
-      <Compiler {...params.compilerProps} minHeight={62} placeholder={Placeholder} />
+      <Compiler
+        {...params.compilerProps}
+        minHeight={62}
+        placeholder={Placeholder}
+      />
       <Error msg={params.errorProps.msg} isPopup />
       <Knobs {...params.knobProps} />
       <Editor {...params.editorProps} />
       <Error {...params.errorProps} />
-      <ThemeEditor theme={params.providerValue || {}} set={params.actions.updateProvider} />
+      <ThemeEditor
+        theme={params.providerValue || {}}
+        set={params.actions.updateProvider}
+      />
       <ActionButtons {...params.actions} />
       <P>
         The <Inline>ThemeEditor</Inline> is a custom built UI and utilizes the{' '}
-        <Inline>provider</Inline> setting. You can see the default values that our{' '}
-        <Inline>Button</Inline> component consumes. If you change any of those, the code generator
-        will wrap the component with the <Inline>ThemeProvider</Inline> component and also add
-        related imports.
+        <Inline>provider</Inline> setting. You can see the default values that
+        our <Inline>Button</Inline> component consumes. If you change any of
+        those, the code generator will wrap the component with the{' '}
+        <Inline>ThemeProvider</Inline> component and also add related imports.
       </P>
       <P>
-        <b>This is an advanced and very flexible API</b>. For example, you have to be familiar with{' '}
-        the concept of <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a> to use
-        it. Check the source code of this page or main README for more details. We will add more
-        docs over time.
+        <b>This is an advanced and very flexible API</b>. For example, you have
+        to be familiar with the concept of{' '}
+        <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a> to
+        use it. Check the source code of this page or main README for more
+        details. We will add more docs over time.
       </P>
     </Layout>
   );
-};
-
-export const getActiveTheme = (
-  values: {[key: string]: string},
-  initialValues: {[key: string]: string}
-) => {
-  const activeValues: {[key: string]: string} = {};
-  Object.keys(initialValues).forEach(key => {
-    activeValues[key] = initialValues[key];
-    if (values && values[key]) {
-      activeValues[key] = values[key];
-    }
-  });
-  return activeValues;
-};
-
-export const getThemeDiff = (
-  values: {[key: string]: string},
-  initialValues: {[key: string]: string}
-) => {
-  const diff: {[key: string]: string} = {};
-  Object.keys(values).forEach(key => {
-    if (initialValues[key] && values[key] && initialValues[key] !== values[key]) {
-      diff[key] = values[key];
-    }
-  });
-  return diff;
 };
 
 export default Theming;

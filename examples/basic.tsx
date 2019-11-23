@@ -60,21 +60,28 @@ const Basic = () => {
     <Layout>
       <H1>Basic example of useView</H1>
       <P>
-        This is our main <a href="https://reactjs.org/docs/hooks-intro.html">hook</a> based API.
-        React View strictly separates the UI components from everything else so you can completely
-        customize every aspect of the playground. If you want to start as quick as possible, try the{' '}
+        This is our main{' '}
+        <a href="https://reactjs.org/docs/hooks-intro.html">hook</a> based API.
+        React View strictly separates the UI components from everything else so
+        you can completely customize every aspect of the playground. If you want
+        to start as quick as possible, try the{' '}
         <a href="/?path=/story/view--view">View component</a> instead.
       </P>
-      <Compiler {...params.compilerProps} minHeight={62} placeholder={Placeholder} />
+      <Compiler
+        {...params.compilerProps}
+        minHeight={62}
+        placeholder={Placeholder}
+      />
       <Error msg={params.errorProps.msg} isPopup />
       <Knobs {...params.knobProps} />
       <Editor {...params.editorProps} />
       <Error {...params.errorProps} />
       <ActionButtons {...params.actions} />
       <P>
-        This is a basic example that demonstrates all basic features of React View. At the top, you
-        can see the <b>rendered component</b>, followed by the <b>middle section with knobs</b> that
-        lets you explore all component props, the <b>edittable code snippet</b> and finally some{' '}
+        This is a basic example that demonstrates all basic features of React
+        View. At the top, you can see the <b>rendered component</b>, followed by
+        the <b>middle section with knobs</b> that lets you explore all component
+        props, the <b>edittable code snippet</b> and finally some{' '}
         <b>action buttons</b>.
       </P>
       <H2>Usage</H2>
@@ -150,23 +157,27 @@ const Basic = () => {
 `}
       </Code>
       <P>
-        <b>useView</b> expects a configuration describing your component and returns a
-        data-structure that nicely fits into multiple UI components such as Compiler, Error, Knobs,
-        Editor and Action Buttons. That gives you the maximum flexibility since you can swap any of
-        these components for your own.
+        <b>useView</b> expects a configuration describing your component and
+        returns a data-structure that nicely fits into multiple UI components
+        such as Compiler, Error, Knobs, Editor and Action Buttons. That gives
+        you the maximum flexibility since you can swap any of these components
+        for your own.
       </P>
       <P>
         <b>
-          Note that you never have to specify the code snippet since the code is auto-generated
-          based on the rest of useView configuration and internal state.
+          Note that you never have to specify the code snippet since the code is
+          auto-generated based on the rest of useView configuration and internal
+          state.
         </b>
       </P>
       <P>
-        The biggest part of configuration is a list of <Inline>props</Inline>. You also have to
-        explicitely define the <Inline>scope</Inline> (in this case, importing the Button and
-        passing it through). On the other hand, the <Inline>imports</Inline> setting is completely
-        optional. The imports appear at the top of auto-generated code. That can be nice for your
-        users since they will be always able to copy&paste a fully working example.{' '}
+        The biggest part of configuration is a list of <Inline>props</Inline>.
+        You also have to explicitely define the <Inline>scope</Inline> (in this
+        case, importing the Button and passing it through). On the other hand,
+        the <Inline>imports</Inline> setting is completely optional. The imports
+        appear at the top of auto-generated code. That can be nice for your
+        users since they will be always able to copy&paste a fully working
+        example.{' '}
       </P>
     </Layout>
   );

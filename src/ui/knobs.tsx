@@ -35,8 +35,12 @@ const KnobColumn: React.FC<TKnobsProps & {knobNames: string[]}> = ({
 
 const Knobs: React.FC<TKnobsProps> = ({state, set, error}) => {
   const [showAllKnobs, setShowAllKnobs] = React.useState(false);
-  const allKnobNames = Object.keys(state).filter(name => state[name].type !== PropTypes.Custom);
-  const filteredKnobNames = allKnobNames.filter((name: string) => state[name].hidden !== true);
+  const allKnobNames = Object.keys(state).filter(
+    name => state[name].type !== PropTypes.Custom
+  );
+  const filteredKnobNames = allKnobNames.filter(
+    (name: string) => state[name].hidden !== true
+  );
   const knobNames = showAllKnobs ? allKnobNames : filteredKnobNames;
   const firstGroup = knobNames.slice(0, Math.round(knobNames.length / 2));
   const secondGroup = knobNames.slice(Math.round(knobNames.length / 2));
@@ -58,8 +62,18 @@ const Knobs: React.FC<TKnobsProps> = ({state, set, error}) => {
         }}
       />
       <div className="react-view-columns">
-        <KnobColumn state={state} knobNames={firstGroup} set={set} error={error} />
-        <KnobColumn state={state} knobNames={secondGroup} set={set} error={error} />
+        <KnobColumn
+          state={state}
+          knobNames={firstGroup}
+          set={set}
+          error={error}
+        />
+        <KnobColumn
+          state={state}
+          knobNames={secondGroup}
+          set={set}
+          error={error}
+        />
       </div>
       {filteredKnobNames.length !== allKnobNames.length && (
         <button onClick={() => setShowAllKnobs(!showAllKnobs)}>

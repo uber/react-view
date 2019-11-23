@@ -5,6 +5,7 @@
   "compilerOptions": {
     "module": "esnext",
     "declaration": true,
+    "noEmit": false,
     "declarationDir": "dist/types",
     "rootDir": "src",
     "outDir": "dist/es"

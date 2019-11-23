@@ -5,6 +5,7 @@
     "lib": ["esnext", "dom"],
     "jsx": "react",
     "checkJs": false,
+    "noEmit": true,
 
     /* Strict Type-Checking Options */
     "strict": true /* Enable all strict type-checking options. */,

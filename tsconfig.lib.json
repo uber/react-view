@@ -5,6 +5,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "declaration": false,
+    "noEmit": false,
     "rootDir": "src",
     "outDir": "dist/lib"
   }

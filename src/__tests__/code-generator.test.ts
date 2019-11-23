@@ -356,79 +356,81 @@ describe('getAstReactHooks', () => {
 
 describe('getAstImport', () => {
   test('return multiple named imports', () => {
-    expect(generate(getAstImport(['Button', 'KIND'], 'baseui/button') as any).code).toBe(
-      'import { Button, KIND } from "baseui/button";'
-    );
+    expect(
+      generate(getAstImport(['Button', 'KIND'], 'baseui/button') as any).code
+    ).toBe('import { Button, KIND } from "baseui/button";');
   });
 });
 
 describe('getAstImports', () => {
   test('return multiple named and default imports', () => {
     expect(
-      generate(t.program(
-        //@ts-ignore
-        getAstImports(
-          {
-            'baseui/tabs': {
-              named: ['Tab'],
-              default: 'Root',
-            },
-            'react-motion': {
-              named: ['Motion'],
-            },
-          },
-          {
-            'my-provider': {
-              named: ['ThemeProvider'],
-            },
-          },
-          {
-            a: {
-              value: true,
-              type: PropTypes.Boolean,
-              description: '',
-              imports: {
-                'baseui/tabs': {
-                  named: ['Tab', 'Tabs'],
-                  default: 'OverrideRoot',
-                },
+      generate(
+        t.program(
+          //@ts-ignore
+          getAstImports(
+            {
+              'baseui/tabs': {
+                named: ['Tab'],
+                default: 'Root',
+              },
+              'react-motion': {
+                named: ['Motion'],
               },
             },
-            b: {
-              value: undefined,
-              type: PropTypes.String,
-              description: '',
-              imports: {
-                'baseui/button': {
-                  named: ['Button'],
-                },
+            {
+              'my-provider': {
+                named: ['ThemeProvider'],
               },
             },
-            c: {
-              value: 'SIZE.default',
-              defaultValue: 'SIZE.default',
-              type: PropTypes.Enum,
-              description: '',
-              imports: {
-                'baseui/button': {
-                  named: ['SIZE'],
+            {
+              a: {
+                value: true,
+                type: PropTypes.Boolean,
+                description: '',
+                imports: {
+                  'baseui/tabs': {
+                    named: ['Tab', 'Tabs'],
+                    default: 'OverrideRoot',
+                  },
                 },
               },
-            },
-            d: {
-              value: 'ORIENTATION.vertical',
-              defaultValue: 'ORIENTATION.horizontal',
-              type: PropTypes.Enum,
-              description: '',
-              imports: {
-                'baseui/tabs': {
-                  named: ['ORIENTATION'],
+              b: {
+                value: undefined,
+                type: PropTypes.String,
+                description: '',
+                imports: {
+                  'baseui/button': {
+                    named: ['Button'],
+                  },
                 },
               },
-            },
-          }
-        )
-      ) as any).code
+              c: {
+                value: 'SIZE.default',
+                defaultValue: 'SIZE.default',
+                type: PropTypes.Enum,
+                description: '',
+                imports: {
+                  'baseui/button': {
+                    named: ['SIZE'],
+                  },
+                },
+              },
+              d: {
+                value: 'ORIENTATION.vertical',
+                defaultValue: 'ORIENTATION.horizontal',
+                type: PropTypes.Enum,
+                description: '',
+                imports: {
+                  'baseui/tabs': {
+                    named: ['ORIENTATION'],
+                  },
+                },
+              },
+            }
+          )
+        ) as any
+      ).code
     ).toBe(`import OverrideRoot, { Tab, Tabs, ORIENTATION } from "baseui/tabs";
 import { Motion } from "react-motion";
 import { ThemeProvider } from "my-provider";`);

@@ -1,6 +1,12 @@
 import * as React from 'react';
 import {ThemeContext} from './theme-provider';
 
+export const SIZE = {
+  default: 'default',
+  compact: 'compact',
+  large: 'large',
+};
+
 type TButtonProps = {
   children: React.ReactNode;
   onClick: (e: any) => void;
@@ -8,13 +14,12 @@ type TButtonProps = {
   disabled: boolean;
 };
 
-export const SIZE = {
-  default: 'default',
-  compact: 'compact',
-  large: 'large',
-};
-
-export const Button: React.FC<TButtonProps> = ({children, onClick, size, disabled}) => {
+export const Button: React.FC<TButtonProps> = ({
+  children,
+  onClick,
+  size,
+  disabled,
+}) => {
   const colors = React.useContext(ThemeContext);
   const getSizeStyle = (size: keyof typeof SIZE) => {
     switch (size) {

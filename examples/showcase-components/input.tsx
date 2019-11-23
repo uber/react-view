@@ -1,5 +1,11 @@
 import * as React from 'react';
 
+export const SIZE = {
+  default: 'default',
+  compact: 'compact',
+  large: 'large',
+};
+
 type TInputProps = {
   value: string;
   onChange: (e: any) => void;
@@ -7,13 +13,12 @@ type TInputProps = {
   disabled: boolean;
 };
 
-export const SIZE = {
-  default: 'default',
-  compact: 'compact',
-  large: 'large',
-};
-
-export const Input: React.FC<TInputProps> = ({value, onChange, size, disabled}) => {
+export const Input: React.FC<TInputProps> = ({
+  value,
+  onChange,
+  size,
+  disabled,
+}) => {
   const getSizeStyle = (size: keyof typeof SIZE) => {
     switch (size) {
       case SIZE.compact:
@@ -42,5 +47,12 @@ export const Input: React.FC<TInputProps> = ({value, onChange, size, disabled}) 
     borderStyle: 'solid',
     borderColor: '#000',
   };
-  return <input value={value} onChange={onChange} style={inputStyle} disabled={disabled} />;
+  return (
+    <input
+      value={value}
+      onChange={onChange}
+      style={inputStyle}
+      disabled={disabled}
+    />
+  );
 };

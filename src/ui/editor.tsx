@@ -20,18 +20,23 @@ const highlightCode = ({
   transformToken?: TTransformToken;
   language?: TEditorLanguage;
 }) => (
-  <Highlight Prism={Prism} code={code} theme={theme} language={language || 'jsx'}>
+  <Highlight
+    Prism={Prism}
+    code={code}
+    theme={theme}
+    language={language || 'jsx'}
+  >
     {({tokens, getLineProps, getTokenProps}) => (
       <React.Fragment>
         {tokens.map((line, i) => (
-          <div {...getLineProps({line, key: i})}>
+          <div key={i} {...getLineProps({line, key: i})}>
             {line.map((token, key) => {
               const tokenProps = getTokenProps({token, key});
 
               if (transformToken) {
                 return transformToken(tokenProps);
               }
-              return <span {...tokenProps} />;
+              return <span key={key} {...tokenProps} />;
             })}
           </div>
         ))}
@@ -79,7 +84,9 @@ const Editor: React.FC<TEditorProps> = ({
       <SimpleEditor
         value={code || ''}
         placeholder={placeholder}
-        highlight={code => highlightCode({code, theme: editorTheme, transformToken, language})}
+        highlight={code =>
+          highlightCode({code, theme: editorTheme, transformToken, language})
+        }
         onValueChange={code => setCode(code)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}

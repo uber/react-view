@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/camelcase */
+
 import * as React from 'react';
 import copy from 'copy-to-clipboard';
 import debounce from 'lodash/debounce';
@@ -77,26 +79,30 @@ const useView: TUseView = (config = {}) => {
   // this callback is secretely inserted into props marked with
   // "propHook" this way we can get notified when the internal
   // state of previewed component is changed by user
-  const __react_view_onChange = debounce((propValue: TPropValue, propName: string) => {
-    !hydrated && setHydrated(true);
-    const newCode = getCode({
-      props: buildPropsObj(state.props, {[propName]: propValue}),
-      componentName,
-      provider,
-      providerValue: state.providerValue,
-      importsConfig,
-      customProps,
-    });
-    updatePropsAndCodeNoRecompile(dispatch, newCode, propName, propValue);
-    onUpdate({code: newCode});
-  }, 200);
+  const __react_view_onChange = debounce(
+    (propValue: TPropValue, propName: string) => {
+      !hydrated && setHydrated(true);
+      const newCode = getCode({
+        props: buildPropsObj(state.props, {[propName]: propValue}),
+        componentName,
+        provider,
+        providerValue: state.providerValue,
+        importsConfig,
+        customProps,
+      });
+      updatePropsAndCodeNoRecompile(dispatch, newCode, propName, propValue);
+      onUpdate({code: newCode});
+    },
+    200
+  );
 
   return {
     compilerProps: {
       code: state.code,
       setError: (msg: string | null) => setError({where: '__compiler', msg}),
       transformations: [
-        (ast: t.File) => transformBeforeCompilation(ast, componentName, propsConfig),
+        (ast: t.File) =>
+          transformBeforeCompilation(ast, componentName, propsConfig),
       ],
       scope: {
         ...scopeConfig,

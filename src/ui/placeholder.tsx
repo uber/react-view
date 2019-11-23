@@ -69,7 +69,13 @@ const Placeholder: React.FC<{height: number}> = ({height}) => (
   `,
       }}
     />
-    <div style={{height: `${height < 32 ? 32 : height}px`, display: 'flex', alignItems: 'center'}}>
+    <div
+      style={{
+        height: `${height < 32 ? 32 : height}px`,
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
       <div className="react-view-loader">Loading...</div>
     </div>
   </React.Fragment>

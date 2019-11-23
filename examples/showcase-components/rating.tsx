@@ -55,7 +55,11 @@ const Heart: React.FC<THeartProps> = ({active, setHovered, index, onClick}) => {
 export const Rating: React.FC<TRatingProps> = ({value, onChange}) => {
   const [hovered, setHovered] = React.useState(0);
   return (
-    <ul role="radiogroup" tabIndex={0} style={{display: 'flex', flexWrap: 'nowrap', padding: 0}}>
+    <ul
+      role="radiogroup"
+      tabIndex={0}
+      style={{display: 'flex', flexWrap: 'nowrap', padding: 0}}
+    >
       {[...Array(5).keys()].map(index => (
         <Heart
           key={index}

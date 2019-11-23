@@ -1,4 +1,3 @@
-// import Router from 'next/router';
 import {parseCode} from './ast';
 import {Action, PropTypes} from './const';
 import {TProp, TDispatch, TPropValue, TCustomProps} from './types';
@@ -10,7 +9,11 @@ export const updateCode = (dispatch: TDispatch, newCode: string) => {
   });
 };
 
-export const updateCodeAndProvider = (dispatch: TDispatch, newCode: string, providerValue: any) => {
+export const updateCodeAndProvider = (
+  dispatch: TDispatch,
+  newCode: string,
+  providerValue: any
+) => {
   dispatch({
     type: Action.UpdateCodeAndProvider,
     payload: {
@@ -29,14 +32,23 @@ export const updateAll = (
   customProps?: TCustomProps
 ) => {
   const propValues: {[key: string]: TPropValue} = {};
-  const {parsedProps, parsedProvider} = parseCode(newCode, componentName, parseProvider);
+  const {parsedProps, parsedProvider} = parseCode(
+    newCode,
+    componentName,
+    parseProvider
+  );
   Object.keys(propsConfig).forEach(name => {
     propValues[name] = propsConfig[name].value;
     if (customProps && customProps[name] && customProps[name].parse) {
       // custom prop parser
-      propValues[name] = customProps[name].parse(parsedProps[name], propsConfig);
+      propValues[name] = customProps[name].parse(
+        parsedProps[name],
+        propsConfig
+      );
     } else if (propsConfig[name].type === PropTypes.Date) {
-      const match = parsedProps[name].match(/^new\s*Date\(\s*"([0-9-T:.Z]+)"\s*\)$/);
+      const match = parsedProps[name].match(
+        /^new\s*Date\(\s*"([0-9-T:.Z]+)"\s*\)$/
+      );
       if (match) {
         propValues[name] = match[1];
       } else {
@@ -86,7 +98,11 @@ export const updatePropsAndCode = (
   });
 };
 
-export const updateProps = (dispatch: TDispatch, propName: string, propValue: TPropValue) => {
+export const updateProps = (
+  dispatch: TDispatch,
+  propName: string,
+  propValue: TPropValue
+) => {
   dispatch({
     type: Action.UpdateProps,
     payload: {[propName]: propValue},

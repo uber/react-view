@@ -21,12 +21,13 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc --p tsconfig.lib.json && tsc --p tsconfig.es.json",
+    "lint": "eslint '{examples,e2e,src}/**/*.{js,ts,tsx}'",
     "prebuild": "rimraf dist",
     "storybook": "start-storybook -p 6006",
     "storybook:ci": "start-storybook --ci -p 6006",
     "storybook:static": "build-storybook",
-    "test": "tsc && jest",
-    "test:ci": "tsc && yarn test:unit --runInBand && yarn test:e2e:ci",
+    "test": "tsc && yarn lint && jest",
+    "test:ci": "tsc && yarn lint && yarn test:unit --runInBand && yarn test:e2e:ci",
     "test:e2e": "jest e2e --runInBand",
     "test:e2e:ci": "start-server-and-test storybook:ci http://localhost:6006 test:e2e",
     "test:unit": "jest src",
@@ -44,12 +45,6 @@
       "json"
     ],
     "preset": "jest-puppeteer"
-  },
-  "prettier": {
-    "semi": true,
-    "singleQuote": true,
-    "bracketSpacing": false,
-    "trailingComma": "es5"
   },
   "dependencies": {
     "@babel/code-frame": "^7.5.5",
@@ -82,8 +77,14 @@
     "@types/puppeteer": "^2.0.0",
     "@types/react": "^16.9.12",
     "@types/react-dom": "^16.9.4",
+    "@typescript-eslint/eslint-plugin": "^2.8.0",
+    "@typescript-eslint/parser": "^2.8.0",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
+    "eslint": "^6.7.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
     "jest": "^24.8.0",
     "jest-puppeteer": "^4.3.0",
     "prettier": "^1.14.3",

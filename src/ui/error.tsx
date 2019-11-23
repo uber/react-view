@@ -9,7 +9,11 @@ const PopupError: React.FC<{enabled: boolean; children: React.ReactNode}> = ({
 }) => {
   if (!enabled) return <React.Fragment>{children}</React.Fragment>;
   return (
-    <Popover isOpen={enabled} position={'bottom'} content={<div>{children}</div>}>
+    <Popover
+      isOpen={enabled}
+      position={'bottom'}
+      content={<div>{children}</div>}
+    >
       <div />
     </Popover>
   );

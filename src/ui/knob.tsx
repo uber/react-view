@@ -23,7 +23,13 @@ const getTooltip = (description: string, type: string, name: string) => (
 
 const Spacing: React.FC<{children: React.ReactNode}> = ({children}) => {
   return (
-    <div style={{margin: '10px 0px', fontFamily: "'Helvetica Neue', Arial", fontSize: '14px'}}>
+    <div
+      style={{
+        margin: '10px 0px',
+        fontFamily: "'Helvetica Neue', Arial",
+        fontSize: '14px',
+      }}
+    >
       {children}
     </div>
   );
@@ -35,7 +41,11 @@ const Label: React.FC<{
 }> = ({children, tooltip}) => {
   const [hoverRef, isHover] = useHover();
   return (
-    <Popover isOpen={Boolean(isHover)} position={'top'} content={<div>{tooltip}</div>}>
+    <Popover
+      isOpen={Boolean(isHover)}
+      position={'top'}
+      content={<div>{tooltip}</div>}
+    >
       <label
         ref={hoverRef as any}
         style={{
@@ -57,7 +67,11 @@ const BooleanKnob: React.FC<{
 }> = ({tooltip, name, val, globalSet}) => {
   const [hoverRef, isHover] = useHover();
   return (
-    <Popover isOpen={Boolean(isHover)} position={'top'} content={<div>{tooltip}</div>}>
+    <Popover
+      isOpen={Boolean(isHover)}
+      position={'top'}
+      content={<div>{tooltip}</div>}
+    >
       <div
         ref={hoverRef as any}
         style={{
@@ -113,6 +127,7 @@ const Knob: React.SFC<{
           <a
             href="https://reactjs.org/docs/refs-and-the-dom.html"
             target="_blank"
+            rel="noopener noreferrer"
             style={{
               fontSize: '14px',
               display: 'block',
@@ -186,7 +201,10 @@ const Knob: React.SFC<{
               }}
             >
               {Object.keys(options).map(opt => (
-                <option key={`${name}_${opt}`} value={`${enumName || name.toUpperCase()}.${opt}`}>
+                <option
+                  key={`${name}_${opt}`}
+                  value={`${enumName || name.toUpperCase()}.${opt}`}
+                >
                   {opt}
                 </option>
               ))}

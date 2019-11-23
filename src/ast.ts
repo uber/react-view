@@ -19,7 +19,10 @@ const getInstrumentOnChange = (what: string, into: string) =>
   ]);
 
 // appends a call expression to a function body
-const fnBodyAppend = (path: NodePath<any>, callExpression: t.CallExpression) => {
+const fnBodyAppend = (
+  path: NodePath<any>,
+  callExpression: t.CallExpression
+) => {
   if (path.node.type !== 'JSXExpressionContainer') {
     return;
   }
@@ -79,8 +82,13 @@ export const transformBeforeCompilation = (
             const propHook = propsConfig['children'].propHook;
             path.get('children').forEach(child => {
               typeof propHook === 'object'
-                ? fnBodyAppend(child, getInstrumentOnChange(propHook.what, propHook.into))
-                : child.traverse(propHook({getInstrumentOnChange, fnBodyAppend}));
+                ? fnBodyAppend(
+                    child,
+                    getInstrumentOnChange(propHook.what, propHook.into)
+                  )
+                : child.traverse(
+                    propHook({getInstrumentOnChange, fnBodyAppend})
+                  );
             });
           }
           path
@@ -95,7 +103,9 @@ export const transformBeforeCompilation = (
                       attr.get('value') as any,
                       getInstrumentOnChange(propHook.what, propHook.into)
                     )
-                  : attr.traverse(propHook({getInstrumentOnChange, fnBodyAppend}));
+                  : attr.traverse(
+                      propHook({getInstrumentOnChange, fnBodyAppend})
+                    );
               }
             });
         }
@@ -105,7 +115,11 @@ export const transformBeforeCompilation = (
   return ast;
 };
 
-export function parseCode(code: string, elementName: string, parseProvider?: (ast: any) => void) {
+export function parseCode(
+  code: string,
+  elementName: string,
+  parseProvider?: (ast: any) => void
+) {
   const propValues: {[key: string]: string} = {};
   const stateValues: {[key: string]: string} = {};
   let parsedProvider: any = undefined;
@@ -162,7 +176,10 @@ export function parseCode(code: string, elementName: string, parseProvider?: (as
         ) {
           const name = node.id.elements[0].name;
           const valueNode = node.init.arguments[0];
-          if (valueNode.type === 'StringLiteral' || valueNode.type === 'BooleanLiteral') {
+          if (
+            valueNode.type === 'StringLiteral' ||
+            valueNode.type === 'BooleanLiteral'
+          ) {
             stateValues[name] = valueNode.value;
           } else {
             stateValues[name] = generate(valueNode).code;
