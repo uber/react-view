@@ -112,3 +112,20 @@ export function useHover() {
   }, [ref.current]);
   return [ref, value];
 }
+
+export function clone<T>(obj: T): T {
+  if (typeof obj == 'function') {
+    return obj;
+  }
+  var result: any = Array.isArray(obj) ? [] : {};
+  for (var key in obj) {
+    var value = obj[key];
+    var type = {}.toString.call(value).slice(8, -1);
+    if (type == 'Array' || type == 'Object') {
+      result[key] = clone(value);
+    } else {
+      result[key] = value;
+    }
+  }
+  return result;
+}

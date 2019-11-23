@@ -1,6 +1,6 @@
 import template from '@babel/template';
 import * as t from '@babel/types';
-import clone from 'just-clone';
+import {clone} from './utils';
 import {TProp, TImportsConfig, TCustomProps, TProvider} from './types';
 import {PropTypes} from './const';
 import {parse} from './ast';
