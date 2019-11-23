@@ -1,6 +1,5 @@
 module.exports = {
   launch: {
-    headless: true,
-    //headless: process.env.HEADLESS !== 'false',
+    headless: process.env.HEADLESS !== 'false',
   },
 };

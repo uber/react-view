@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {addParameters, addDecorator, configure} from '@storybook/react';
-import {Client as Styletron} from 'styletron-engine-atomic';
-import {LightTheme, BaseProvider} from 'baseui';
-import {Provider as StyletronProvider} from 'styletron-react';
-
-const engine = new Styletron();
+import {addParameters, configure} from '@storybook/react';
 
 addParameters({
   options: {
@@ -15,12 +10,6 @@ addParameters({
     showPanel: false,
   },
 });
-
-addDecorator(story => (
-  <StyletronProvider value={engine}>
-    <BaseProvider theme={LightTheme}>{story()}</BaseProvider>
-  </StyletronProvider>
-));
 
 const loaderFn = () => [
   require('../examples/use-view.stories.tsx'),

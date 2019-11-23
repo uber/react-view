@@ -1,10 +1,8 @@
 import * as React from 'react';
 import {Layout, H1, H2, P, Code, CompilerBox} from './layout/';
+
 //@ts-ignore
 import presetTypescript from '@babel/preset-typescript';
-
-// baseui imports
-import {Button, KIND, SIZE, SHAPE} from 'baseui/button';
 
 import {useView, Compiler, Editor, Error} from '../src/';
 
@@ -14,7 +12,7 @@ const initialCode = `() => {
 }`;
 
 const TypescriptCodeOnly = () => {
-  const params = useView({initialCode, scope: {Button, KIND, SIZE, SHAPE}});
+  const params = useView({initialCode});
   return (
     <Layout>
       <H1>TypeScript Support</H1>

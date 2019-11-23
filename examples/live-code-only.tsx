@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {Layout, H1, H2, P, Code, CompilerBox, Inline} from './layout/';
-
-// baseui imports
-import {Button, KIND, SIZE, SHAPE} from 'baseui/button';
+import {Button, SIZE} from './showcase-components/button';
 
 import {useView, Compiler, Editor, Error, ActionButtons} from '../src/';
 
@@ -16,8 +14,8 @@ const initialCodeEl = `<Button onClick={() => alert("click")}>Hello</Button>`;
 const initialCodeSum = `2 + 5`;
 
 const CodeOnly = () => {
-  const params = useView({initialCode, scope: {Button, KIND, SIZE, SHAPE}});
-  const paramsEl = useView({initialCode: initialCodeEl, scope: {Button, KIND, SIZE, SHAPE}});
+  const params = useView({initialCode, scope: {Button, SIZE}});
+  const paramsEl = useView({initialCode: initialCodeEl, scope: {Button, SIZE}});
   const paramsSum = useView({initialCode: initialCodeSum});
   return (
     <Layout>

@@ -2,7 +2,13 @@
   "name": "react-view",
   "version": "1.0.3",
   "description": "",
-  "keywords": [],
+  "keywords": [
+    "react",
+    "uber",
+    "playground",
+    "view",
+    "documentation"
+  ],
   "main": "dist/lib/index.js",
   "module": "dist/es/index.js",
   "typings": "dist/types/index.d.ts",
@@ -10,42 +16,21 @@
     "dist"
   ],
   "author": "Vojtech Miksu <vojtech@uber.com>",
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
+  "repository": "uber/react-view",
   "license": "MIT",
-  "engines": {
-    "node": ">=10.0.0"
-  },
+  "sideEffects": false,
   "scripts": {
-    "test": "jest",
-    "test:ci": "yarn test:unit --runInBand && yarn test:e2e:ci",
-    "test:e2e": "jest e2e --runInBand",
-    "test:e2e:ci": "start-server-and-test storybook http://localhost:6006 test:e2e",
-    "test:unit": "jest src",
-    "prebuild": "rimraf dist",
     "build": "tsc --p tsconfig.lib.json && tsc --p tsconfig.es.json",
-    "deploy-docs": "ts-node tools/gh-pages-publish",
-    "commit": "git-cz",
-    "semantic-release": "semantic-release",
-    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-    "travis-deploy-once": "travis-deploy-once",
+    "prebuild": "rimraf dist",
     "storybook": "start-storybook -p 6006",
-    "storybook-ci": "start-storybook --ci",
-    "build-storybook": "build-storybook",
+    "storybook:ci": "start-storybook --ci -p 6006",
+    "storybook:static": "build-storybook",
+    "test": "tsc && jest",
+    "test:ci": "tsc && yarn test:unit --runInBand && yarn test:e2e:ci",
+    "test:e2e": "jest e2e --runInBand",
+    "test:e2e:ci": "start-server-and-test storybook:ci http://localhost:6006 test:e2e",
+    "test:unit": "jest src",
     "typecheck": "tsc"
-  },
-  "lint-staged": {
-    "{src,test}/**/*.ts": [
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    }
   },
   "jest": {
     "transform": {
@@ -66,11 +51,6 @@
     "bracketSpacing": false,
     "trailingComma": "es5"
   },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
   "dependencies": {
     "@babel/code-frame": "^7.5.5",
     "@babel/core": "^7.7.0",
@@ -89,11 +69,6 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.7.2",
-    "@commitlint/cli": "^8.0.0",
-    "@commitlint/config-conventional": "^8.0.0",
-    "@storybook/addon-actions": "^5.2.5",
-    "@storybook/addon-links": "^5.2.5",
-    "@storybook/addons": "^5.2.5",
     "@storybook/react": "^5.2.5",
     "@types/babel__code-frame": "^7.0.1",
     "@types/babel__core": "^7.1.3",
@@ -106,47 +81,19 @@
     "@types/lodash": "^4.14.144",
     "@types/node": "^12.0.8",
     "@types/puppeteer": "^2.0.0",
-    "@types/react-portal": "^4.0.2",
-    "@types/styletron-engine-atomic": "^1.1.0",
-    "@types/styletron-react": "^5.0.2",
+    "@types/react": "^16.9.12",
+    "@types/react-dom": "^16.9.4",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
-    "baseui": "^9.20.0",
-    "colors": "^1.3.2",
-    "commitizen": "^4.0.0",
-    "cross-env": "^6.0.0",
-    "cz-conventional-changelog": "^3.0.0",
-    "husky": "^3.0.0",
     "jest": "^24.8.0",
-    "jest-config": "^24.8.0",
     "jest-puppeteer": "^4.3.0",
-    "lint-staged": "^9.0.0",
-    "lodash.camelcase": "^4.3.0",
     "prettier": "^1.14.3",
-    "prompt": "^1.0.0",
     "puppeteer": "^2.0.0",
     "react": "^16.11.0",
-    "react-codesandboxer": "^3.1.5",
     "react-dom": "^16.11.0",
-    "react-icons": "^3.8.0",
-    "replace-in-file": "^4.1.0",
     "rimraf": "^3.0.0",
-    "rollup": "^1.26.3",
-    "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.0.3",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-typescript": "^1.0.1",
-    "rollup-plugin-typescript2": "^0.25.2",
-    "semantic-release": "^15.13.30",
-    "shelljs": "^0.8.3",
     "start-server-and-test": "^1.10.6",
-    "styletron-engine-atomic": "^1.4.4",
-    "styletron-react": "^5.2.5",
-    "travis-deploy-once": "^5.0.9",
     "ts-jest": "^24.0.2",
-    "ts-node": "^8.3.0",
-    "tslib": "^1.10.0",
     "typescript": "^3.7.2"
   },
   "volta": {
