@@ -52,6 +52,7 @@ const Editor: React.FC<TEditorProps> = ({
   placeholder,
   language,
   theme,
+  id,
 }) => {
   const [focused, setFocused] = React.useState(false);
   const editorTheme = {
@@ -66,6 +67,7 @@ const Editor: React.FC<TEditorProps> = ({
 
   return (
     <div
+      data-testid={id}
       style={{
         boxSizing: 'border-box',
         paddingLeft: '4px',

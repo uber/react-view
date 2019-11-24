@@ -49,6 +49,7 @@ export const Input: React.FC<TInputProps> = ({
   };
   return (
     <input
+      id="example-input"
       value={value}
       onChange={onChange}
       style={inputStyle}

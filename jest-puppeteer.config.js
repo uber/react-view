@@ -5,6 +5,5 @@ module.exports = {
       width: 763,
       height: 1000,
     },
-    slowMo: 200,
   },
 };

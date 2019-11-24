@@ -66,6 +66,7 @@ export type TEditorProps = {
   onChange: (code: string) => void;
   small?: boolean;
   theme?: typeof lightTheme;
+  id?: string;
 };
 
 export type TErrorProps = {

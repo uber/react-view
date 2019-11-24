@@ -51,7 +51,12 @@ export const Button: React.FC<TButtonProps> = ({
     borderColor: disabled ? '#CCC' : colors.background,
   };
   return (
-    <button onClick={onClick} style={btnStyle} disabled={disabled}>
+    <button
+      id="example-btn"
+      onClick={onClick}
+      style={btnStyle}
+      disabled={disabled}
+    >
       {children}
     </button>
   );

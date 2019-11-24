@@ -4,6 +4,7 @@ export const ActionButton: React.FC<{
   onClick: () => void;
   children: React.ReactNode;
   style?: React.CSSProperties;
+  ['data-testid']?: string;
 }> = props => <button className="react-view-button" {...props} />;
 
 export const ActionButtons: React.FC<{
@@ -40,16 +41,32 @@ export const ActionButtons: React.FC<{
       }}
     />
     <div style={{margin: '10px 0px'}}>
-      <ActionButton style={{marginRight: '8px'}} onClick={formatCode}>
+      <ActionButton
+        data-testid="format"
+        style={{marginRight: '8px'}}
+        onClick={formatCode}
+      >
         Format code
       </ActionButton>
-      <ActionButton style={{marginRight: '8px'}} onClick={copyCode}>
+      <ActionButton
+        data-testid="copy-code"
+        style={{marginRight: '8px'}}
+        onClick={copyCode}
+      >
         Copy code
       </ActionButton>
-      <ActionButton style={{marginRight: '8px'}} onClick={copyUrl}>
+      <ActionButton
+        data-testid="copy-url"
+        style={{marginRight: '8px'}}
+        onClick={copyUrl}
+      >
         Copy URL
       </ActionButton>
-      <ActionButton style={{marginRight: '8px'}} onClick={reset}>
+      <ActionButton
+        data-testid="reset"
+        style={{marginRight: '8px'}}
+        onClick={reset}
+      >
         Reset
       </ActionButton>
     </div>

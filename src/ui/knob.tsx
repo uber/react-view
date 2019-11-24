@@ -21,9 +21,13 @@ const getTooltip = (description: string, type: string, name: string) => (
   </div>
 );
 
-const Spacing: React.FC<{children: React.ReactNode}> = ({children}) => {
+const Spacing: React.FC<{children: React.ReactNode; name?: string}> = ({
+  children,
+  name,
+}) => {
   return (
     <div
+      data-testid={name}
       style={{
         margin: '10px 0px',
         fontFamily: "'Helvetica Neue', Arial",
@@ -222,7 +226,7 @@ const Knob: React.SFC<{
     case PropTypes.Date:
     case PropTypes.Number:
       return (
-        <Spacing>
+        <Spacing name={name}>
           <Label tooltip={getTooltip(description, type, name)}>{name}</Label>
           <Editor
             onChange={code => {
