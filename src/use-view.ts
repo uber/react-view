@@ -165,17 +165,18 @@ const useView: TUseView = (config = {}) => {
       },
       reset: () => {
         const editorOnlyMode = Object.keys(propsConfig).length === 0;
+        const providerValue = provider ? provider.value : undefined;
         const newCode = editorOnlyMode
           ? initialCode
           : getCode({
               props: propsConfig,
               componentName,
               provider,
-              providerValue: state.providerValue,
+              providerValue,
               importsConfig,
               customProps,
             });
-        reset(dispatch, newCode, propsConfig);
+        reset(dispatch, newCode, providerValue, propsConfig);
         onUpdate({code: newCode});
       },
       updateProvider: (providerValue: any) => {

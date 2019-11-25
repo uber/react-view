@@ -49,6 +49,7 @@ export default function reducer(
         code: action.payload.code,
         codeNoRecompile: '',
         props: action.payload.props,
+        providerValue: action.payload.providerValue,
       };
     default:
       return assertUnreachable();

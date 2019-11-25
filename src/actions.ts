@@ -112,6 +112,7 @@ export const updateProps = (
 export const reset = (
   dispatch: TDispatch,
   initialCode: string,
+  providerValue: any,
   propsConfig: {[key: string]: TProp}
 ) => {
   dispatch({
@@ -119,6 +120,7 @@ export const reset = (
     payload: {
       code: initialCode,
       props: propsConfig,
+      providerValue,
     },
   });
 };

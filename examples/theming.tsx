@@ -83,6 +83,7 @@ const ColorInput: React.FC<TColorInputProps> = ({
           onChange={val => {
             setColor(val);
           }}
+          data-testid={themeKey}
           code={color}
           placeholder={defaultTheme[themeKey]}
           language="css"
@@ -261,7 +262,7 @@ const Theming = () => {
       />
       <Error msg={params.errorProps.msg} isPopup />
       <Knobs {...params.knobProps} />
-      <Editor {...params.editorProps} />
+      <Editor {...params.editorProps} data-testid="rv-editor" />
       <Error {...params.errorProps} />
       <ThemeEditor
         theme={params.providerValue || {}}
