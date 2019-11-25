@@ -1,4 +1,6 @@
-import {urls} from './utils';
+import {urls} from '../const';
+
+jest.setTimeout(20 * 1000);
 
 describe.only('State hook', () => {
   beforeAll(async () => {

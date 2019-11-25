@@ -21,15 +21,15 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc --p tsconfig.lib.json && tsc --p tsconfig.es.json",
-    "lint": "eslint '{examples,e2e,src}/**/*.{js,ts,tsx}'",
+    "lint": "eslint '{examples,src}/**/*.{js,ts,tsx}'",
     "prebuild": "rimraf dist",
     "storybook": "start-storybook -p 6006",
     "storybook:ci": "start-storybook --ci -p 6006",
     "storybook:static": "build-storybook",
     "test": "tsc && yarn lint && jest",
     "test:ci": "tsc && yarn lint && yarn test:unit --runInBand && yarn test:e2e:ci",
-    "test:e2e": "HEADLESS=false jest e2e/theming.test.ts",
-    "test:e2e:band": "jest e2e --runInBand",
+    "test:e2e": "HEADLESS=false jest examples",
+    "test:e2e:band": "jest examples --runInBand",
     "test:e2e:ci": "start-server-and-test storybook:ci http://localhost:6006 test:e2e:band",
     "test:unit": "jest src",
     "typecheck": "tsc"

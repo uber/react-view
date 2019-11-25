@@ -33,6 +33,7 @@ const Heart: React.FC<THeartProps> = ({active, setHovered, index, onClick}) => {
 
   return (
     <li
+      id={`heart-${index}`}
       role="radio"
       tabIndex={0}
       aria-setsize={5}

@@ -141,7 +141,7 @@ const StateHook = () => {
         set={params.knobProps.set}
       />
       <Knobs {...params.knobProps} />
-      <Editor {...params.editorProps} />
+      <Editor {...params.editorProps} data-testid="rv-editor" />
       <Error {...params.errorProps} />
       <ActionButtons {...params.actions} />
       <P>
