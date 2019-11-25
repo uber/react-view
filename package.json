@@ -28,7 +28,7 @@
     "storybook:static": "build-storybook",
     "test": "tsc && yarn lint && jest",
     "test:ci": "tsc && yarn lint && yarn test:unit --runInBand && yarn test:e2e:ci",
-    "test:e2e": "HEADLESS=false jest e2e/state-hook.test.ts",
+    "test:e2e": "HEADLESS=false jest e2e/view.test.ts",
     "test:e2e:band": "jest e2e --runInBand",
     "test:e2e:ci": "start-server-and-test storybook:ci http://localhost:6006 test:e2e:band",
     "test:unit": "jest src",
