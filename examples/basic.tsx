@@ -74,7 +74,7 @@ const Basic = () => {
       />
       <Error msg={params.errorProps.msg} isPopup />
       <Knobs {...params.knobProps} />
-      <Editor {...params.editorProps} id="editor" />
+      <Editor {...params.editorProps} data-testid="rv-editor" />
       <Error {...params.errorProps} />
       <ActionButtons {...params.actions} />
       <P>

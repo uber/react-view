@@ -6,7 +6,7 @@ describe('Basic knobs', () => {
   });
 
   beforeEach(async () => {
-    await page.click('[data-testid="reset"]');
+    await page.click('[data-testid="rv-reset"]');
   });
 
   it('should select size compact, update component and input', async () => {
@@ -30,7 +30,7 @@ export default () => {
       e => (e as any).style['font-size']
     );
     expect(fontSize).toBe('14px');
-    const editorTextarea = await page.$('[data-testid="editor"] textarea');
+    const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
     const text = await page.evaluate(el => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
@@ -52,7 +52,7 @@ export default () => {
       e => (e as any).disabled
     );
     expect(isDisabled).toBeTruthy();
-    const editorTextarea = await page.$('[data-testid="editor"] textarea');
+    const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
     const text = await page.evaluate(el => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
@@ -69,7 +69,7 @@ export default () => {
     </Button>
   );
 }`;
-    await page.focus('[data-testid="children"] textarea');
+    await page.focus('[data-testid="rv-knob-children"] textarea');
     for (let i = 0; i < 5; i++) {
       await page.keyboard.press('Delete');
     }
@@ -77,7 +77,7 @@ export default () => {
     await expect(page).toMatchElement('#example-btn', {
       text: childrenPropValue,
     });
-    const editorTextarea = await page.$('[data-testid="editor"] textarea');
+    const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
     const text = await page.evaluate(el => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
@@ -98,7 +98,7 @@ export default () => {
     </Button>
   );
 }`;
-    await page.focus('[data-testid="onClick"] textarea');
+    await page.focus('[data-testid="rv-knob-onClick"] textarea');
     for (let i = 0; i < 20; i++) {
       await page.keyboard.press('Delete');
     }
@@ -110,7 +110,7 @@ export default () => {
       return h1 ? h1.innerText : '';
     });
     expect(text).toBe('foo');
-    const editorTextarea = await page.$('[data-testid="editor"] textarea');
+    const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
     const editorText = await page.evaluate(el => el.value, editorTextarea);
     expect(editorText).toBe(codeOutput);
   });
@@ -122,11 +122,10 @@ describe('Basic actions', () => {
   });
 
   beforeEach(async () => {
-    await page.click('[data-testid="reset"]');
+    await page.click('[data-testid="rv-reset"]');
   });
 
   it('should format the code snippet', async () => {
-    await page.click('[data-testid="reset"]');
     const formattedCode = `import * as React from "react";
 import { Button } from "your-button-component";
 
@@ -144,14 +143,14 @@ export default () => {
         </Button>
       );
 }`;
-    await page.focus('[data-testid="editor"] textarea');
+    await page.focus('[data-testid="rv-editor"] textarea');
     for (let i = 0; i < 232; i++) {
       await page.keyboard.press('Delete');
     }
     await page.keyboard.type(messyCode);
     await page.waitFor(300); // waiting for debounce
-    await page.click('[data-testid="format"]');
-    const editorTextarea = await page.$('[data-testid="editor"] textarea');
+    await page.click('[data-testid="rv-format"]');
+    const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
     const text = await page.evaluate(el => el.value, editorTextarea);
     expect(text).toBe(formattedCode);
   });
@@ -163,11 +162,10 @@ describe('Basic editor', () => {
   });
 
   beforeEach(async () => {
-    await page.click('[data-testid="reset"]');
+    await page.click('[data-testid="rv-reset"]');
   });
 
   it('should edit the code and update the knob and component', async () => {
-    await page.click('[data-testid="reset"]');
     const newCode = `import * as React from "react";
 import { Button } from "your-button-component";
 
@@ -176,7 +174,7 @@ export default () => {
     <Button onClick={() => alert("click")} disabled>Hello</Button>
   );
 }`;
-    await page.focus('[data-testid="editor"] textarea');
+    await page.focus('[data-testid="rv-editor"] textarea');
     for (let i = 0; i < 232; i++) {
       await page.keyboard.press('Delete');
     }

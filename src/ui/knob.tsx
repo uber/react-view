@@ -27,7 +27,7 @@ const Spacing: React.FC<{children: React.ReactNode; name?: string}> = ({
 }) => {
   return (
     <div
-      data-testid={name}
+      data-testid={`rv-knob-${name}`}
       style={{
         margin: '10px 0px',
         fontFamily: "'Helvetica Neue', Arial",

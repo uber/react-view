@@ -42,28 +42,28 @@ export const ActionButtons: React.FC<{
     />
     <div style={{margin: '10px 0px'}}>
       <ActionButton
-        data-testid="format"
+        data-testid="rv-format"
         style={{marginRight: '8px'}}
         onClick={formatCode}
       >
         Format code
       </ActionButton>
       <ActionButton
-        data-testid="copy-code"
+        data-testid="rv-copy-code"
         style={{marginRight: '8px'}}
         onClick={copyCode}
       >
         Copy code
       </ActionButton>
       <ActionButton
-        data-testid="copy-url"
+        data-testid="rv-copy-url"
         style={{marginRight: '8px'}}
         onClick={copyUrl}
       >
         Copy URL
       </ActionButton>
       <ActionButton
-        data-testid="reset"
+        data-testid="rv-reset"
         style={{marginRight: '8px'}}
         onClick={reset}
       >
