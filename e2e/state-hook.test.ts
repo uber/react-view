@@ -62,4 +62,49 @@ export default () => {
     const text = await page.evaluate(el => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
+
+  it('should respect the default boolean value, uncheck editable and update component and input', async () => {
+    const initialCode = `import * as React from "react";
+import { Input } from "your-input-component";
+
+export default () => {
+  const [value, setValue] = React.useState("Hello");
+  return (
+    <Input
+      value={value}
+      onChange={e => setValue(e.target.value)}
+    />
+  );
+}`;
+    const resultCode = `import * as React from "react";
+import { Input } from "your-input-component";
+
+export default () => {
+  const [value, setValue] = React.useState("Hello");
+  return (
+    <Input
+      value={value}
+      onChange={e => setValue(e.target.value)}
+      editable={false}
+    />
+  );
+}`;
+    const initialEditor = await page.evaluate(
+      el => el.value,
+      await page.$('[data-testid="rv-editor"] textarea')
+    );
+    expect(initialEditor).toBe(initialCode);
+
+    await page.click('#editable');
+    const isDisabled = await page.$eval(
+      '#example-input',
+      e => (e as any).disabled
+    );
+    expect(isDisabled).toBeTruthy();
+    const resultEditor = await page.evaluate(
+      el => el.value,
+      await page.$('[data-testid="rv-editor"] textarea')
+    );
+    expect(resultEditor).toBe(resultCode);
+  });
 });

@@ -44,10 +44,11 @@ const StateHook = () => {
           into: 'value',
         },
       },
-      disabled: {
-        value: false,
+      editable: {
+        value: true,
+        defaultValue: true,
         type: PropTypes.Boolean,
-        description: 'Indicates that the input is disabled',
+        description: 'Indicates that the input is editable.',
       },
     },
     scope: {
@@ -163,10 +164,11 @@ const StateHook = () => {
           into: 'value',
         },
       },
-      disabled: {
-        value: false,
+      editable: {
+        value: true,
+        defaultValue: true,
         type: PropTypes.Boolean,
-        description: 'Indicates that the input is disabled',
+        description: 'Indicates that the input is editable.',
       },
     },
     scope: {
@@ -244,6 +246,22 @@ const StateHook = () => {
         secretely adds an instrumentation call into the body of{' '}
         <Inline>e &gt; setValue(e.target.value)</Inline> function.
       </P>
+      <H2>defaultValue</H2>
+      <P>
+        Props can have a <Inline>defaultValue</Inline>. That is useful for an{' '}
+        <Inline>enum</Inline>
+        so the code generator knows when to skip the default option. Sometimes
+        you can also have a <Inline>boolean</Inline> prop that treats{' '}
+        <Inline>undefined</Inline> the opposite way to <Inline>false</Inline>.
+        In the example above, this inverted behavior is demonstrated with the
+        prop <Inline>editable</Inline>:
+      </P>
+      <Code>{`editable: {
+  value: true,
+  defaultValue: true,
+  type: PropTypes.Boolean,
+  description: 'Indicates that the input is editable.',
+}`}</Code>
     </Layout>
   );
 };

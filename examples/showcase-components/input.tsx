@@ -11,6 +11,7 @@ type TInputProps = {
   onChange: (e: any) => void;
   size: keyof typeof SIZE;
   disabled: boolean;
+  editable: boolean;
 };
 
 export const Input: React.FC<TInputProps> = ({
@@ -18,6 +19,7 @@ export const Input: React.FC<TInputProps> = ({
   onChange,
   size,
   disabled,
+  editable,
 }) => {
   const getSizeStyle = (size: keyof typeof SIZE) => {
     switch (size) {
@@ -53,7 +55,7 @@ export const Input: React.FC<TInputProps> = ({
       value={value}
       onChange={onChange}
       style={inputStyle}
-      disabled={disabled}
+      disabled={typeof editable === 'undefined' || editable ? false : true}
     />
   );
 };
