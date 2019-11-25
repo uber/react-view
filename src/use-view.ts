@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useState, useReducer, useEffect} from 'react';
 import copy from 'copy-to-clipboard';
 import debounce from 'lodash/debounce';
 import * as t from '@babel/types';
@@ -39,9 +39,9 @@ const useView: TUseView = (config = {}) => {
   const customProps = config.customProps ? config.customProps : {};
   const initialCode = config.initialCode;
 
-  const [hydrated, setHydrated] = React.useState(false);
-  const [error, setError] = React.useState<TError>({where: '', msg: null});
-  const [state, dispatch] = React.useReducer(reducer, {
+  const [hydrated, setHydrated] = useState(false);
+  const [error, setError] = useState<TError>({where: '', msg: null});
+  const [state, dispatch] = useReducer(reducer, {
     code:
       initialCode ||
       getCode({
@@ -58,7 +58,7 @@ const useView: TUseView = (config = {}) => {
   });
 
   // initialize from the initialCode
-  React.useEffect(() => {
+  useEffect(() => {
     if (initialCode && !hydrated) {
       setHydrated(true);
       try {
