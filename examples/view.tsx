@@ -58,7 +58,7 @@ const ViewExample = () => (
     />
     <H2>Usage</H2>
     <Code>
-      {`import {View} from 'react-view';
+      {`import {View, PropTypes} from 'react-view';
 import {Button, SIZE} from 'your-button-component';
 
 export default () => <View
