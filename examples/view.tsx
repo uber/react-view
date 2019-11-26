@@ -12,7 +12,7 @@ const ViewExample = () => (
       <b>A single component that does it all</b>. It is a tiny wrapper around
       the <a href="/?path=/story/useview--basic">useView</a> hook and composes
       all UI components into one thing. This might be an ideal solution if you
-      do not want to visually tweak anything and just get started as quick as
+      do not want to visually tweak anything and just get started as quickly as
       possible.
     </P>
     <View

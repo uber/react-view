@@ -64,7 +64,7 @@ const Basic = () => {
         <a href="https://reactjs.org/docs/hooks-intro.html">hook</a> based API.
         React View strictly separates the UI components from everything else so
         you can completely customize every aspect of the playground. If you want
-        to start as quick as possible, try the{' '}
+        to start as quickly as possible, try the{' '}
         <a href="/?path=/story/view--view">View component</a> instead.
       </P>
       <Compiler
@@ -172,11 +172,11 @@ const Basic = () => {
       </P>
       <P>
         The biggest part of configuration is a list of <Inline>props</Inline>.
-        You also have to explicitely define the <Inline>scope</Inline> (in this
+        You also have to explicitly define the <Inline>scope</Inline> (in this
         case, importing the Button and passing it through). On the other hand,
         the <Inline>imports</Inline> setting is completely optional. The imports
         appear at the top of auto-generated code. That can be nice for your
-        users since they will be always able to copy&paste a fully working
+        users since they will be always able to copy paste a fully working
         example.{' '}
       </P>
     </Layout>

@@ -250,9 +250,9 @@ const Theming = () => {
         context.
       </P>
       <P>
-        Often, you can also override these context values by adding an aditional
-        nested provider. Since this is a way how components can be visually
-        adjusted,{' '}
+        Often, you can also override these context values by adding an
+        additional nested provider. Since this is a way how components can be
+        visually adjusted,{' '}
         <b>React View has a support for this Consumer/Provider pattern</b>:
       </P>
       <Compiler

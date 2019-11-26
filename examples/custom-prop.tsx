@@ -110,13 +110,13 @@ const StateHook = () => {
       <H1>Custom Props and Knobs</H1>
       <P>
         <b>React View supports many basic prop types out of the box</b>.
-        Obviously, any prop value can be always editted through an input (or a
+        Obviously, any prop value can always be edited through an input (or a
         tiny code editor). That is no different than writing an actual code.
         Boring.
       </P>
       <P>
         <b>
-          However, many prop types can be more accessible with a specilized UI
+          However, many prop types can be more accessible with a specialized UI
         </b>
         . For example, <Inline>boolean</Inline> is always translated into a
         checkbox and <Inline>enum</Inline> into an input radio or select (if we

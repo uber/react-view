@@ -75,7 +75,7 @@ export default () => {
         code-generation), we currently generate only plain JavaScript. The
         reason is that our examples simply do not need any type annotations
         since both TypeScript and Flow can infer 100% of them. So you can take
-        the same output and copy&paste it into a JS, TS or Flow codebase without
+        the same output and copy paste it into a JS, TS or Flow codebase without
         any changes.
       </P>
     </Layout>

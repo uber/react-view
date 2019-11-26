@@ -84,7 +84,7 @@ const StateHook = () => {
           However, you would not be able to interact with the component itself
         </b>{' '}
         since the value is hard-coded - the component is controlled. The code
-        above is also not very realistic. How often do we create uneditable
+        above is also not very realistic. How often do we create non editable
         inputs?
       </P>
       <P>
@@ -215,9 +215,9 @@ const StateHook = () => {
 `}</Code>
       <P>
         At this point,{' '}
-        <b>the value is datached and rendered input is fully interactive</b>.
-        However, the changes are not synchronized with the rest of playground.
-        We need to give React View a slight hint:{' '}
+        <b>the value is detached and rendered input is fully interactive</b>.
+        However, the changes are not synchronized with the rest of the
+        playground. We need to give React View a slight hint:{' '}
       </P>
       <Code>
         {`onChange: {
@@ -243,18 +243,17 @@ const StateHook = () => {
         <Inline>what</Inline> value it should use and <Inline>into</Inline> what
         stateful prop it should go. Note that this setting also depends on the
         initial value of <Inline>onChange</Inline> prop since React View
-        secretely adds an instrumentation call into the body of{' '}
+        secretly adds an instrumentation call into the body of{' '}
         <Inline>e &gt; setValue(e.target.value)</Inline> function.
       </P>
       <H2>defaultValue</H2>
       <P>
         Props can have a <Inline>defaultValue</Inline>. That is useful for an{' '}
-        <Inline>enum</Inline>
-        so the code generator knows when to skip the default option. Sometimes
-        you can also have a <Inline>boolean</Inline> prop that treats{' '}
-        <Inline>undefined</Inline> the opposite way to <Inline>false</Inline>.
-        In the example above, this inverted behavior is demonstrated with the
-        prop <Inline>editable</Inline>:
+        <Inline>enum</Inline> so the code generator knows when to skip the
+        default option. Sometimes you can also have a <Inline>boolean</Inline>{' '}
+        prop that treats <Inline>undefined</Inline> the opposite way to{' '}
+        <Inline>false</Inline>. In the example above, this inverted behavior is
+        demonstrated with the prop <Inline>editable</Inline>:
       </P>
       <Code>{`editable: {
   value: true,

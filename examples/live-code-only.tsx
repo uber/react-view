@@ -72,7 +72,7 @@ export default () => {
         <b>Note:</b> All import statements in the editor are always taken out
         before compilation. <b>They do not do anything.</b> Our compiler does
         not understand modules (we do not have a bundler in our flow). So feel
-        free to add them if benefical for your users. All dependencies need to
+        free to add them if beneficial for your users. All dependencies need to
         be passed through the <Inline>scope</Inline> prop (React is included
         automatically).
       </P>

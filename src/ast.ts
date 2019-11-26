@@ -43,7 +43,7 @@ const fnBodyAppend = (
   }
 };
 
-// clean-up for react-live, removing all imports, exports and top level
+// removing all imports, exports and top level
 // variable declaration, add __reactViewOnChange instrumentation when needed
 export const transformBeforeCompilation = (
   ast: t.File,
