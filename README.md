@@ -16,7 +16,7 @@
 yarn add react-view
 ```
 
-## All-in-one Playground Example
+## All-in-one Playground
 
 ```tsx
 import {View, PropTypes} from 'react-view';
