@@ -2,21 +2,21 @@
 
 1. Clone the repo locally and run yarn to install dependencies from npm. We use [volta](https://volta.sh/).
 
-```
+```sh
 git clone https://github.com/uber/react-view
 cd react-view
 yarn
 ```
 
-2. You can test your changes inside of the storybook.
+2. You can test your changes inside of the storybook:
 
-```
+```sh
 yarn storybook
 ```
 
-3. When done, run all unit tests, e2e tests, typescript check and eslint via
+3. When done, run all unit tests, e2e tests, typescript check and eslint via:
 
-```
+```sh
 yarn test:ci
 ```
 

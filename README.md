@@ -9,8 +9,8 @@
 **There are three main ways** how to use React View:
 
 - **All-in-one playground**. Import `<View />`, give it the component configuration and drop it in your web documentation. This is ideal if you want to start as quickly as possible and don't need to customize anything.
-- **Build your own playground**. Import the `useView` hook and give it the component configuration. This hook handles the playground state and returns various props and callbacks that you can fit into your own UI components. React View also exports all default UI parts separately (`Editor`, `ActionButtons`, `Compiler`, `Knobs`, `Error`...) so you can reuse them. This is a great option if you want to customize some parts of the default UI (or all of it) and not to worry about the rest.
-- **Live code editing only**. Sometimes it is useful to only have an editable source code and live preview without the list of props. You can use `useView` for that too. Just don't give it any component configuration and don't render the `<Knobs />` component. React View uses babel, so **you can add additional presets and enable TypeScript**.
+- **Build your playground**. Import the `useView` hook and give it the component configuration. This hook handles the playground state and returns various props and callbacks that you can fit into your UI components. React View also exports all default UI parts separately (`Editor`, `ActionButtons`, `Compiler`, `Knobs`, `Error`...) so you can reuse them. This is a great option if you want to customize some parts of the default UI (or all of it) and not worry about the rest.
+- **Live code editing only**. Sometimes it is useful to only have editable source code and live preview without the list of props. You can use `useView` for that too. Just don't give it any component configuration and don't render the `<Knobs />` component. React View uses babel, so **you can add additional presets and enable TypeScript**.
 
 ## Installation
 
@@ -58,7 +58,7 @@ export default () => (
 
 This is a basic example demonstrating the all-in-one `View` component. You need to define the component name, props, scope and imports. This example renders the gif above (without the `size` prop).
 
-## Build Your Own Playground
+## Build Your Playground
 
 The View component is a tiny wrapper around the `useView` hook. If you wish to do some customization and have more control, you can opt-in for this more flexible API:
 
@@ -174,7 +174,7 @@ or pretty much anything that could be executed after the return statement of JS 
 
 ## Applications
 
-We build this library for ourselves as a part of [baseweb.design](https://baseweb.design) documentation ([uber/baseweb](https://github.com/uber/baseweb)). We use all features of React View extensively. Our playground components are customized reusing existing Base Web components. We have implemented an entire custom playground section called [Style Overrides](https://baseweb.design/guides/understanding-overrides/) and there is also a support for theming through a context provider.
+We built this library for ourselves as a part of [baseweb.design](https://baseweb.design) documentation ([uber/baseweb](https://github.com/uber/baseweb)). We use all features of React View extensively. Our playground components are customized reusing existing Base Web components. We have implemented an entire custom playground section called [Style Overrides](https://baseweb.design/guides/understanding-overrides/) and there is also support for theming through a context provider.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/1387913/69666276-d8d4d680-1040-11ea-81a6-129655828009.png" width="75%"><p>
 
@@ -196,7 +196,7 @@ useView accepts a configuration `object` where all values are optional:
 componentName?: string;
 ```
 
-A name of the primary component in the playground. It's used for the code generation and props parsing.
+The name of the primary component in the playground. It's used for the code generation and props parsing.
 
 #### imports
 
@@ -232,7 +232,7 @@ import Button, {SIZE} from 'baseui/button';
 scope?: {[key: string]: any};
 ```
 
-All outside dependencies in the code editor need to be explicitly passed through the `scope`. Why? `imports` do nothing. Their only purpose is to make copy pasting easier. React View does not include a bundler, so it can't really understand ES modules. For example, if you want to use `styled` function from the `styled-components` in the code editor, you would do:
+All outside dependencies in the code editor need to be explicitly passed through the `scope`. Why? `imports` do nothing. Their only purpose is to make copy-pasting easier. React View does not include a bundler, so it can't understand ES modules. For example, if you want to use `styled` function from the `styled-components` in the code editor, you would do:
 
 ```js
 import styled from 'styled-components';
@@ -267,7 +267,7 @@ props?: {[key: string]: {
 }};
 ```
 
-If you wish to use the code generation and knobs you need to define component's API - props. Each prop can take multiple options:
+If you wish to use the code generation and knobs you need to define the component's API - props. Each prop can take multiple options:
 
 - `value` - The default value (initial state).
 - `type` - React View has some predefined internal types that are used to generate and parse code and should describe any React component: _String, ReactNode, Boolean, Number, Enum, Array, Object, Function, Ref, Date_ or _Custom_.
@@ -276,11 +276,11 @@ If you wish to use the code generation and knobs you need to define component's 
 - `enumName` - When `type` is set to `PropTypes.Enum`, you need to pass the enum name through `enumName` so the code generator knows what to output.
 - `placeholder` - A value placeholder, displayed in knobs.
 - `defaultValue` - Can be useful for `PropTypes.Enum` or `PropTypes.Boolean`. When `value` equals `defaultValue`, the prop will not be code generated. It keeps examples with set default options cleaner.
-- `hidden` - Some components have a lot of props but not all of them are that useful. You can optionally hide them from the default list of knobs. User still can expand them via the "Show all props" button.
+- `hidden` - Some components have a lot of props but not all of them are that useful. You can optionally hide them from the default list of knobs. The user still can expand them via the "Show all props" button.
 - `imports` - Same as the top-level imports argument. However, it will add import statements only if the prop is being used and code generated. For example, there is no need to display the `enum` import if the related prop is not used (defaultValue). It keeps examples cleaner.
 - `stateful` - It detaches the prop value into an internal `React.useState` hook. This can make components like inputs interactive. [More info](https://react-view.netlify.com/?path=/story/useview--state-hook).
 - `propHook` - This works in combination with the `stateful` flag. [More info](https://react-view.netlify.com/?path=/story/useview--state-hook)
-- `custom` - When you define `customProps`, you can use this part of configuration to pass arbitrary data.
+- `custom` - When you define `customProps`, you can use this part of the configuration to pass arbitrary data.
 
 #### onUpdate
 
@@ -298,7 +298,7 @@ initialCode?: string;
 
 You can set an initial source code. This can be useful in combination with `onUpdate` to preserve the playground's state through the URL. React View would initially hydrate the state from the `initialCode` value but all subsequent changes will be driven by its internal state.
 
-If you use `useView` only as the live code editor, you should always set this value to something so user doesn't see a blank page.
+If you use `useView` only as the live code editor, you should always set this value to something so the user doesn't see a blank page.
 
 #### provider
 
@@ -335,13 +335,13 @@ customProps?: {
 **This is an advanced API**. It lets you build your own prop/knob types and UIs. [See the example.](https://react-view.netlify.com/?path=/story/advanced--custom-prop) First, you set the `type` of your prop to `PropTypes.Custom`. Then, you can target it by its name (`key` is the prop name). For each prop, you need to define:
 
 - `parse` - Gives you the prop code and the prop configuration (a part of the props list), you should return the **value** (internal representation) of that prop.
-- `generate` - Gives you the **value**, you should return the AST of prop so React View knows what to code generate.
+- `generate` - Gives you the **value**, you should return the AST of the prop so React View knows what to code generate.
 
-Custom Props are ignored by the `Knobs` UI component, so you need to always implement your own UI.
+Custom Props are ignored by the `Knobs` UI component, so you need to always implement your UI.
 
 ### `useView` Return Value
 
-`useView` is a React hook, it accepts the configuration above, handles the internal state of playground and returns many values and callback that you can plug into our default UI components or you can build your own UIs. `useView` returns on object with these parameters:
+`useView` is a React hook, it accepts the configuration above, handles the internal state of the playground and returns many values and callback that you can plug into our default UI components or you can build your own UIs. `useView` returns on an object with these parameters:
 
 #### compilerProps
 
@@ -470,9 +470,9 @@ placeholder?: React.FC<{height: number}>;
 presets?: PluginItem[];
 ```
 
-- `minHeight` - To prevent the scroll jump when component is rendered for the first time (aka the code is executed), we can pre-allocate a container with the `minHeight` (px).
+- `minHeight` - To prevent the scroll jump when the component is rendered for the first time (aka the code is executed), we can pre-allocate a container with the `minHeight` (px).
 - `placeholder` - A React component to display before the first render, you can use the default `Placeholder` component (it's a spinner). It gets the `minHeight` through the `height` prop.
-- `presets` - The Compiler component uses Babel and you can add additional babel presets to enable extra syntax features like TypeScript. `preset-react` in included by default.
+- `presets` - The Compiler component uses Babel and you can add additional babel presets to enable extra syntax features like TypeScript. `preset-react` is included by default.
 
 #### Editor
 
@@ -484,7 +484,7 @@ theme?: typeof lightTheme;
 ```
 
 - `language` - Syntax highlighting option. `jsx` is used by default.
-- `small` - More compact version of editor, used as a part of the Knobs UI.
+- `small` - More compact version of the editor, used as a part of the Knobs UI.
 - `theme` - prism-react-renderer's [theme](https://github.com/FormidableLabs/prism-react-renderer#theming), an internal light theme is used by default (also exported).
 
 #### Error
@@ -497,7 +497,7 @@ theme?: typeof lightTheme;
 
 ### Other React View Exports
 
-There are some other utilities that React View exports, mostly to help you when building your own custom knobs or provider.
+There are some other utilities that React View exports, mostly to help you when building your custom knobs or provider.
 
 ```js
 import {
@@ -526,7 +526,7 @@ This hook creates a duplicate internal state, synchronizes it with the up-stream
 (code: string) => string;
 ```
 
-Uses Prettier to format a source code.
+Uses Prettier to format the source code.
 
 #### parse
 
@@ -534,7 +534,7 @@ Uses Prettier to format a source code.
 (code: string) => t.File;
 ```
 
-Turns a source code into AST.
+Turns the source code into AST.
 
 #### getAstJsxElement
 
@@ -542,12 +542,12 @@ Turns a source code into AST.
 (name: string, attrs: (t.JSXAttribute | null)[], children: TJsxChild[]) => t.JSXElement;
 ```
 
-Generates an AST for JSX element.
+Generates the AST for a JSX element.
 
 ## Prior Art & Similar Projects
 
-[React Live](https://github.com/FormidableLabs/react-live). The first prototype of React View was even using react-live internally but eventually we needed a finer-grained control over the compilation process and more flexible API. We also rely on babel and babel-parser instead of buble.
+[React Live](https://github.com/FormidableLabs/react-live). The first prototype of React View was even using react-live internally but eventually we needed a finer-grained control over the compilation process and a more flexible API. We also rely on babel and babel-parser instead of buble.
 
 [Storybook knobs](https://github.com/storybookjs/storybook/tree/master/addons/knobs). They allow you to edit component props dynamically using the Storybook UI. We use the same concept.
 
-[Playroom](https://github.com/seek-oss/playroom). Simultaneously design across a variety of themes and screen sizes, powered by JSX and your own component library.
+[Playroom](https://github.com/seek-oss/playroom). Simultaneously design across a variety of themes and screen sizes, powered by JSX and your component library.
