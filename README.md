@@ -1,10 +1,10 @@
-<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589804-18001a80-0fa2-11ea-9af7-106ccaa5ab2b.png" width="50%"><p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589804-18001a80-0fa2-11ea-9af7-106ccaa5ab2b.png" style="max-width: 440px"><p>
 
 **React View is an interactive playground, documentation and code generator for your components.** Use it to document your component APIs, let users to live-edit the props and grab the generated ready-to-use source code.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589789-09196800-0fa2-11ea-9485-aeb506d18fe8.gif" width="75%"><p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589789-09196800-0fa2-11ea-9485-aeb506d18fe8.gif" style="max-width: 600px"><p>
 
-[See the example.](https://react-view.netlify.com/?path=/story/view--view)
+[See the example](https://react-view.netlify.com/?path=/story/view--view). [CodeSandbox](https://codesandbox.io/s/i3dbn?fontsize=14&hidenavigation=1&theme=dark).
 
 **There are three main ways** how to use React View:
 
@@ -128,7 +128,7 @@ export default () => {
 
 ## Live Code Editing Only
 
-<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69591933-3289c200-0fa9-11ea-952b-d628ace46e8a.gif" width="75%"><p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69591933-3289c200-0fa9-11ea-952b-d628ace46e8a.gif" style="max-width: 600px"><p>
 
 [See the example.](https://react-view.netlify.com/?path=/story/useview--live-code-only)
 
@@ -176,7 +176,7 @@ or pretty much anything that could be executed after the return statement of JS 
 
 We build this library for ourselves as a part of [baseweb.design](https://baseweb.design) documentation ([uber/baseweb](https://github.com/uber/baseweb)). We use all features of React View extensively. Our playground components are customized reusing existing Base Web components. We have implemented an entire custom playground section called [Style Overrides](https://baseweb.design/guides/understanding-overrides/) and there is also a support for theming through a context provider.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69666276-d8d4d680-1040-11ea-81a6-129655828009.png" width="75%"><p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69666276-d8d4d680-1040-11ea-81a6-129655828009.png" style="max-width: 600px"><p>
 
 [See the example.](https://baseweb.design/components/rating/)
 
@@ -539,7 +539,8 @@ Turns a source code into AST.
 #### getAstJsxElement
 
 ```ts
-(name: string, attrs: (t.JSXAttribute | null)[], children: TJsxChild[]) => t.JSXElement;
+(name: string, attrs: (t.JSXAttribute | null)[], children: TJsxChild[]) =>
+  t.JSXElement;
 ```
 
 Generates an AST for JSX element.
