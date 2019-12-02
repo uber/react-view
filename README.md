@@ -1,16 +1,16 @@
-<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589804-18001a80-0fa2-11ea-9af7-106ccaa5ab2b.png" style="max-width: 440px"><p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589804-18001a80-0fa2-11ea-9af7-106ccaa5ab2b.png" style="max-width: 50%"><p>
 
-**React View is an interactive playground, documentation and code generator for your components.** Use it to document your component APIs, let users to live-edit the props and grab the generated ready-to-use source code.
+React View is a set of tools that aspires to close the gap between users, developers and designers of component libraries. React View aims to make documentation more interactive and useful. It utilizes already popular tools such as babel and prettier. [Read the introductory blog post](https://baseweb.design/blog/introducing-react-view).
 
-<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589789-09196800-0fa2-11ea-9485-aeb506d18fe8.gif" style="max-width: 600px"><p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589789-09196800-0fa2-11ea-9485-aeb506d18fe8.gif" style="max-width: 75%"><p>
 
 [See the example](https://react-view.netlify.com/?path=/story/view--view). [CodeSandbox](https://codesandbox.io/s/i3dbn?fontsize=14&hidenavigation=1&theme=dark).
 
-**There are three main ways** how to use React View:
+There are three main ways how to use React View:
 
 - **All-in-one playground**. Import `<View />`, give it the component configuration and drop it in your web documentation. This is ideal if you want to start as quickly as possible and don't need to customize anything.
-- **Build your own playground**. Import the `useView` hook and give it the component configuration. This hook handles the playground state and returns various props and callbacks that you can fit into your own UI components. React View also exports all default UI parts separately (`Editor`, `ActionButtons`, `Compiler`, `Knobs`, `Error`...) so you can reuse them. This is a great option if you want to customize some parts of the default UI (or all of it) and not to worry about the rest.
-- **Live code editing only**. Sometimes it is useful to only have an editable source code and live preview without the list of props. You can use `useView` for that too. Just don't give it any component configuration and don't render the `<Knobs />` component. React View uses babel, so **you can add additional presets and enable TypeScript**.
+- **Build your own playground**. Import the `useView` hook and give it the component configuration. This hook handles the playground state and returns various props and callbacks that you can fit into your own UI components. React View also exports all default UI parts separately (`Editor`, `ActionButtons`, `Compiler`, `Knobs`, `Error`...) so you can reuse them. This is a great option if you want to customize some parts of the default UI (or all of it) without worrying about the rest.
+- **Live code editing only**. Sometimes it is useful to only have editable source code and live preview without the list of props. You can use `useView` for that too. Just don't give it any component configuration and don't render the `<Knobs />` component. React View uses babel, so you can add additional presets and enable TypeScript.
 
 ## Installation
 
@@ -56,11 +56,11 @@ export default () => (
 );
 ```
 
-This is a basic example demonstrating the all-in-one `View` component. You need to define the component name, props, scope and imports. This example renders the gif above (without the `size` prop).
+This is a basic example demonstrating the all-in-one `View` component. You need to define the component name, props, scope and imports. This example renders the gif above (except the `size` prop).
 
 ## Build Your Own Playground
 
-The View component is a tiny wrapper around the `useView` hook. If you wish to do some customization and have more control, you can opt-in for this more flexible API:
+**Bring your own UI**. The View component is a tiny wrapper around the `useView` hook. If you want to customize and have more control, you can use the `useView` hook directly. You can still re-use our default UI components or create your own:
 
 ```tsx
 import * as React from 'react';
@@ -128,11 +128,11 @@ export default () => {
 
 ## Live Code Editing Only
 
-<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69591933-3289c200-0fa9-11ea-952b-d628ace46e8a.gif" style="max-width: 600px"><p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69591933-3289c200-0fa9-11ea-952b-d628ace46e8a.gif" style="max-width: 75%"><p>
 
 [See the example.](https://react-view.netlify.com/?path=/story/useview--live-code-only)
 
-If you don't need the code generation or props documentation, you can also use React View as an editable source code with the live preview.
+If you don't need the code generation or props documentation, you can also use React View for editing source code with a live preview.
 
 ```tsx
 import {useView, Compiler, Editor, Error} from 'react-view';
@@ -160,13 +160,13 @@ export default () => {
 
 This example also demonstrates how to opt-in into TypeScript support. Since we use babel as the compiler, you can simply add additional presets (`preset-react` is applied by default). If you are using additional components or dependencies, you need to pass them through `scope`.
 
-You could also pass just a naked JSX element:
+It can also compile a naked JSX element:
 
 ```tsx
 <h2>Hey</h2>
 ```
 
-or pretty much anything that could be executed after the return statement of JS function:
+Or pretty much anything that can be executed after the return statement of JavaScript function:
 
 ```js
 2 + 5;
@@ -176,7 +176,7 @@ or pretty much anything that could be executed after the return statement of JS 
 
 We build this library for ourselves as a part of [baseweb.design](https://baseweb.design) documentation ([uber/baseweb](https://github.com/uber/baseweb)). We use all features of React View extensively. Our playground components are customized reusing existing Base Web components. We have implemented an entire custom playground section called [Style Overrides](https://baseweb.design/guides/understanding-overrides/) and there is also a support for theming through a context provider.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69666276-d8d4d680-1040-11ea-81a6-129655828009.png" style="max-width: 600px"><p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69666276-d8d4d680-1040-11ea-81a6-129655828009.png" style="max-width: 75%"><p>
 
 [See the example.](https://baseweb.design/components/rating/)
 
