@@ -1,16 +1,16 @@
 <p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589804-18001a80-0fa2-11ea-9af7-106ccaa5ab2b.png" width="50%"><p>
 
-**React View is an interactive playground, documentation and code generator for your components.** Use it to document your component APIs, let users to live-edit the props and grab the generated ready-to-use source code.
+React View is a set of tools that aspires to close the gap between users, developers and designers of component libraries. React View aims to make documentation more interactive and useful. It utilizes already popular tools such as babel and prettier. [Read the introductory blog post](https://baseweb.design/blog/introducing-react-view).
 
 <p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589789-09196800-0fa2-11ea-9485-aeb506d18fe8.gif" width="75%"><p>
 
-[See the example.](https://react-view.netlify.com/?path=/story/view--view)
+[See the example](https://react-view.netlify.com/?path=/story/view--view). [CodeSandbox](https://codesandbox.io/s/i3dbn?fontsize=14&hidenavigation=1&theme=dark).
 
-**There are three main ways** how to use React View:
+There are three main ways how to use React View:
 
 - **All-in-one playground**. Import `<View />`, give it the component configuration and drop it in your web documentation. This is ideal if you want to start as quickly as possible and don't need to customize anything.
-- **Build your playground**. Import the `useView` hook and give it the component configuration. This hook handles the playground state and returns various props and callbacks that you can fit into your UI components. React View also exports all default UI parts separately (`Editor`, `ActionButtons`, `Compiler`, `Knobs`, `Error`...) so you can reuse them. This is a great option if you want to customize some parts of the default UI (or all of it) and not worry about the rest.
-- **Live code editing only**. Sometimes it is useful to only have editable source code and live preview without the list of props. You can use `useView` for that too. Just don't give it any component configuration and don't render the `<Knobs />` component. React View uses babel, so **you can add additional presets and enable TypeScript**.
+- **Build your own playground**. Import the `useView` hook and give it the component configuration. This hook handles the playground state and returns various props and callbacks that you can fit into your own UI components. React View also exports all default UI parts separately (`Editor`, `ActionButtons`, `Compiler`, `Knobs`, `Error`...) so you can reuse them. This is a great option if you want to customize some parts of the default UI (or all of it) without worrying about the rest.
+- **Live code editing only**. Sometimes it is useful to only have editable source code and live preview without the list of props. You can use `useView` for that too. Just don't give it any component configuration and don't render the `<Knobs />` component. React View uses babel, so you can add additional presets and enable TypeScript.
 
 ## Installation
 
@@ -56,11 +56,11 @@ export default () => (
 );
 ```
 
-This is a basic example demonstrating the all-in-one `View` component. You need to define the component name, props, scope and imports. This example renders the gif above (without the `size` prop).
+This is a basic example demonstrating the all-in-one `View` component. You need to define the component name, props, scope and imports. This example renders the gif above (except the `size` prop).
 
 ## Build Your Playground
 
-The View component is a tiny wrapper around the `useView` hook. If you wish to do some customization and have more control, you can opt-in for this more flexible API:
+**Bring your own UI**. The View component is a tiny wrapper around the `useView` hook. If you want to customize and have more control, you can use the `useView` hook directly. You can still re-use our default UI components or create your own:
 
 ```tsx
 import * as React from 'react';
@@ -132,7 +132,7 @@ export default () => {
 
 [See the example.](https://react-view.netlify.com/?path=/story/useview--live-code-only)
 
-If you don't need the code generation or props documentation, you can also use React View as an editable source code with the live preview.
+If you don't need the code generation or props documentation, you can also use React View for editing source code with a live preview.
 
 ```tsx
 import {useView, Compiler, Editor, Error} from 'react-view';
@@ -160,13 +160,13 @@ export default () => {
 
 This example also demonstrates how to opt-in into TypeScript support. Since we use babel as the compiler, you can simply add additional presets (`preset-react` is applied by default). If you are using additional components or dependencies, you need to pass them through `scope`.
 
-You could also pass just a naked JSX element:
+It can also compile a naked JSX element:
 
 ```tsx
 <h2>Hey</h2>
 ```
 
-or pretty much anything that could be executed after the return statement of JS function:
+Or pretty much anything that can be executed after the return statement of JavaScript function:
 
 ```js
 2 + 5;
@@ -539,7 +539,8 @@ Turns the source code into AST.
 #### getAstJsxElement
 
 ```ts
-(name: string, attrs: (t.JSXAttribute | null)[], children: TJsxChild[]) => t.JSXElement;
+(name: string, attrs: (t.JSXAttribute | null)[], children: TJsxChild[]) =>
+  t.JSXElement;
 ```
 
 Generates the AST for a JSX element.
