@@ -1,8 +1,8 @@
-<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589804-18001a80-0fa2-11ea-9af7-106ccaa5ab2b.png" style="max-width: 50%"><p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589804-18001a80-0fa2-11ea-9af7-106ccaa5ab2b.png" width="50%"><p>
 
 React View is a set of tools that aspires to close the gap between users, developers and designers of component libraries. React View aims to make documentation more interactive and useful. It utilizes already popular tools such as babel and prettier. [Read the introductory blog post](https://baseweb.design/blog/introducing-react-view).
 
-<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589789-09196800-0fa2-11ea-9485-aeb506d18fe8.gif" style="max-width: 75%"><p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589789-09196800-0fa2-11ea-9485-aeb506d18fe8.gif" width="75%"><p>
 
 [See the example](https://react-view.netlify.com/?path=/story/view--view). [CodeSandbox](https://codesandbox.io/s/i3dbn?fontsize=14&hidenavigation=1&theme=dark).
 
@@ -128,7 +128,7 @@ export default () => {
 
 ## Live Code Editing Only
 
-<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69591933-3289c200-0fa9-11ea-952b-d628ace46e8a.gif" style="max-width: 75%"><p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69591933-3289c200-0fa9-11ea-952b-d628ace46e8a.gif" width="75%"><p>
 
 [See the example.](https://react-view.netlify.com/?path=/story/useview--live-code-only)
 
@@ -176,7 +176,7 @@ Or pretty much anything that can be executed after the return statement of JavaS
 
 We build this library for ourselves as a part of [baseweb.design](https://baseweb.design) documentation ([uber/baseweb](https://github.com/uber/baseweb)). We use all features of React View extensively. Our playground components are customized reusing existing Base Web components. We have implemented an entire custom playground section called [Style Overrides](https://baseweb.design/guides/understanding-overrides/) and there is also a support for theming through a context provider.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69666276-d8d4d680-1040-11ea-81a6-129655828009.png" style="max-width: 75%"><p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/69666276-d8d4d680-1040-11ea-81a6-129655828009.png" width="75%"><p>
 
 [See the example.](https://baseweb.design/components/rating/)
 
