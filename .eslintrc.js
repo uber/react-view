@@ -1,4 +1,7 @@
 module.exports = {
+  plugins: [
+    'header',
+  ],
   parser: "@typescript-eslint/parser", // Specifies the ESLint parser
   extends: [
     "plugin:react/recommended", // Uses the recommended rules from @eslint-plugin-react
@@ -19,7 +22,9 @@ module.exports = {
     "react/prop-types": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    'header/header': [2, 'LICENSE-HEAD'],
   },
   settings: {
     react: {
