@@ -190,6 +190,7 @@ describe('parseCode', () => {
           >
             <Input
               value={value}
+              obj={{ foo: true }}
               onChange={e => setValue(e.target.value)}
               placeholder="Controlled Input"
             />
@@ -203,6 +204,7 @@ describe('parseCode', () => {
         onChange: 'e => setValue(e.target.value)',
         placeholder: 'Controlled Input',
         value: 'Hello',
+        obj: '{ foo: true }',
       },
       parsedProvider: {
         inputFill: 'yellow',
