@@ -157,6 +157,11 @@ export function parseCode(
                     t.program([t.expressionStatement(attr.value.expression)]),
                     30
                   );
+                  if (attr.value.expression.type === 'ObjectExpression') {
+                    // the generated code is ({ .... }), this removes the brackets to
+                    // keep the input more readable
+                    value = value.slice(1, -1);
+                  }
                 }
               }
             }

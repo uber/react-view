@@ -53,7 +53,9 @@ export const getAstPropValue = (
     case PropTypes.Ref:
       return null;
     case PropTypes.Object:
-      return template.ast(`${value}`, {plugins: ['jsx']}) as any;
+      // need to add this bogus assignment so the value is recognized as an ObjectExpression
+      return (template.ast(`a = ${value}`, {plugins: ['jsx']}) as any)
+        .expression.right;
     case PropTypes.Array:
     case PropTypes.Number:
     case PropTypes.Function:

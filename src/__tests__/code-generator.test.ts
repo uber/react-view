@@ -245,29 +245,25 @@ describe('getAstPropValue', () => {
         {}
       )
     ).toEqual({
-      body: [
+      properties: [
         {
-          body: {
-            expression: {
-              loc: undefined,
-              type: 'BooleanLiteral',
-              value: true,
-            },
-            loc: undefined,
-            type: 'ExpressionStatement',
-          },
-          label: {
+          computed: false,
+          key: {
             loc: undefined,
             name: 'foo',
             type: 'Identifier',
           },
           loc: undefined,
-          type: 'LabeledStatement',
+          shorthand: false,
+          type: 'ObjectProperty',
+          value: {
+            loc: undefined,
+            type: 'BooleanLiteral',
+            value: true,
+          },
         },
       ],
-      directives: [],
-      loc: undefined,
-      type: 'BlockStatement',
+      type: 'ObjectExpression',
     });
   });
   test('React node', () => {
