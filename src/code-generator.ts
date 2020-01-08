@@ -44,7 +44,14 @@ export const getAstPropValue = (
     case PropTypes.Boolean:
       return t.booleanLiteral(Boolean(value));
     case PropTypes.Enum:
-      return t.identifier(String(value));
+      const [object, property] = String(value).split('.');
+      return t.memberExpression(
+        t.identifier(object),
+        property.includes('-')
+          ? t.stringLiteral(property)
+          : t.identifier(property),
+        property.includes('-') ? true : false
+      );
     case PropTypes.Date:
       return t.newExpression(
         t.identifier('Date'),

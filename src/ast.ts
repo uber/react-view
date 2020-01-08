@@ -162,6 +162,14 @@ export function parseCode(
                     // keep the input more readable
                     value = value.slice(1, -1);
                   }
+                  if (
+                    attr.value.expression.type === 'MemberExpression' &&
+                    attr.value.expression.computed
+                  ) {
+                    // turn a['hello-world'] into a.hello-world so we don't have to deal with two
+                    // variants in the enum knob UI
+                    value = `${attr.value.expression.object.name}.${attr.value.expression.property.value}`;
+                  }
                 }
               }
             }
