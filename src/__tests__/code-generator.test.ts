@@ -189,8 +189,40 @@ describe('getAstPropValue', () => {
         {}
       )
     ).toEqual({
-      name: 'SIZE.large',
-      type: 'Identifier',
+      computed: false,
+      object: {
+        name: 'SIZE',
+        type: 'Identifier',
+      },
+      optional: null,
+      property: {
+        name: 'large',
+        type: 'Identifier',
+      },
+      type: 'MemberExpression',
+    });
+    expect(
+      getAstPropValue(
+        {
+          value: 'SIZE.large-size',
+          type: PropTypes.Enum,
+          description: '',
+        },
+        'foo',
+        {}
+      )
+    ).toEqual({
+      computed: true,
+      object: {
+        name: 'SIZE',
+        type: 'Identifier',
+      },
+      optional: null,
+      property: {
+        value: 'large-size',
+        type: 'StringLiteral',
+      },
+      type: 'MemberExpression',
     });
   });
   test('ref', () => {

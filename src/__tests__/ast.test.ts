@@ -191,6 +191,8 @@ describe('parseCode', () => {
             <Input
               value={value}
               obj={{ foo: true }}
+              size={SIZE['a-b']}
+              size2={SIZE.a}
               onChange={e => setValue(e.target.value)}
               placeholder="Controlled Input"
             />
@@ -204,6 +206,8 @@ describe('parseCode', () => {
         onChange: 'e => setValue(e.target.value)',
         placeholder: 'Controlled Input',
         value: 'Hello',
+        size: 'SIZE.a-b',
+        size2: 'SIZE.a',
         obj: '{ foo: true }',
       },
       parsedProvider: {
