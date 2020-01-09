@@ -6,7 +6,14 @@ LICENSE file in the root directory of this source tree.
 */
 import * as React from 'react';
 import Popover from '@miksu/react-tiny-popover';
-import {useValueDebounce, PropTypes, Error, Editor, TPropValue} from '../index';
+import {
+  useValueDebounce,
+  PropTypes,
+  Error,
+  Editor,
+  TPropValue,
+  TImportsConfig,
+} from '../index';
 import {useHover} from '../utils';
 
 const getTooltip = (description: string, type: string, name: string) => (
@@ -117,6 +124,7 @@ const Knob: React.SFC<{
   options?: {[key: string]: string};
   placeholder?: string;
   enumName?: string;
+  imports?: TImportsConfig;
 }> = ({
   name,
   error,
@@ -127,6 +135,7 @@ const Knob: React.SFC<{
   description,
   placeholder,
   enumName,
+  imports,
 }) => {
   const [val] = useValueDebounce<TPropValue>(globalVal, globalSet);
   switch (type) {
@@ -168,29 +177,34 @@ const Knob: React.SFC<{
           <Label tooltip={getTooltip(description, type, name)}>{name}</Label>
           {numberOfOptions < 7 ? (
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
-              {Object.keys(options).map(opt => (
-                <div
-                  style={{
-                    marginRight: '16px',
-                    marginBottom: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                  key={opt}
-                >
-                  <input
-                    style={{marginRight: '8px', marginLeft: '0px'}}
-                    type="radio"
-                    checked={`${enumName || name.toUpperCase()}.${opt}` === val}
+              {Object.keys(options).map(opt => {
+                const enumValue = imports
+                  ? `${enumName || name.toUpperCase()}.${opt}`
+                  : opt;
+                return (
+                  <div
+                    style={{
+                      marginRight: '16px',
+                      marginBottom: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
                     key={opt}
-                    id={`${name}_${opt}`}
-                    value={`${enumName || name.toUpperCase()}.${opt}`}
-                    name={`radio_${name}`}
-                    onChange={e => globalSet(e.target.value)}
-                  />
-                  <label htmlFor={`${name}_${opt}`}>{opt}</label>
-                </div>
-              ))}
+                  >
+                    <input
+                      style={{marginRight: '8px', marginLeft: '0px'}}
+                      type="radio"
+                      checked={enumValue === val}
+                      key={opt}
+                      id={`${name}_${opt}`}
+                      value={enumValue}
+                      name={`radio_${name}`}
+                      onChange={e => globalSet(e.target.value)}
+                    />
+                    <label htmlFor={`${name}_${opt}`}>{opt}</label>
+                  </div>
+                );
+              })}
             </div>
           ) : (
             <select

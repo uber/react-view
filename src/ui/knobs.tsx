@@ -33,6 +33,7 @@ const KnobColumn: React.FC<TKnobsProps & {knobNames: string[]}> = ({
           placeholder={state[name].placeholder}
           set={(value: TPropValue) => set(value, name)}
           enumName={state[name].enumName}
+          imports={state[name].imports}
         />
       ))}
     </div>

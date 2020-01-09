@@ -44,6 +44,9 @@ export const getAstPropValue = (
     case PropTypes.Boolean:
       return t.booleanLiteral(Boolean(value));
     case PropTypes.Enum:
+      if (!prop.imports) {
+        return t.stringLiteral(String(value));
+      }
       const [object, property] = String(value).split('.');
       return t.memberExpression(
         t.identifier(object),
