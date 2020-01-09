@@ -14,7 +14,37 @@ import {getAstJsxElement, formatAstAndPrint} from './code-generator';
 export const parse = (code: string) =>
   babelParse(code, {
     sourceType: 'module',
-    plugins: ['jsx', 'flow'],
+    plugins: [
+      'jsx',
+      'flowComments',
+      'typescript',
+      'asyncGenerators',
+      'classProperties',
+      'classPrivateProperties',
+      'classPrivateMethods',
+      [
+        'decorators',
+        {
+          decoratorsBeforeExport: true,
+        },
+      ],
+      'doExpressions',
+      'dynamicImport',
+      'exportDefaultFrom',
+      'exportNamespaceFrom',
+      'functionBind',
+      'functionSent',
+      'importMeta',
+      'logicalAssignment',
+      'nullishCoalescingOperator',
+      'numericSeparator',
+      'objectRestSpread',
+      'optionalCatchBinding',
+      'optionalChaining',
+      'partialApplication',
+      'throwExpressions',
+      'topLevelAwait',
+    ],
   });
 
 // creates a call expression that synchronizes view state
