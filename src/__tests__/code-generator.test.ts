@@ -184,6 +184,11 @@ describe('getAstPropValue', () => {
           value: 'SIZE.large',
           type: PropTypes.Enum,
           description: '',
+          imports: {
+            'your-button-component': {
+              named: ['SIZE'],
+            },
+          },
         },
         'foo',
         {}
@@ -207,6 +212,11 @@ describe('getAstPropValue', () => {
           value: 'SIZE.large-size',
           type: PropTypes.Enum,
           description: '',
+          imports: {
+            'your-button-component': {
+              named: ['SIZE'],
+            },
+          },
         },
         'foo',
         {}
@@ -223,6 +233,20 @@ describe('getAstPropValue', () => {
         type: 'StringLiteral',
       },
       type: 'MemberExpression',
+    });
+    expect(
+      getAstPropValue(
+        {
+          value: 'compact',
+          type: PropTypes.Enum,
+          description: '',
+        },
+        'foo',
+        {}
+      )
+    ).toEqual({
+      value: 'compact',
+      type: 'StringLiteral',
     });
   });
   test('ref', () => {
