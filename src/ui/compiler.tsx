@@ -99,7 +99,7 @@ const Compiler: React.FC<TCompilerProps> = ({
   placeholder,
   minHeight,
   presets,
-  classNames,
+  className,
 }) => {
   const [output, setOutput] = React.useState<{
     component: React.ComponentClass | null;
@@ -115,29 +115,22 @@ const Compiler: React.FC<TCompilerProps> = ({
     <div
       {...getStyles(
         {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'baseline',
+          flexWrap: 'wrap',
           minHeight: `${minHeight || 0}px`,
           paddingTop: minHeight ? '16px' : 0,
           paddingBottom: minHeight ? '16px' : 0,
         },
-        classNames && classNames.root
+        className
       )}
     >
-      <div
-        {...getStyles(
-          {
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-          },
-          classNames && classNames.inner
-        )}
-      >
-        {Element ? (
-          <Element />
-        ) : Placeholder ? (
-          <Placeholder height={minHeight || 32} />
-        ) : null}
-      </div>
+      {Element ? (
+        <Element />
+      ) : Placeholder ? (
+        <Placeholder height={minHeight || 32} />
+      ) : null}
     </div>
   );
 };

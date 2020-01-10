@@ -57,7 +57,7 @@ export type TCompilerProps = {
   transformations: ((ast: t.File) => t.File)[];
   placeholder?: React.FC<{height: number}>;
   presets?: PluginItem[];
-  classNames?: {[key: string]: string};
+  className?: string;
 };
 
 export type TKnobsProps = {
