@@ -46,6 +46,7 @@ export type TUseViewParams<CustomPropFields = any> = {
   initialCode?: string;
   provider?: TProvider;
   customProps?: TCustomProps;
+  className?: string;
 };
 
 export type TCompilerProps = {
@@ -56,6 +57,7 @@ export type TCompilerProps = {
   transformations: ((ast: t.File) => t.File)[];
   placeholder?: React.FC<{height: number}>;
   presets?: PluginItem[];
+  classNames?: {[key: string]: string};
 };
 
 export type TKnobsProps = {
@@ -73,12 +75,14 @@ export type TEditorProps = {
   small?: boolean;
   theme?: typeof lightTheme;
   ['data-testid']?: string;
+  className?: string;
 };
 
 export type TErrorProps = {
   msg: string | null;
   code?: string;
   isPopup?: boolean;
+  className?: string;
 };
 
 export type TUseView = <ProviderValue = any, CustomPropFields = any>(

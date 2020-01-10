@@ -14,13 +14,14 @@ import {
   ActionButtons,
   Placeholder,
 } from '../index';
+import {getStyles} from '../utils';
 
 import {TUseViewParams} from '../types';
 
 const View: React.FC<TUseViewParams> = args => {
   const params = useView(args);
   return (
-    <div style={{maxWidth: '600px'}}>
+    <div {...getStyles({maxWidth: '600px'}, args.className)}>
       <Compiler
         {...params.compilerProps}
         minHeight={62}

@@ -6,7 +6,7 @@ LICENSE file in the root directory of this source tree.
 */
 import * as React from 'react';
 import Popover from '@miksu/react-tiny-popover';
-import {formatBabelError, frameError} from '../utils';
+import {formatBabelError, frameError, getStyles} from '../utils';
 import {TErrorProps} from '../index';
 
 const PopupError: React.FC<{enabled: boolean; children: React.ReactNode}> = ({
@@ -25,22 +25,25 @@ const PopupError: React.FC<{enabled: boolean; children: React.ReactNode}> = ({
   );
 };
 
-const Error: React.FC<TErrorProps> = ({msg, code, isPopup}) => {
+const Error: React.FC<TErrorProps> = ({msg, code, isPopup, className}) => {
   if (msg === null) return null;
   return (
     <PopupError enabled={Boolean(isPopup)}>
       <div
-        style={{
-          borderRadius: '5px',
-          backgroundColor: '#892C21',
-          whiteSpace: 'pre',
-          fontSize: '11px',
-          fontFamily: `Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace`,
-          color: '#FFF',
-          padding: '16px',
-          margin: `${isPopup ? 4 : 8}px 0px`,
-          overflowX: 'scroll',
-        }}
+        {...getStyles(
+          {
+            borderRadius: '5px',
+            backgroundColor: '#892C21',
+            whiteSpace: 'pre',
+            fontSize: '11px',
+            fontFamily: `Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace`,
+            color: '#FFF',
+            padding: '16px',
+            margin: `${isPopup ? 4 : 8}px 0px`,
+            overflowX: 'scroll',
+          },
+          className
+        )}
       >
         {code ? frameError(msg, code) : formatBabelError(msg)}
       </div>
