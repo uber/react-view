@@ -502,7 +502,7 @@ className?: string;
 ```
 
 - `isPopup` - Should the component be displayed as a pop-up instead of being inlined.
-- `className` - The class name passed to the root wrapper of Editor.
+- `className` - The class name passed to the root wrapper of Error.
 
 ### Other React View Exports
 
