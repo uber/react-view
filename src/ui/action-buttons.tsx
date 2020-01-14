@@ -5,6 +5,7 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
 import * as React from 'react';
+import {getStyles} from '../utils';
 
 export const ActionButton: React.FC<{
   onClick: () => void;
@@ -18,7 +19,8 @@ export const ActionButtons: React.FC<{
   copyCode: () => void;
   copyUrl: () => void;
   reset: () => void;
-}> = ({formatCode, copyCode, copyUrl, reset}) => (
+  className?: string;
+}> = ({formatCode, copyCode, copyUrl, reset, className}) => (
   <React.Fragment>
     <style
       dangerouslySetInnerHTML={{
@@ -46,7 +48,7 @@ export const ActionButtons: React.FC<{
   `,
       }}
     />
-    <div style={{margin: '10px 0px'}}>
+    <div {...getStyles({margin: '10px 0px'}, className)}>
       <ActionButton
         data-testid="rv-format"
         style={{marginRight: '8px'}}

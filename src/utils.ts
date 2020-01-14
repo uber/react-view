@@ -138,3 +138,7 @@ export function clone<T>(obj: T): T {
   }
   return result;
 }
+
+export function getStyles(style: React.CSSProperties, className?: string) {
+  return className ? {className} : {style};
+}

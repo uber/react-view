@@ -351,6 +351,7 @@ compilerProps: {
   code: string;
   setError: (error: string | null) => void;
   transformations: ((ast: t.File) => t.File)[];
+  className?: string;
 }
 ```
 
@@ -384,6 +385,7 @@ editorProps: {
   code: string;
   onChange: (code: string) => void;
   placeholder?: string;
+  className?: string;
 };
 ```
 
@@ -401,6 +403,7 @@ You can pass these props into the `Error` component.
 errorProps: {
   msg: string | null;
   code?: string;
+  className?: string;
 };
 ```
 
@@ -468,11 +471,13 @@ Their APIs almost exactly match the return parameters of `useView`. However, **t
 minHeight?: number;
 placeholder?: React.FC<{height: number}>;
 presets?: PluginItem[];
+className?: string;
 ```
 
 - `minHeight` - To prevent the scroll jump when the component is rendered for the first time (aka the code is executed), we can pre-allocate a container with the `minHeight` (px).
 - `placeholder` - A React component to display before the first render, you can use the default `Placeholder` component (it's a spinner). It gets the `minHeight` through the `height` prop.
 - `presets` - The Compiler component uses Babel and you can add additional babel presets to enable extra syntax features like TypeScript. `preset-react` is included by default.
+- `className` - The class name passed to the root wrapper of Compiler.
 
 #### Editor
 
@@ -481,19 +486,23 @@ language?: 'javascript' | 'jsx' | 'typescript' | 'tsx' | 'css';
 small?: boolean;
 theme?: typeof lightTheme;
 ['data-testid']?: string;
+className?: string;
 ```
 
 - `language` - Syntax highlighting option. `jsx` is used by default.
 - `small` - More compact version of the editor, used as a part of the Knobs UI.
 - `theme` - prism-react-renderer's [theme](https://github.com/FormidableLabs/prism-react-renderer#theming), an internal light theme is used by default (also exported).
+- `className` - The class name passed to the root wrapper of Editor.
 
 #### Error
 
 ```ts
   isPopup?: boolean;
+  className?: string;
 ```
 
 - `isPopup` - Should the component be displayed as a pop-up instead of being inlined.
+- `className` - The class name passed to the root wrapper of Error.
 
 ### Other React View Exports
 

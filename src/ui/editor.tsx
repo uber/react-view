@@ -14,6 +14,7 @@ import {
   TEditorLanguage,
   TTransformToken,
 } from '../index';
+import {getStyles} from '../utils';
 
 const highlightCode = ({
   code,
@@ -59,6 +60,7 @@ const Editor: React.FC<TEditorProps> = ({
   language,
   theme,
   ['data-testid']: testid,
+  className,
 }) => {
   const [focused, setFocused] = React.useState(false);
   const editorTheme = {
@@ -74,15 +76,18 @@ const Editor: React.FC<TEditorProps> = ({
   return (
     <div
       data-testid={testid}
-      style={{
-        boxSizing: 'border-box',
-        paddingLeft: '4px',
-        paddingRight: '4px',
-        maxWidth: 'auto',
-        overflow: 'hidden',
-        border: focused ? '1px solid #276EF1' : '1px solid #CCC',
-        borderRadius: '5px',
-      }}
+      {...getStyles(
+        {
+          boxSizing: 'border-box',
+          paddingLeft: '4px',
+          paddingRight: '4px',
+          maxWidth: 'auto',
+          overflow: 'hidden',
+          border: focused ? '1px solid #276EF1' : '1px solid #CCC',
+          borderRadius: '5px',
+        },
+        className
+      )}
     >
       <style
         dangerouslySetInnerHTML={{

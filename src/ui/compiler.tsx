@@ -11,6 +11,7 @@ import * as t from '@babel/types';
 import presetReact from '@babel/preset-react';
 import {parse} from '../ast';
 import {TCompilerProps} from '../index';
+import {getStyles} from '../utils';
 
 const errorBoundary = (
   Element: React.FC | React.ComponentClass | undefined,
@@ -98,6 +99,7 @@ const Compiler: React.FC<TCompilerProps> = ({
   placeholder,
   minHeight,
   presets,
+  className,
 }) => {
   const [output, setOutput] = React.useState<{
     component: React.ComponentClass | null;
@@ -111,25 +113,24 @@ const Compiler: React.FC<TCompilerProps> = ({
   const Placeholder = placeholder;
   return (
     <div
-      style={{
-        minHeight: `${minHeight || 0}px`,
-        paddingTop: minHeight ? '16px' : 0,
-        paddingBottom: minHeight ? '16px' : 0,
-      }}
-    >
-      <div
-        style={{
+      {...getStyles(
+        {
           display: 'flex',
           justifyContent: 'center',
+          alignItems: 'baseline',
           flexWrap: 'wrap',
-        }}
-      >
-        {Element ? (
-          <Element />
-        ) : Placeholder ? (
-          <Placeholder height={minHeight || 32} />
-        ) : null}
-      </div>
+          minHeight: `${minHeight || 0}px`,
+          paddingTop: minHeight ? '16px' : 0,
+          paddingBottom: minHeight ? '16px' : 0,
+        },
+        className
+      )}
+    >
+      {Element ? (
+        <Element />
+      ) : Placeholder ? (
+        <Placeholder height={minHeight || 32} />
+      ) : null}
     </div>
   );
 };
