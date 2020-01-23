@@ -44,6 +44,9 @@ export const getAstPropValue = (
     case PropTypes.Boolean:
       return t.booleanLiteral(Boolean(value));
     case PropTypes.Enum:
+      if (!value) {
+        return t.identifier(String(value));
+      }
       if (!prop.imports) {
         return t.stringLiteral(String(value));
       }
