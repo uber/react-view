@@ -41,9 +41,23 @@ const useView: TUseView = (config = {}) => {
         generate: (_: any, child: t.JSXElement) => child,
         imports: {},
       };
-  const onUpdate = config.onUpdate ? config.onUpdate : () => {};
+
+  const onUpdate = ({code}: {code: string}) => {
+    history.replaceState(
+      null,
+      '',
+      `${window.location.search.split('&code')[0]}&code=${encodeURI(code)}`
+    );
+    config.onUpdate && config.onUpdate({code});
+  };
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlInitialCode = urlParams.get('code');
+
   const customProps = config.customProps ? config.customProps : {};
-  const initialCode = config.initialCode;
+  const initialCode = urlInitialCode
+    ? decodeURI(urlInitialCode)
+    : config.initialCode;
 
   const [hydrated, setHydrated] = useState(false);
   const [error, setError] = useState<TError>({where: '', msg: null});
