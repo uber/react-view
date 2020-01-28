@@ -346,7 +346,7 @@ describe('vscodeSnippet component', () => {
       Button: {
         body: [
           '<Button',
-          '  ${1:enhancer={${2:() => {\n    return <div>Blah</div>;\n  }}\\}}',
+          '  ${1:enhancer={${2:() => {\n    return <div>Blah</div>;\n  \\}}\\}}',
           '/>',
         ],
         description: 'Base Button component.',
@@ -355,7 +355,7 @@ describe('vscodeSnippet component', () => {
       },
     });
   });
-  test('prop formatting child (prettier)', () => {
+  test('prop formatting child function (prettier)', () => {
     expect(
       vscodeSnippet({
         componentName: 'Button',
@@ -372,7 +372,33 @@ describe('vscodeSnippet component', () => {
         body: [
           '<Button',
           '>',
-          '  ${1:() => {\n    return <div>Blah</div>;\n  }}',
+          '  ${1:() => {\n    return <div>Blah</div>;\n  \\}}',
+          '</Button>',
+        ],
+        description: 'Base Button component.',
+        prefix: ['Button component'],
+        scope: 'javascript,javascriptreact,typescript,typescriptreact',
+      },
+    });
+  });
+  test('prop formatting child components (prettier)', () => {
+    expect(
+      vscodeSnippet({
+        componentName: 'Button',
+        props: {
+          children: {
+            value: `<span>Foo</span><span>Baz</span><span>Ok</span>`,
+            type: PropTypes.Function,
+            description: 'Foo',
+          },
+        },
+      })
+    ).toEqual({
+      Button: {
+        body: [
+          '<Button',
+          '>',
+          '  ${1:<span>Foo</span>\n  <span>Baz</span>\n  <span>Ok</span>}',
           '</Button>',
         ],
         description: 'Base Button component.',

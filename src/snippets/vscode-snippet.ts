@@ -17,11 +17,26 @@ import {addToImportList} from '../code-generator';
 
 const formatCode = (code: TPropValue) => {
   if (code && typeof code === 'string') {
+    const isJsx = code.startsWith('<');
     try {
-      code = rvFormatCode(code);
-      return code.replace(/\n/g, '\n  ');
+      if (isJsx) {
+        code = rvFormatCode(`<>${code}</>`);
+      } else {
+        code = rvFormatCode(`<>{${code}}</>`);
+      }
+      const addSpaces = !code.startsWith('<>\n');
+      if (isJsx) {
+        code = code.replace(/^<>\s*/, '').replace(/\s*<\/>$/, '');
+      } else {
+        code = code.replace(/^<>\s*\{/, '').replace(/\}\s*<\/>$/, '');
+      }
+      if (addSpaces) {
+        code = code.replace(/\n/g, '\n  ');
+      }
     } catch (e) {}
+    code = code.replace(/\}/g, '\\}').replace(/\$\{/g, '$\\{');
   }
+
   return code;
 };
 
