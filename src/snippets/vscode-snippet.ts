@@ -17,7 +17,10 @@ import {addToImportList} from '../code-generator';
 
 const formatCode = (code: TPropValue) => {
   if (code && typeof code === 'string') {
-    return rvFormatCode(code);
+    try {
+      code = rvFormatCode(code);
+      return code.replace(/\n/g, '\n  ');
+    } catch (e) {}
   }
   return code;
 };
@@ -126,7 +129,9 @@ const getComponentBody = (
     }
     if (props['children'] && !props['children'].hidden) {
       componentBody.push('>');
-      componentBody.push(`  \${${ctr++}:${props['children'].value}}`);
+      componentBody.push(
+        `  \${${ctr++}:${formatCode(props['children'].value)}}`
+      );
       componentBody.push(`</${componentName}>`);
     } else {
       componentBody.push(`/>`);
