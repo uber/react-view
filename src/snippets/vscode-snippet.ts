@@ -74,14 +74,14 @@ const getComponentBody = (
   componentName: string,
   props?: {[key: string]: TProp<any>}
 ) => {
-  let ctr2 = 1;
+  let ctr = 1;
   const componentBody = [`<${componentName}`];
   if (props) {
     for (const propName in props) {
       if (props[propName].hidden) continue;
       if (propName === 'children') continue;
       if (props[propName].type === PropTypes.Boolean) {
-        const row = `  \${${ctr2++}:${propName}}`;
+        const row = `  \${${ctr++}:${propName}}`;
         componentBody.push(row);
       } else if (props[propName].type === PropTypes.Enum) {
         const enumName = props[propName].imports
@@ -99,19 +99,19 @@ const getComponentBody = (
         if (props[propName].defaultValue) {
           opts.unshift(props[propName].defaultValue as string);
         }
-        const row = `  \${${ctr2++}:${propName}={\${${ctr2++}|${opts.join(
+        const row = `  \${${ctr++}:${propName}={\${${ctr++}|${opts.join(
           ','
         )}|}\\}}`;
         componentBody.push(row);
       } else {
-        const row = `  \${${ctr2++}:${propName}={\${${ctr2++}:${props[propName]
+        const row = `  \${${ctr++}:${propName}={\${${ctr++}:${props[propName]
           .defaultValue || props[propName].value}}\\}}`;
         componentBody.push(row);
       }
     }
     if (props['children'] && !props['children'].hidden) {
       componentBody.push('>');
-      componentBody.push(`  \${${ctr2++}:${props['children'].value}}`);
+      componentBody.push(`  \${${ctr++}:${props['children'].value}}`);
       componentBody.push(`</${componentName}>`);
     } else {
       componentBody.push(`/>`);
