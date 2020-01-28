@@ -79,7 +79,7 @@ const getComponentBody = (
   if (props) {
     for (const propName in props) {
       if (props[propName].hidden) continue;
-      if (propName === 'children' || propName === 'overrides') continue;
+      if (propName === 'children') continue;
       if (props[propName].type === PropTypes.Boolean) {
         const row = `  \${${ctr2++}:${propName}}`;
         componentBody.push(row);
