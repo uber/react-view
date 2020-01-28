@@ -330,4 +330,29 @@ describe('vscodeSnippet component', () => {
       },
     });
   });
+  test('prop formatting (prettier)', () => {
+    expect(
+      vscodeSnippet({
+        componentName: 'Button',
+        props: {
+          enhancer: {
+            value: '() => { return   <div>Blah</div>}',
+            type: PropTypes.Function,
+            description: 'Foo',
+          },
+        },
+      })
+    ).toEqual({
+      Button: {
+        body: [
+          '<Button',
+          '  ${1:enhancer={${2:() => {\n  return <div>Blah</div>;\n}}\\}}',
+          '/>',
+        ],
+        description: 'Base Button component.',
+        prefix: ['Button component'],
+        scope: 'javascript,javascriptreact,typescript,typescriptreact',
+      },
+    });
+  });
 });

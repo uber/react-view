@@ -6,8 +6,21 @@ LICENSE file in the root directory of this source tree.
 */
 
 import {clone} from '../utils';
-import {TProp, TImportsConfig, PropTypes} from '../';
+import {
+  TProp,
+  TPropValue,
+  TImportsConfig,
+  PropTypes,
+  formatCode as rvFormatCode,
+} from '../';
 import {addToImportList} from '../code-generator';
+
+const formatCode = (code: TPropValue) => {
+  if (code && typeof code === 'string') {
+    return rvFormatCode(code);
+  }
+  return code;
+};
 
 const joinNamed = (items: string[] | undefined, ctr: number) => {
   if (!items) return '';
@@ -105,8 +118,9 @@ const getComponentBody = (
         )}|}\\}}`;
         componentBody.push(row);
       } else {
-        const row = `  \${${ctr++}:${propName}={\${${ctr++}:${props[propName]
-          .defaultValue || props[propName].value}}\\}}`;
+        const row = `  \${${ctr++}:${propName}={\${${ctr++}:${formatCode(
+          props[propName].defaultValue || props[propName].value
+        )}}\\}}`;
         componentBody.push(row);
       }
     }
