@@ -33,6 +33,7 @@ type TVscodeSnippetOutput = {
 
 type TVscodeSnippet = (props: {
   componentName: string;
+  prefix?: string;
   imports?: TImportsConfig;
   props?: {[key: string]: TProp<any>};
 }) => TVscodeSnippetOutput;
@@ -122,14 +123,19 @@ const getComponentBody = (
   return componentBody;
 };
 
-const vscodeSnippet: TVscodeSnippet = ({componentName, imports, props}) => {
+const vscodeSnippet: TVscodeSnippet = ({
+  componentName,
+  prefix,
+  imports,
+  props,
+}) => {
   const output: TVscodeSnippetOutput = {};
 
   const importBody = getImportBody(imports, props);
   if (importBody.length > 0) {
     output[`${componentName} import`] = {
       scope: 'javascript,javascriptreact,typescript,typescriptreact',
-      prefix: [`${componentName} import`],
+      prefix: [`${prefix || componentName} import`],
       description: `Base ${componentName} import.`,
       body: importBody,
     };
@@ -137,7 +143,7 @@ const vscodeSnippet: TVscodeSnippet = ({componentName, imports, props}) => {
 
   output[`${componentName}`] = {
     scope: 'javascript,javascriptreact,typescript,typescriptreact',
-    prefix: [`${componentName}`],
+    prefix: [`${prefix || componentName}`],
     description: `Base ${componentName} component.`,
     body: getComponentBody(componentName, props),
   };
