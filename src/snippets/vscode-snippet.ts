@@ -143,7 +143,7 @@ const vscodeSnippet: TVscodeSnippet = ({
 
   output[`${componentName}`] = {
     scope: 'javascript,javascriptreact,typescript,typescriptreact',
-    prefix: [`${prefix || componentName}`],
+    prefix: [`${prefix || componentName} component`],
     description: `Base ${componentName} component.`,
     body: getComponentBody(componentName, props),
   };

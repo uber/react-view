@@ -158,7 +158,7 @@ describe('vscodeSnippet component', () => {
       Button: {
         body: ['<Button', '/>'],
         description: 'Base Button component.',
-        prefix: ['Button'],
+        prefix: ['Button component'],
         scope: 'javascript,javascriptreact,typescript,typescriptreact',
       },
     });
@@ -179,7 +179,7 @@ describe('vscodeSnippet component', () => {
       Button: {
         body: ['<Button', '  ${1:onClick={${2:() => alert("click")}\\}}', '/>'],
         description: 'Base Button component.',
-        prefix: ['Button'],
+        prefix: ['Button component'],
         scope: 'javascript,javascriptreact,typescript,typescriptreact',
       },
     });
@@ -200,7 +200,7 @@ describe('vscodeSnippet component', () => {
       Button: {
         body: ['<Button', '  ${1:disabled}', '/>'],
         description: 'Base Button component.',
-        prefix: ['Button'],
+        prefix: ['Button component'],
         scope: 'javascript,javascriptreact,typescript,typescriptreact',
       },
     });
@@ -224,7 +224,7 @@ describe('vscodeSnippet component', () => {
       Button: {
         body: ['<Button', '  ${1:size={${2|SIZE.default,SIZE.big|}\\}}', '/>'],
         description: 'Base Button component.',
-        prefix: ['Button'],
+        prefix: ['Button component'],
         scope: 'javascript,javascriptreact,typescript,typescriptreact',
       },
     });
@@ -253,7 +253,7 @@ describe('vscodeSnippet component', () => {
           '/>',
         ],
         description: 'Base Button component.',
-        prefix: ['Button'],
+        prefix: ['Button component'],
         scope: 'javascript,javascriptreact,typescript,typescriptreact',
       },
     });
@@ -276,7 +276,7 @@ describe('vscodeSnippet component', () => {
       Button: {
         body: ['<Button', '  ${1:size={${2|default,big|}\\}}', '/>'],
         description: 'Base Button component.',
-        prefix: ['Button'],
+        prefix: ['Button component'],
         scope: 'javascript,javascriptreact,typescript,typescriptreact',
       },
     });
@@ -304,7 +304,7 @@ describe('vscodeSnippet component', () => {
           '/>',
         ],
         description: 'Base Button component.',
-        prefix: ['Button'],
+        prefix: ['Button component'],
         scope: 'javascript,javascriptreact,typescript,typescriptreact',
       },
     });
@@ -325,7 +325,7 @@ describe('vscodeSnippet component', () => {
       Button: {
         body: ['<Button', '>', '  ${1:Hey}', '</Button>'],
         description: 'Base Button component.',
-        prefix: ['Button'],
+        prefix: ['Button component'],
         scope: 'javascript,javascriptreact,typescript,typescriptreact',
       },
     });
