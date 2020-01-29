@@ -20,6 +20,7 @@ import lightTheme from './light-theme';
 
 import {getAstJsxElement, formatCode} from './code-generator';
 import {parse} from './ast';
+import vscodeSnippet from './snippets/vscode-snippet';
 
 // hooks, utils
 export {useView, useValueDebounce, assertUnreachable};
@@ -32,6 +33,9 @@ export {PropTypes, lightTheme};
 
 // ast helpers
 export {getAstJsxElement, formatCode, parse};
+
+// vscode snippet generator
+export {vscodeSnippet};
 
 // types
 export * from './types';

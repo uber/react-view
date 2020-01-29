@@ -186,7 +186,7 @@ export const getAstJsxElement = (
   );
 };
 
-const addToImportList = (
+export const addToImportList = (
   importList: TImportsConfig,
   imports: TImportsConfig
 ) => {
