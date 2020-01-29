@@ -34,7 +34,7 @@ const formatCode = (code: TPropValue) => {
         code = code.replace(/\n/g, '\n  ');
       }
     } catch (e) {}
-    code = code.replace(/\}/g, '\\}').replace(/\$\{/g, '$\\{');
+    code = code.replace(/\}/g, '\\}').replace(/\$/g, '\\$');
   }
 
   return code;

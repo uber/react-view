@@ -407,4 +407,30 @@ describe('vscodeSnippet component', () => {
       },
     });
   });
+  test('prop escape variables', () => {
+    expect(
+      vscodeSnippet({
+        componentName: 'Button',
+        props: {
+          children: {
+            value: '<span $align="center">${hey}</span>',
+            type: PropTypes.Function,
+            description: 'Foo',
+          },
+        },
+      })
+    ).toEqual({
+      Button: {
+        body: [
+          '<Button',
+          '>',
+          '  ${1:<span \\$align="center">\\${hey\\}</span>}',
+          '</Button>',
+        ],
+        description: 'Base Button component.',
+        prefix: ['Button component'],
+        scope: 'javascript,javascriptreact,typescript,typescriptreact',
+      },
+    });
+  });
 });
