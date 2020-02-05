@@ -128,8 +128,30 @@ const useView: TUseView = (config = {}) => {
             customProps,
           });
           setError({where: '', msg: null});
-          updatePropsAndCode(dispatch, newCode, propName, propValue);
-          onUpdate({code: newCode});
+          if (state.codeNoRecompile !== '') {
+            // fixes https://github.com/uber/react-view/issues/19
+            // We don't run compiler when the state change comes from interacting
+            // with the component since that causes remount and lost of focus.
+            // That's a bad experience for interactions like typing. But, we
+            // still want to display correct code snippet. That's why we have
+            // a separate state.codeNoRecompile. The problem is that compiler runs
+            // only if state.code changes and that doesn't really happen in the modal
+            // case since we are only flipping a boolean flag. So state.code stays same
+            // each even cycle of "open the modal through the knob and close it by its button".
+
+            // so here we need to force an addition state.code update (aka recompile
+            // with show=false
+            updateCode(dispatch, state.codeNoRecompile);
+            // and now we need to do the sequential state.code update with show=true
+            // in the next tick
+            setTimeout(() => {
+              updatePropsAndCode(dispatch, newCode, propName, propValue);
+              onUpdate({code: newCode});
+            }, 0);
+          } else {
+            updatePropsAndCode(dispatch, newCode, propName, propValue);
+            onUpdate({code: newCode});
+          }
         } catch (e) {
           updateProps(dispatch, propName, propValue);
           setError({where: propName, msg: e.toString()});
