@@ -12,6 +12,7 @@ const Modal: React.FC<{
   show: boolean;
   children: React.ReactNode;
 }> = ({handleClose, show, children}) => {
+  if (!show) return null;
   return (
     <div
       style={{
@@ -22,7 +23,6 @@ const Modal: React.FC<{
         height: '100%',
         zIndex: 2,
         background: 'rgba(0, 0, 0, 0.6)',
-        display: show ? 'block' : 'none',
       }}
     >
       <section
@@ -43,7 +43,9 @@ const Modal: React.FC<{
         }}
       >
         <p>{children}</p>
-        <button onClick={handleClose}>close modal</button>
+        <button id="close-modal" onClick={handleClose}>
+          close modal
+        </button>
       </section>
     </div>
   );

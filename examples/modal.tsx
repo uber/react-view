@@ -7,21 +7,19 @@ LICENSE file in the root directory of this source tree.
 
 import * as React from 'react';
 import {View, PropTypes} from '../src/index';
-import {Layout, H1} from './layout/';
+import {Layout, H1, P} from './layout/';
 import Modal from './showcase-components/modal';
 
 const ModalExample = () => (
   <Layout>
     <H1>Modal example</H1>
+    <P>
+      This is story was created for an e2e test. Reproduces this{' '}
+      <a href="https://github.com/uber/react-view/issues/19">bug report.</a>
+    </P>
     <View
       componentName="Modal"
       props={{
-        show: {
-          value: false,
-          type: PropTypes.Boolean,
-          description: 'Indicates that the modal is visible',
-          stateful: true,
-        },
         children: {
           value: 'This is a simple Modal',
           type: PropTypes.ReactNode,
@@ -35,6 +33,12 @@ const ModalExample = () => (
             what: 'false',
             into: 'show',
           },
+        },
+        show: {
+          value: false,
+          type: PropTypes.Boolean,
+          description: 'Indicates that the modal is visible',
+          stateful: true,
         },
       }}
       scope={{
