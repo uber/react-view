@@ -20,23 +20,30 @@ const Modal: React.FC<{
         left: '0',
         width: '100%',
         height: '100%',
+        zIndex: 2,
         background: 'rgba(0, 0, 0, 0.6)',
         display: show ? 'block' : 'none',
       }}
     >
       <section
         style={{
+          fontFamily: "'Helvetica Neue', Arial",
           position: 'fixed',
           background: 'white',
           width: '80%',
           height: 'auto',
+          minHeight: '200px',
+          flexDirection: 'column',
           top: '50%',
           left: '50%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
           transform: 'translate(-50%,-50%)',
         }}
       >
-        {children}
-        <button onClick={handleClose}>close</button>
+        <p>{children}</p>
+        <button onClick={handleClose}>close modal</button>
       </section>
     </div>
   );
