@@ -12,4 +12,5 @@ export const urls = {
   view: 'http://localhost:6006/iframe.html?id=view--view',
   customProps: 'http://localhost:6006/iframe.html?id=advanced--custom-prop',
   theming: 'http://localhost:6006/iframe.html?id=advanced--theming',
+  modal: 'http://localhost:6006/iframe.html?id=tests--modal',
 };
