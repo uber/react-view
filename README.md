@@ -6,11 +6,12 @@ React View is a set of tools that aspires to close the gap between users, develo
 
 [See the example](https://react-view.netlify.com/?path=/story/view--view). [CodeSandbox](https://codesandbox.io/s/i3dbn?fontsize=14&hidenavigation=1&theme=dark).
 
-There are three main ways how to use React View:
+There are a few ways how to use React View:
 
 - **All-in-one playground**. Import `<View />`, give it the component configuration and drop it in your web documentation. This is ideal if you want to start as quickly as possible and don't need to customize anything.
 - **Build your own playground**. Import the `useView` hook and give it the component configuration. This hook handles the playground state and returns various props and callbacks that you can fit into your own UI components. React View also exports all default UI parts separately (`Editor`, `ActionButtons`, `Compiler`, `Knobs`, `Error`...) so you can reuse them. This is a great option if you want to customize some parts of the default UI (or all of it) without worrying about the rest.
 - **Live code editing only**. Sometimes it is useful to only have editable source code and live preview without the list of props. You can use `useView` for that too. Just don't give it any component configuration and don't render the `<Knobs />` component. React View uses babel, so you can add additional presets and enable TypeScript.
+- **VS Code Snippets**. Leverage the component documentation to programatically generate VS Code snippets to make your developers more productive. [More information](#code-snippets).
 
 ## Installation
 
@@ -171,6 +172,70 @@ Or pretty much anything that can be executed after the return statement of JavaS
 ```js
 2 + 5;
 ```
+
+## Code Snippets
+
+VS Code has a powerful feature called code snippets. It lets you to quickly embed and modify repetitive code. In our case, React components:
+
+<p align="center"><img src="https://user-images.githubusercontent.com/1387913/74782839-23897780-5259-11ea-98d6-77b8dbd4276b.gif" width="75%"><p>
+
+However, first you need to define these code snippets with a [special grammar](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_grammar):
+
+```json
+"Button": {
+  "scope": "javascript,javascriptreact,typescript,typescriptreact",
+  "prefix": [
+   "Button component"
+  ],
+  "description": "Base Button component.",
+  "body": [
+   "<Button",
+   "  ${1:onClick={${2:() => alert("click")}\}}",
+   "  ${3:startEnhancer={${4:undefined}\}}",
+   "  ${5:endEnhancer={${6:undefined}\}}",
+   "  ${7:disabled}",
+   "  ${8:kind={${9|KIND.primary,KIND.secondary,KIND.tertiary,KIND.minimal|}\}}",
+   "  ${10:size={${11|SIZE.default,SIZE.mini,SIZE.compact,SIZE.large|}\}}",
+   "  ${12:shape={${13|SHAPE.default,SHAPE.pill,SHAPE.round,SHAPE.square|}\}}",
+   "  ${14:isLoading}",
+   "  ${15:isSelected}",
+   ">",
+   "  ${16:Hello}",
+   "</Button>"
+  ]
+}
+```
+
+This would be normally a lot of error-prone work. Fortunately, you can auto-generate this based on the same component configuration you already use for the React View playground.
+
+```js
+import {vscodeSnippet, PropTypes} from 'react-view';
+
+const snippet = vscodeSnippet({
+  prefix: ['Button component'],
+  componentName: 'Button',
+  props: {
+    children: {
+      value: 'Hello',
+      type: PropTypes.ReactNode,
+      description: 'Visible label.',
+    },
+  },
+  imports: {
+    'your-button-component': {
+      named: ['Button'],
+    },
+  },
+});
+
+// then you might want to write it into a file so it can be loaded into VS Code
+fs.writeFileSync(
+  path.join(__dirname, 'components.code-snippets'),
+  JSON.stringify({Button: snippet}, undefined, ' ')
+);
+```
+
+Snippets can be used locally or bundled with an extension. Check [the documentation](https://code.visualstudio.com/docs/editor/userdefinedsnippets). Also there is an article about how we use this feature at [Base Web](https://baseweb.design/blog/vs-code-extension/).
 
 ## Applications
 
