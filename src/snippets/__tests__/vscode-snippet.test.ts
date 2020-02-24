@@ -433,4 +433,22 @@ describe('vscodeSnippet component', () => {
       },
     });
   });
+  test('custom description', () => {
+    expect(
+      vscodeSnippet({
+        componentName: 'Button',
+        imports: {
+          'your-button-component': {
+            default: 'Button',
+          },
+        },
+        description: 'Button component',
+      })['Button import']
+    ).toEqual({
+      body: ["import ${1:Button} from 'your-button-component';"],
+      description: 'Button component',
+      prefix: ['Button import'],
+      scope: 'javascript,javascriptreact,typescript,typescriptreact',
+    });
+  });
 });
