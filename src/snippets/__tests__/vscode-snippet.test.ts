@@ -451,4 +451,55 @@ describe('vscodeSnippet component', () => {
       scope: 'javascript,javascriptreact,typescript,typescriptreact',
     });
   });
+  test('treat PropTypes.String props as strings', () => {
+    const props = {
+      placeholder: {
+        value: 'Placeholder',
+        type: PropTypes.String,
+        description: 'Placeholder',
+      },
+    };
+
+    expect(
+      vscodeSnippet({
+        props,
+        componentName: 'Input',
+      })['Input']
+    ).toEqual({
+      body: [
+        '<Input',
+        '  ${1:placeholder="${2:Placeholder}"}',
+        '/>',
+      ],
+      description: 'Base Input component.',
+      prefix: ['Input component'],
+      scope: 'javascript,javascriptreact,typescript,typescriptreact',
+    });
+  });
+  test('ignore undefined values on PropTypes.String props', () => {
+    const props = {
+      value: {
+        value: undefined,
+        type: PropTypes.String,
+        description: 'Value',
+      },
+    };
+
+    expect(
+      vscodeSnippet({
+        props,
+        componentName: 'Input',
+      })['Input']
+    ).toEqual({
+      body: [
+        '<Input',
+        //"  ${8:placeholder=\"${9:Placeholder}\"}",
+        '  ${1:value={${2:undefined}\\}}',
+        '/>',
+      ],
+      description: 'Base Input component.',
+      prefix: ['Input component'],
+      scope: 'javascript,javascriptreact,typescript,typescriptreact',
+    });
+  });
 });

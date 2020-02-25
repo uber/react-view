@@ -136,6 +136,14 @@ const getComponentBody = (
           ','
         )}|}\\}}`;
         componentBody.push(row);
+      } else if (
+        props[propName].type === PropTypes.String &&
+        typeof props[propName].value === PropTypes.String
+      ) {
+        const row = `  \${${ctr++}:${propName}="\${${ctr++}:${formatCode(
+          props[propName].defaultValue || props[propName].value
+        )}}\"}`;
+        componentBody.push(row);
       } else {
         const row = `  \${${ctr++}:${propName}={\${${ctr++}:${formatCode(
           props[propName].defaultValue || props[propName].value
