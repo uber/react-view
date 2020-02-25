@@ -451,4 +451,42 @@ describe('vscodeSnippet component', () => {
       scope: 'javascript,javascriptreact,typescript,typescriptreact',
     });
   });
+  test('(PropTypes.String prop) append as string literal', () => {
+    expect(
+      vscodeSnippet({
+        props: {
+          placeholder: {
+            value: 'Placeholder',
+            type: PropTypes.String,
+            description: 'Placeholder',
+          },
+        },
+        componentName: 'Input',
+      })['Input']
+    ).toEqual({
+      body: ['<Input', '  ${1:placeholder="${2:Placeholder}"}', '/>'],
+      description: 'Base Input component.',
+      prefix: ['Input component'],
+      scope: 'javascript,javascriptreact,typescript,typescriptreact',
+    });
+  });
+  test('(PropTypes.String prop) ignore undefined values', () => {
+    expect(
+      vscodeSnippet({
+        props: {
+          value: {
+            value: undefined,
+            type: PropTypes.String,
+            description: 'Value',
+          },
+        },
+        componentName: 'Input',
+      })['Input']
+    ).toEqual({
+      body: ['<Input', '  ${1:value={${2:undefined}\\}}', '/>'],
+      description: 'Base Input component.',
+      prefix: ['Input component'],
+      scope: 'javascript,javascriptreact,typescript,typescriptreact',
+    });
+  });
 });
