@@ -466,11 +466,7 @@ describe('vscodeSnippet component', () => {
         componentName: 'Input',
       })['Input']
     ).toEqual({
-      body: [
-        '<Input',
-        '  ${1:placeholder="${2:Placeholder}"}',
-        '/>',
-      ],
+      body: ['<Input', '  ${1:placeholder="${2:Placeholder}"}', '/>'],
       description: 'Base Input component.',
       prefix: ['Input component'],
       scope: 'javascript,javascriptreact,typescript,typescriptreact',
@@ -491,12 +487,7 @@ describe('vscodeSnippet component', () => {
         componentName: 'Input',
       })['Input']
     ).toEqual({
-      body: [
-        '<Input',
-        //"  ${8:placeholder=\"${9:Placeholder}\"}",
-        '  ${1:value={${2:undefined}\\}}',
-        '/>',
-      ],
+      body: ['<Input', '  ${1:value={${2:undefined}\\}}', '/>'],
       description: 'Base Input component.',
       prefix: ['Input component'],
       scope: 'javascript,javascriptreact,typescript,typescriptreact',
