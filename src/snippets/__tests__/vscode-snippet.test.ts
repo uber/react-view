@@ -451,18 +451,16 @@ describe('vscodeSnippet component', () => {
       scope: 'javascript,javascriptreact,typescript,typescriptreact',
     });
   });
-  test('treat PropTypes.String props as strings', () => {
-    const props = {
-      placeholder: {
-        value: 'Placeholder',
-        type: PropTypes.String,
-        description: 'Placeholder',
-      },
-    };
-
+  test('(PropTypes.String prop) append as string literal', () => {
     expect(
       vscodeSnippet({
-        props,
+        props: {
+          placeholder: {
+            value: 'Placeholder',
+            type: PropTypes.String,
+            description: 'Placeholder',
+          },
+        },
         componentName: 'Input',
       })['Input']
     ).toEqual({
@@ -472,18 +470,16 @@ describe('vscodeSnippet component', () => {
       scope: 'javascript,javascriptreact,typescript,typescriptreact',
     });
   });
-  test('ignore undefined values on PropTypes.String props', () => {
-    const props = {
-      value: {
-        value: undefined,
-        type: PropTypes.String,
-        description: 'Value',
-      },
-    };
-
+  test('(PropTypes.String prop) ignore undefined values', () => {
     expect(
       vscodeSnippet({
-        props,
+        props: {
+          value: {
+            value: undefined,
+            type: PropTypes.String,
+            description: 'Value',
+          },
+        },
         componentName: 'Input',
       })['Input']
     ).toEqual({
