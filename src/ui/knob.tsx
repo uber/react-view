@@ -138,6 +138,8 @@ const Knob: React.SFC<{
   imports,
 }) => {
   const [val] = useValueDebounce<TPropValue>(globalVal, globalSet);
+  const getEnumValue = (opt: string) =>
+    imports ? `${enumName || name.toUpperCase()}.${opt}` : opt;
   switch (type) {
     case PropTypes.Ref:
       return (
@@ -178,9 +180,7 @@ const Knob: React.SFC<{
           {numberOfOptions < 7 ? (
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
               {Object.keys(options).map(opt => {
-                const enumValue = imports
-                  ? `${enumName || name.toUpperCase()}.${opt}`
-                  : opt;
+                const enumValue = getEnumValue(opt);
                 return (
                   <div
                     style={{
@@ -224,14 +224,14 @@ const Knob: React.SFC<{
                 borderRadius: '5px',
               }}
             >
-              {Object.keys(options).map(opt => (
-                <option
-                  key={`${name}_${opt}`}
-                  value={`${enumName || name.toUpperCase()}.${opt}`}
-                >
-                  {opt}
-                </option>
-              ))}
+              {Object.keys(options).map(opt => {
+                const enumValue = getEnumValue(opt);
+                return (
+                  <option key={`${name}_${opt}`} value={enumValue}>
+                    {opt}
+                  </option>
+                );
+              })}
             </select>
           )}
 
