@@ -281,6 +281,31 @@ describe('vscodeSnippet component', () => {
       },
     });
   });
+  test('enum prop without imports (options as array)', () => {
+    expect(
+      vscodeSnippet({
+        props: {
+          variant: {
+            value: 'primary',
+            defaultValue: 'primary',
+            type: PropTypes.Enum,
+            options: ['primary', 'secondary', 'tertiary'],
+            description: 'Variant',
+          },
+        },
+        componentName: 'Button',
+      })['Button']
+    ).toEqual({
+      body: [
+        '<Button',
+        '  ${1:variant="${2|primary,secondary,tertiary|}"}',
+        '/>',
+      ],
+      description: 'Base Button component.',
+      prefix: ['Button component'],
+      scope: 'javascript,javascriptreact,typescript,typescriptreact',
+    });
+  });
   test('enum prop with values containing a dash', () => {
     expect(
       vscodeSnippet({

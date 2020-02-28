@@ -132,10 +132,17 @@ const getComponentBody = (
         if (props[propName].defaultValue) {
           opts.unshift(props[propName].defaultValue as string);
         }
-        const row = `  \${${ctr++}:${propName}={\${${ctr++}|${opts.join(
-          ','
-        )}|}\\}}`;
-        componentBody.push(row);
+        if (Array.isArray(props[propName].options)) {
+          const row = `  \${${ctr++}:${propName}="\${${ctr++}|${opts.join(
+            ','
+          )}|}\"}`;
+          componentBody.push(row);
+        } else {
+          const row = `  \${${ctr++}:${propName}={\${${ctr++}|${opts.join(
+            ','
+          )}|}\\}}`;
+          componentBody.push(row);
+        }
       } else if (
         props[propName].type === PropTypes.String &&
         typeof props[propName].value === PropTypes.String
