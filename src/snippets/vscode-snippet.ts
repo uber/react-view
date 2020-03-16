@@ -132,7 +132,7 @@ const getComponentBody = (
         if (props[propName].defaultValue) {
           opts.unshift(props[propName].defaultValue as string);
         }
-        if (Array.isArray(props[propName].options)) {
+        if (!props[propName].imports) {
           const row = `  \${${ctr++}:${propName}="\${${ctr++}|${opts.join(
             ','
           )}|}\"}`;
