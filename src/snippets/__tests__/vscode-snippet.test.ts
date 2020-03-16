@@ -274,7 +274,7 @@ describe('vscodeSnippet component', () => {
       })
     ).toEqual({
       Button: {
-        body: ['<Button', '  ${1:size={${2|default,big|}\\}}', '/>'],
+        body: ['<Button', '  ${1:size="${2|default,big|}"}', '/>'],
         description: 'Base Button component.',
         prefix: ['Button component'],
         scope: 'javascript,javascriptreact,typescript,typescriptreact',
