@@ -20,6 +20,32 @@ import {provider} from '../../examples/theming';
 import {customProps} from '../../examples/custom-prop';
 
 describe('getAstPropsArray', () => {
+  test('number (0) and value !== defaulValue', () => {
+    expect(
+      getAstPropsArray(
+        {
+          a: {
+            value: 0,
+            defaultValue: undefined,
+            type: PropTypes.Number,
+            description: '',
+          },
+        },
+        {}
+      )[0]?.value
+    ).toEqual({
+      expression: {
+        extra: {
+          raw: '0',
+          rawValue: 0,
+        },
+        loc: undefined,
+        type: 'NumericLiteral',
+        value: 0,
+      },
+      type: 'JSXExpressionContainer',
+    });
+  });
   test('boolean (true) and value === defaulValue', () => {
     expect(
       getAstPropsArray(
