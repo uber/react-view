@@ -107,7 +107,7 @@ export const getAstPropsArray = (
     // in the view correctly (checked checkboxes and selected default value in radio groups)
     // and not rendered in the component's props.
     if (
-      (typeof value !== 'boolean' && !value) ||
+      (typeof value !== 'boolean' && typeof value !== 'number' && !value) ||
       value === defaultValue ||
       (typeof value === 'boolean' && !value && !defaultValue)
     ) {
