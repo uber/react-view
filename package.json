@@ -55,7 +55,7 @@
     "@babel/template": "^7.7.0",
     "@babel/traverse": "^7.7.0",
     "@babel/types": "^7.7.1",
-    "@miksu/prettier": "^1.18.3",
+    "@miksu/prettier": "^1.18.6",
     "@miksu/react-tiny-popover": "^3.5.1",
     "copy-to-clipboard": "^3.2.0",
     "lodash": "^4.17.15",
