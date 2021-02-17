@@ -41,6 +41,7 @@ const evalCode = (
       presets: presets ? [presetReact, ...presets] : [presetReact],
       inputSourceMap: false as any,
       sourceMaps: false,
+      comments: false,
       // TS preset needs this and it doesn't seem to matter when TS preset
       // is not used, so let's keep it here?
       filename: 'file.tsx',
