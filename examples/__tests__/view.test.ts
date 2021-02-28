@@ -29,7 +29,7 @@ export default () => {
   );
 }`;
     const text = await page.evaluate(
-      el => el.value,
+      (el) => el.value,
       await page.$('[data-testid="rv-editor"] textarea')
     );
     expect(text).toBe(codeOutput);

@@ -78,7 +78,7 @@ const transpile = (
       parse(code)
     );
     const component = generateElement(
-      ast,
+      ast as any,
       scope,
       (error: Error) => {
         setError(error.toString());

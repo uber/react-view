@@ -43,7 +43,7 @@ export const updateAll = (
     componentName,
     parseProvider
   );
-  Object.keys(propsConfig).forEach(name => {
+  Object.keys(propsConfig).forEach((name) => {
     propValues[name] = propsConfig[name].value;
     if (customProps && customProps[name] && customProps[name].parse) {
       // custom prop parser

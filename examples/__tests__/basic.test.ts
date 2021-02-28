@@ -35,11 +35,11 @@ export default () => {
     await page.click('#size_compact');
     const fontSize = await page.$eval(
       '#example-btn',
-      e => (e as any).style['font-size']
+      (e) => (e as any).style['font-size']
     );
     expect(fontSize).toBe('14px');
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate(el => el.value, editorTextarea);
+    const text = await page.evaluate((el) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 
@@ -57,11 +57,11 @@ export default () => {
     await page.click('#disabled');
     const isDisabled = await page.$eval(
       '#example-btn',
-      e => (e as any).disabled
+      (e) => (e as any).disabled
     );
     expect(isDisabled).toBeTruthy();
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate(el => el.value, editorTextarea);
+    const text = await page.evaluate((el) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 
@@ -86,7 +86,7 @@ export default () => {
       text: childrenPropValue,
     });
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate(el => el.value, editorTextarea);
+    const text = await page.evaluate((el) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 
@@ -119,7 +119,7 @@ export default () => {
     });
     expect(text).toBe('foo');
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const editorText = await page.evaluate(el => el.value, editorTextarea);
+    const editorText = await page.evaluate((el) => el.value, editorTextarea);
     expect(editorText).toBe(codeOutput);
   });
 });
@@ -159,7 +159,7 @@ export default () => {
     await page.waitFor(300); // waiting for debounce
     await page.click('[data-testid="rv-format"]');
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate(el => el.value, editorTextarea);
+    const text = await page.evaluate((el) => el.value, editorTextarea);
     expect(text).toBe(formattedCode);
   });
 });
@@ -190,12 +190,12 @@ export default () => {
     await page.waitFor(300); // waiting for debounce
     const isButtonDisabled = await page.$eval(
       '#example-btn',
-      e => (e as any).disabled
+      (e) => (e as any).disabled
     );
     expect(isButtonDisabled).toBeTruthy();
     const isDisabledChecked = await page.$eval(
       '#disabled',
-      el => (el as any).checked
+      (el) => (el as any).checked
     );
     expect(isDisabledChecked).toBeTruthy();
   });

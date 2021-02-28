@@ -50,10 +50,10 @@ export const buildPropsObj = (
   const newProps: {
     [key: string]: TProp;
   } = {};
-  Object.keys(stateProps).forEach(name => {
+  Object.keys(stateProps).forEach((name) => {
     newProps[name] = {...stateProps[name]};
   });
-  Object.keys(updatedPropValues).forEach(name => {
+  Object.keys(updatedPropValues).forEach((name) => {
     newProps[name] = {
       value:
         typeof updatedPropValues[name] !== 'undefined'

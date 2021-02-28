@@ -87,7 +87,7 @@ export const transformBeforeCompilation = (
   propsConfig: {[key: string]: TProp}
 ) => {
   try {
-    traverse(ast, {
+    traverse(ast as any, {
       VariableDeclaration(path) {
         if (path.parent.type === 'Program') {
           //@ts-ignore
@@ -116,7 +116,7 @@ export const transformBeforeCompilation = (
         ) {
           if (propsConfig['children'] && propsConfig['children'].propHook) {
             const propHook = propsConfig['children'].propHook;
-            path.get('children').forEach(child => {
+            path.get('children').forEach((child) => {
               typeof propHook === 'object'
                 ? fnBodyAppend(
                     child,
@@ -130,7 +130,7 @@ export const transformBeforeCompilation = (
           path
             .get('openingElement')
             .get('attributes')
-            .forEach(attr => {
+            .forEach((attr) => {
               const name = (attr.get('name') as any).node.name;
               const propHook = propsConfig[name].propHook;
               if (typeof propHook !== 'undefined') {
@@ -244,8 +244,8 @@ export function parseCode(
   }
 
   // override props by local state (React hooks)
-  Object.keys(stateValues).forEach(stateValueKey => {
-    Object.keys(propValues).forEach(propValueKey => {
+  Object.keys(stateValues).forEach((stateValueKey) => {
+    Object.keys(propValues).forEach((propValueKey) => {
       if (propValues[propValueKey] === stateValueKey) {
         propValues[propValueKey] = stateValues[stateValueKey];
       }

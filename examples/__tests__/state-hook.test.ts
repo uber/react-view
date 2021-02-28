@@ -36,11 +36,11 @@ export default () => {
     await page.waitFor(300); // waiting for debounce
 
     const valueKnob = await page.$('[data-testid="rv-knob-value"] textarea');
-    const valueText = await page.evaluate(el => el.value, valueKnob);
+    const valueText = await page.evaluate((el) => el.value, valueKnob);
     expect(valueText).toBe('HelloFoo');
 
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate(el => el.value, editorTextarea);
+    const text = await page.evaluate((el) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 
@@ -63,11 +63,11 @@ export default () => {
     await page.waitFor(300); // waiting for debounce
 
     const input = await page.$('#example-input');
-    const inputValue = await page.evaluate(el => el.value, input);
+    const inputValue = await page.evaluate((el) => el.value, input);
     expect(inputValue).toBe('HelloFoo');
 
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate(el => el.value, editorTextarea);
+    const text = await page.evaluate((el) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 
@@ -98,7 +98,7 @@ export default () => {
   );
 }`;
     const initialEditor = await page.evaluate(
-      el => el.value,
+      (el) => el.value,
       await page.$('[data-testid="rv-editor"] textarea')
     );
     expect(initialEditor).toBe(initialCode);
@@ -106,11 +106,11 @@ export default () => {
     await page.click('#editable');
     const isDisabled = await page.$eval(
       '#example-input',
-      e => (e as any).disabled
+      (e) => (e as any).disabled
     );
     expect(isDisabled).toBeTruthy();
     const resultEditor = await page.evaluate(
-      el => el.value,
+      (el) => el.value,
       await page.$('[data-testid="rv-editor"] textarea')
     );
     expect(resultEditor).toBe(resultCode);

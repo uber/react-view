@@ -12,7 +12,7 @@ export const ActionButton: React.FC<{
   children: React.ReactNode;
   style?: React.CSSProperties;
   ['data-testid']?: string;
-}> = props => <button className="react-view-button" {...props} />;
+}> = (props) => <button className="react-view-button" {...props} />;
 
 export const ActionButtons: React.FC<{
   formatCode: () => void;

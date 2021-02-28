@@ -34,7 +34,7 @@ export default () => {
   );
 }`;
     const initialEditor = await page.evaluate(
-      el => el.value,
+      (el) => el.value,
       await page.$('[data-testid="rv-editor"] textarea')
     );
     expect(initialEditor).toBe(initialCode);
@@ -47,7 +47,7 @@ export default () => {
         'hotpink'
     );
     const hotpinkEditor = await page.evaluate(
-      el => el.value,
+      (el) => el.value,
       await page.$('[data-testid="rv-editor"] textarea')
     );
     expect(hotpinkEditor).toBe(hotpinkCode);
@@ -56,13 +56,13 @@ export default () => {
   it('should reset provider values and get the initial state of code and component', async () => {
     await page.click('[data-testid="rv-reset"]');
     const editor = await page.evaluate(
-      el => el.value,
+      (el) => el.value,
       await page.$('[data-testid="rv-editor"] textarea')
     );
     expect(editor).toBe(initialCode);
     const background = await page.$eval(
       '#example-btn',
-      e => (e as any).style['background']
+      (e) => (e as any).style['background']
     );
     expect(background).toBe('rgb(39, 110, 241)');
   });
