@@ -306,12 +306,19 @@ describe('getAstPropValue', () => {
             raw: '1',
             rawValue: 1,
           },
+          innerComments: undefined,
+          leadingComments: undefined,
+          trailingComments: undefined,
           loc: undefined,
           type: 'NumericLiteral',
           value: 1,
         },
       ],
+      extra: {},
+      innerComments: undefined,
+      leadingComments: undefined,
       loc: undefined,
+      trailingComments: undefined,
       type: 'ArrayExpression',
     });
   });
@@ -327,24 +334,41 @@ describe('getAstPropValue', () => {
         {}
       )
     ).toEqual({
+      extra: {},
+      innerComments: undefined,
+      leadingComments: undefined,
+      loc: undefined,
       properties: [
         {
           computed: false,
+          extra: {},
+          innerComments: undefined,
           key: {
+            extra: {},
+            innerComments: undefined,
+            leadingComments: undefined,
             loc: undefined,
             name: 'foo',
+            trailingComments: undefined,
             type: 'Identifier',
           },
+          leadingComments: undefined,
+          trailingComments: undefined,
           loc: undefined,
           shorthand: false,
           type: 'ObjectProperty',
           value: {
+            extra: {},
+            innerComments: undefined,
+            leadingComments: undefined,
             loc: undefined,
+            trailingComments: undefined,
             type: 'BooleanLiteral',
             value: true,
           },
         },
       ],
+      trailingComments: undefined,
       type: 'ObjectExpression',
     });
   });
@@ -362,18 +386,30 @@ describe('getAstPropValue', () => {
     ).toEqual({
       children: [],
       closingElement: null,
+      extra: {},
+      innerComments: undefined,
+      leadingComments: undefined,
       loc: undefined,
       openingElement: {
         attributes: [],
+        extra: {},
+        innerComments: undefined,
+        leadingComments: undefined,
         loc: undefined,
         name: {
+          extra: {},
+          innerComments: undefined,
+          leadingComments: undefined,
           loc: undefined,
           name: 'div',
+          trailingComments: undefined,
           type: 'JSXIdentifier',
         },
         selfClosing: true,
+        trailingComments: undefined,
         type: 'JSXOpeningElement',
       },
+      trailingComments: undefined,
       type: 'JSXElement',
     });
   });
@@ -391,20 +427,32 @@ describe('getAstPropValue', () => {
     ).toEqual({
       async: false,
       body: {
+        extra: {},
+        innerComments: undefined,
+        leadingComments: undefined,
         body: [],
         directives: [],
         loc: undefined,
+        trailingComments: undefined,
         type: 'BlockStatement',
       },
+      extra: {},
       generator: false,
+      innerComments: undefined,
+      leadingComments: undefined,
       loc: undefined,
       params: [
         {
+          extra: {},
+          innerComments: undefined,
+          leadingComments: undefined,
           loc: undefined,
           name: 'foo',
+          trailingComments: undefined,
           type: 'Identifier',
         },
       ],
+      trailingComments: undefined,
       type: 'ArrowFunctionExpression',
     });
   });
