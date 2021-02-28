@@ -78,7 +78,7 @@ const getImportBody = (
   // prop level imports (typically enums related) that are displayed
   // only when the prop is being used
   props &&
-    Object.values(props).forEach(prop => {
+    Object.values(props).forEach((prop) => {
       if (prop.imports) {
         addToImportList(importList, prop.imports);
       }
@@ -128,7 +128,7 @@ const getComponentBody = (
                 : `${enumName}.${opt}`
               : opt
           )
-          .filter(opt => opt !== props[propName].defaultValue);
+          .filter((opt) => opt !== props[propName].defaultValue);
         if (props[propName].defaultValue) {
           opts.unshift(props[propName].defaultValue as string);
         }

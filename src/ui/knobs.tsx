@@ -43,7 +43,7 @@ const KnobColumn: React.FC<TKnobsProps & {knobNames: string[]}> = ({
 const Knobs: React.FC<TKnobsProps> = ({state, set, error}) => {
   const [showAllKnobs, setShowAllKnobs] = React.useState(false);
   const allKnobNames = Object.keys(state).filter(
-    name => state[name].type !== PropTypes.Custom
+    (name) => state[name].type !== PropTypes.Custom
   );
   const filteredKnobNames = allKnobNames.filter(
     (name: string) => state[name].hidden !== true

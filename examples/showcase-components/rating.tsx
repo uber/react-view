@@ -67,7 +67,7 @@ export const Rating: React.FC<TRatingProps> = ({value, onChange}) => {
       tabIndex={0}
       style={{display: 'flex', flexWrap: 'nowrap', padding: 0}}
     >
-      {[...Array(5).keys()].map(index => (
+      {[...Array(5).keys()].map((index) => (
         <Heart
           key={index}
           active={hovered === 0 ? value > index : hovered > index}

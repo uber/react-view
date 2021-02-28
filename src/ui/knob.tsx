@@ -179,7 +179,7 @@ const Knob: React.SFC<{
           <Label tooltip={getTooltip(description, type, name)}>{name}</Label>
           {numberOfOptions < 7 ? (
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
-              {Object.keys(options).map(opt => {
+              {Object.keys(options).map((opt) => {
                 const enumValue = getEnumValue(opt);
                 return (
                   <div
@@ -199,7 +199,7 @@ const Knob: React.SFC<{
                       id={`${name}_${opt}`}
                       value={enumValue}
                       name={`radio_${name}`}
-                      onChange={e => globalSet(e.target.value)}
+                      onChange={(e) => globalSet(e.target.value)}
                     />
                     <label htmlFor={`${name}_${opt}`}>{opt}</label>
                   </div>
@@ -208,7 +208,7 @@ const Knob: React.SFC<{
             </div>
           ) : (
             <select
-              onChange={e => globalSet(e.target.value)}
+              onChange={(e) => globalSet(e.target.value)}
               value={String(val)}
               name={name}
               style={{
@@ -224,7 +224,7 @@ const Knob: React.SFC<{
                 borderRadius: '5px',
               }}
             >
-              {Object.keys(options).map(opt => {
+              {Object.keys(options).map((opt) => {
                 const enumValue = getEnumValue(opt);
                 return (
                   <option key={`${name}_${opt}`} value={enumValue}>
@@ -249,7 +249,7 @@ const Knob: React.SFC<{
         <Spacing name={name}>
           <Label tooltip={getTooltip(description, type, name)}>{name}</Label>
           <Editor
-            onChange={code => {
+            onChange={(code) => {
               globalSet(code);
             }}
             code={val ? String(val) : ''}

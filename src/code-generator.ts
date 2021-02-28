@@ -136,7 +136,7 @@ export const getAstReactHooks = (
   const buildReactHook = template(
     `const [%%name%%, %%setName%%] = React.useState(%%value%%);`
   ) as TBuildReactHook;
-  Object.keys(props).forEach(name => {
+  Object.keys(props).forEach((name) => {
     if (props[name].stateful === true) {
       hooks.push(
         buildReactHook({
@@ -160,7 +160,7 @@ export const getAstImport = (
       ...(defaultIdentifier
         ? [t.importDefaultSpecifier(t.identifier(defaultIdentifier))]
         : []),
-      ...identifiers.map(identifier =>
+      ...identifiers.map((identifier) =>
         t.importSpecifier(t.identifier(identifier), t.identifier(identifier))
       ),
     ],
@@ -177,7 +177,7 @@ export const getAstJsxElement = (
   return t.jsxElement(
     t.jsxOpeningElement(
       t.jsxIdentifier(name),
-      attrs.filter(attr => !!attr) as t.JSXAttribute[],
+      attrs.filter((attr) => !!attr) as t.JSXAttribute[],
       isSelfClosing
     ),
     isSelfClosing ? null : t.jsxClosingElement(t.jsxIdentifier(name)),
@@ -223,7 +223,7 @@ export const getAstImports = (
 
   // prop level imports (typically enums related) that are displayed
   // only when the prop is being used
-  Object.values(props).forEach(prop => {
+  Object.values(props).forEach((prop) => {
     if (
       prop.imports &&
       prop.value &&
@@ -236,7 +236,7 @@ export const getAstImports = (
 
   addToImportList(importList, providerImports);
 
-  return Object.keys(importList).map(from =>
+  return Object.keys(importList).map((from) =>
     getAstImport(importList[from].named || [], from, importList[from].default)
   );
 };

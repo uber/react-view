@@ -31,7 +31,7 @@ export default () => {
   );
 }`;
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate(el => el.value, editorTextarea);
+    const text = await page.evaluate((el) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 
@@ -50,10 +50,10 @@ export default () => {
 }`;
     await page.click('#heart-4');
     await page.waitFor(300); // debounce time
-    const inputValue = await page.$eval('input', e => (e as any).value);
+    const inputValue = await page.$eval('input', (e) => (e as any).value);
     expect(inputValue).toBe('4');
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate(el => el.value, editorTextarea);
+    const text = await page.evaluate((el) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 });

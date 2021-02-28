@@ -6,6 +6,7 @@
     "jsx": "react",
     "checkJs": false,
     "noEmit": true,
+    "skipLibCheck": true,
 
     /* Strict Type-Checking Options */
     "strict": true /* Enable all strict type-checking options. */,

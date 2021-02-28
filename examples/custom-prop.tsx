@@ -42,7 +42,7 @@ const Slider: React.FC<{
   set: (val: number, propName: string) => void;
 }> = ({value, set}) => {
   // debouncing the knob value so it's always interactive
-  const [rangeValue, setRangeValue] = useValueDebounce(value, val =>
+  const [rangeValue, setRangeValue] = useValueDebounce(value, (val) =>
     set(val, 'value')
   );
   return (
@@ -63,7 +63,7 @@ const Slider: React.FC<{
           max="5"
           step="1"
           value={rangeValue as number}
-          onChange={e => {
+          onChange={(e) => {
             setRangeValue(parseInt(e.target.value, 10));
           }}
         />

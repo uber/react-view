@@ -97,10 +97,10 @@ const Editor: React.FC<TEditorProps> = ({
       <SimpleEditor
         value={code || ''}
         placeholder={placeholder}
-        highlight={code =>
+        highlight={(code) =>
           highlightCode({code, theme: editorTheme, transformToken, language})
         }
-        onValueChange={code => setCode(code)}
+        onValueChange={(code) => setCode(code)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         padding={8}

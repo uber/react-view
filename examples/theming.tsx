@@ -44,7 +44,7 @@ export const getActiveTheme = (
   initialValues: {[key: string]: string}
 ) => {
   const activeValues: {[key: string]: string} = {};
-  Object.keys(initialValues).forEach(key => {
+  Object.keys(initialValues).forEach((key) => {
     activeValues[key] = initialValues[key];
     if (values && values[key]) {
       activeValues[key] = values[key];
@@ -58,7 +58,7 @@ export const getThemeDiff = (
   initialValues: {[key: string]: string}
 ) => {
   const diff: {[key: string]: string} = {};
-  Object.keys(values).forEach(key => {
+  Object.keys(values).forEach((key) => {
     if (
       initialValues[key] &&
       values[key] &&
@@ -86,7 +86,7 @@ const ColorInput: React.FC<TColorInputProps> = ({
     >
       <div style={{width: '160px'}}>
         <Editor
-          onChange={val => {
+          onChange={(val) => {
             setColor(val);
           }}
           data-testid={themeKey}
@@ -126,13 +126,13 @@ const ThemeEditor: React.FC<TThemeEditorProps> = ({theme, set}) => {
   return (
     <React.Fragment>
       <H3>Theme Editor</H3>
-      {themeKeys.map(key => {
+      {themeKeys.map((key) => {
         return (
           <ColorInput
             key={key}
             themeKey={key}
             globalColor={activeTheme[key]}
-            globalSet={color => {
+            globalSet={(color) => {
               const diff = getThemeDiff(
                 {
                   ...theme,
@@ -155,16 +155,16 @@ export const provider = {
   // write a visitor that gets the provider value out of the AST tree
   parse: (astRoot: t.File): TProviderValue => {
     const newThemeValues: Partial<TTheme> = {};
-    traverse(astRoot, {
+    traverse(astRoot as any, {
       JSXOpeningElement(path) {
         const identifier = path.node.name as t.JSXIdentifier;
         const attrs = path.node.attributes as t.JSXAttribute[];
         if (identifier.name === 'ThemeProvider' && attrs.length > 0) {
-          const colorsAttr = attrs.find(attr => attr.name.name === 'colors');
+          const colorsAttr = attrs.find((attr) => attr.name.name === 'colors');
           if (colorsAttr) {
             const colors = (colorsAttr.value as any).expression.properties;
             colors.forEach((prop: t.ObjectProperty) => {
-              const name: keyof typeof defaultTheme = prop.key.name;
+              const name: keyof typeof defaultTheme = (prop.key as any).name;
               const value = (prop.value as t.StringLiteral).value;
               if (defaultTheme[name] !== value) {
                 newThemeValues[name] = value;
