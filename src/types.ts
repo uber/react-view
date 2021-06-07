@@ -46,8 +46,11 @@ export type TUseViewParams<CustomPropFields = any> = {
   initialCode?: string;
   provider?: TProvider;
   customProps?: TCustomProps;
-  className?: string;
 };
+
+export interface TViewParams extends TUseViewParams {
+  className?: string;
+}
 
 export type TCompilerProps = {
   scope: {[key: string]: any};
@@ -88,10 +91,13 @@ export type TErrorProps = {
 export type TUseView = <ProviderValue = any, CustomPropFields = any>(
   params?: TUseViewParams<CustomPropFields>
 ) => {
-  compilerProps: Omit<TCompilerProps, 'minHeight' | 'placeholder' | 'presets'>;
+  compilerProps: Omit<
+    TCompilerProps,
+    'minHeight' | 'placeholder' | 'presets' | 'className'
+  >;
   knobProps: TKnobsProps;
-  editorProps: TEditorProps;
-  errorProps: TErrorProps;
+  editorProps: Omit<TEditorProps, 'className'>;
+  errorProps: Omit<TErrorProps, 'className'>;
   providerValue: ProviderValue;
   actions: {
     formatCode: () => void;
