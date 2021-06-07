@@ -16,9 +16,9 @@ import {
 } from '../index';
 import {getStyles} from '../utils';
 
-import {TUseViewParams} from '../types';
+import {TViewParams} from '../types';
 
-const View: React.FC<TUseViewParams> = (args) => {
+const View: React.FC<TViewParams> = (args) => {
   const params = useView(args);
   return (
     <div {...getStyles({maxWidth: '600px'}, args.className)}>
