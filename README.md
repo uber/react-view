@@ -4,7 +4,7 @@ React View is a set of tools that aspires to close the gap between users, develo
 
 <p align="center"><img src="https://user-images.githubusercontent.com/1387913/69589789-09196800-0fa2-11ea-9485-aeb506d18fe8.gif" width="75%"><p>
 
-[See the example](https://react-view.netlify.com/?path=/story/view--view). [CodeSandbox](https://codesandbox.io/s/i3dbn?fontsize=14&hidenavigation=1&theme=dark).
+[See the example](https://react-view.pages.dev/?path=/story/view--view). [CodeSandbox](https://codesandbox.io/s/i3dbn?fontsize=14&hidenavigation=1&theme=dark).
 
 There are a few ways how to use React View:
 
@@ -125,13 +125,13 @@ export default () => {
 };
 ```
 
-[See the example.](https://react-view.netlify.com/?path=/story/useview--basic)
+[See the example.](https://react-view.pages.dev/?path=/story/useview--basic)
 
 ## Live Code Editing Only
 
 <p align="center"><img src="https://user-images.githubusercontent.com/1387913/69591933-3289c200-0fa9-11ea-952b-d628ace46e8a.gif" width="75%"><p>
 
-[See the example.](https://react-view.netlify.com/?path=/story/useview--live-code-only)
+[See the example.](https://react-view.pages.dev/?path=/story/useview--live-code-only)
 
 If you don't need the code generation or props documentation, you can also use React View for editing source code with a live preview.
 
@@ -343,8 +343,8 @@ If you wish to use the code generation and knobs you need to define the componen
 - `defaultValue` - Can be useful for `PropTypes.Enum` or `PropTypes.Boolean`. When `value` equals `defaultValue`, the prop will not be code generated. It keeps examples with set default options cleaner.
 - `hidden` - Some components have a lot of props but not all of them are that useful. You can optionally hide them from the default list of knobs. The user still can expand them via the "Show all props" button.
 - `imports` - Same as the top-level imports argument. However, it will add import statements only if the prop is being used and code generated. For example, there is no need to display the `enum` import if the related prop is not used (defaultValue). It keeps examples cleaner.
-- `stateful` - It detaches the prop value into an internal `React.useState` hook. This can make components like inputs interactive. [More info](https://react-view.netlify.com/?path=/story/useview--state-hook).
-- `propHook` - This works in combination with the `stateful` flag. [More info](https://react-view.netlify.com/?path=/story/useview--state-hook)
+- `stateful` - It detaches the prop value into an internal `React.useState` hook. This can make components like inputs interactive. [More info](https://react-view.pages.dev/?path=/story/useview--state-hook).
+- `propHook` - This works in combination with the `stateful` flag. [More info](https://react-view.pages.dev/?path=/story/useview--state-hook)
 - `custom` - When you define `customProps`, you can use this part of the configuration to pass arbitrary data.
 
 #### onUpdate
@@ -379,7 +379,7 @@ provider?: {
 };
 ```
 
-**This is an advanced API**. It lets you build an arbitrary provider wrapper around your component. [See the example.](https://react-view.netlify.com/?path=/story/advanced--theming)
+**This is an advanced API**. It lets you build an arbitrary provider wrapper around your component. [See the example.](https://react-view.pages.dev/?path=/story/advanced--theming)
 
 - `value` - Can be anything, represents the state of provider, when `undefined` the provider is not code generated.
 - `parse` - Gives you the AST root, you should return the `value` so React View knows how to parse out the provider value out of the source code.
@@ -397,7 +397,7 @@ customProps?: {
 };
 ```
 
-**This is an advanced API**. It lets you build your own prop/knob types and UIs. [See the example.](https://react-view.netlify.com/?path=/story/advanced--custom-prop) First, you set the `type` of your prop to `PropTypes.Custom`. Then, you can target it by its name (`key` is the prop name). For each prop, you need to define:
+**This is an advanced API**. It lets you build your own prop/knob types and UIs. [See the example.](https://react-view.pages.dev/?path=/story/advanced--custom-prop) First, you set the `type` of your prop to `PropTypes.Custom`. Then, you can target it by its name (`key` is the prop name). For each prop, you need to define:
 
 - `parse` - Gives you the prop code and the prop configuration (a part of the props list), you should return the **value** (internal representation) of that prop.
 - `generate` - Gives you the **value**, you should return the AST of the prop so React View knows what to code generate.
