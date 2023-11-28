@@ -5,6 +5,7 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
 import template from "@babel/template";
+import generate from "@babel/generator";
 import * as t from "@babel/types";
 import { clone } from "./utils";
 import type { TProp, TImportsConfig, TCustomProps, TProvider } from "./types";
@@ -291,18 +292,19 @@ export const getAst = (
 };
 
 export const formatAstAndPrint = (ast: t.File, printWidth?: number) => {
-  const result = (prettier as any).__debug.formatAST(ast, {
+  const { code } = generate(ast);
+  const result = prettier.format(code, {
     originalText: "",
     parser: "babel",
     printWidth: printWidth ? printWidth : 58,
     plugins: [parsers],
   });
   return (
-    result.formatted
+    result
       // add a new line before export
       .replace(
         "export default",
-        `${result.formatted.startsWith("import ") ? "\n" : ""}export default`,
+        `${result.startsWith("import ") ? "\n" : ""}export default`,
       )
       // remove newline at the end of file
       .replace(/[\r\n]+$/, "")

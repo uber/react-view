@@ -30,7 +30,11 @@ import { ThemeProvider } from "your-component-library";
 
 export default () => {
   return (
-    <ThemeProvider colors={{ background: "hotpink" }}>
+    <ThemeProvider
+      colors={{
+        background: "hotpink"
+      }}
+    >
       <Button>Hello</Button>
     </ThemeProvider>
   );

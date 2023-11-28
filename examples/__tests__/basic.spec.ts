@@ -136,9 +136,8 @@ test.describe("Basic actions", () => {
   });
 
   test("should format the code snippet", async ({ page }) => {
-    // todo fix bug with prettier formatting
     const formattedCode = `import * as React from "react";
-import { value Button } from "your-button-component";
+import { Button } from "your-button-component";
 
 export default () => {
   return (
