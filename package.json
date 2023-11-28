@@ -26,8 +26,8 @@
     "test": "vitest src --run",
     "test:dev": "vitest src",
     "test:e2e": " pnpm test:e2e:dev && pnpm test:e2e:prod",
-    "test:e2e:dev": "TYPE=dev && pnpm exec playwright test",
-    "test:e2e:prod": "TYPE=prod && pnpm exec playwright test",
+    "test:e2e:dev": "export TYPE=dev && pnpm exec playwright test",
+    "test:e2e:prod": "export TYPE=prod && pnpm exec playwright test",
     "typecheck": "tsc",
     "prepare": "husky install"
   },
