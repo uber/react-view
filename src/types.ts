@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
@@ -29,13 +29,6 @@ export type TEditorLanguage =
   | "typescript"
   | "tsx"
   | "css";
-
-export type TTransformToken = (tokenProps: {
-  style?: { [key: string]: string | number | null };
-  className: string;
-  children: string;
-  [key: string]: any;
-}) => React.ReactNode;
 
 export type TUseViewParams<CustomPropFields = any> = {
   componentName?: string;
@@ -71,7 +64,6 @@ export type TKnobsProps = {
 
 export type TEditorProps = {
   code: string;
-  transformToken?: TTransformToken;
   placeholder?: string;
   language?: TEditorLanguage;
   onChange: (code: string) => void;

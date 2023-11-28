@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
@@ -111,7 +111,7 @@ const BooleanKnob: React.FC<{
   );
 };
 
-const Knob: React.SFC<{
+const Knob: React.FC<{
   name: string;
   error: string | null;
   description: string;

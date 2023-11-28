@@ -4,8 +4,6 @@ node_modules
 .vscode
 .idea
 dist
+build
 compiled
-.awcache
-.rpt2_cache
 docs
-storybook-static

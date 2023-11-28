@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
@@ -7,19 +7,17 @@ LICENSE file in the root directory of this source tree.
 import * as React from "react";
 import SimpleEditor from "react-simple-code-editor";
 import { Highlight } from "prism-react-renderer";
-import type { TEditorProps, TEditorLanguage, TTransformToken } from "../index";
+import type { TEditorProps, TEditorLanguage } from "../index";
 import lightTheme from "../light-theme";
 import { getStyles, useValueDebounce } from "../utils";
 
 const highlightCode = ({
   code,
   theme,
-  transformToken,
   language,
 }: {
   code: string;
   theme: typeof lightTheme;
-  transformToken?: TTransformToken;
   language?: TEditorLanguage;
 }) => (
   <Highlight code={code} theme={theme} language={language || "jsx"}>
@@ -29,10 +27,6 @@ const highlightCode = ({
           <div key={i} {...getLineProps({ line, key: i })}>
             {line.map((token, key) => {
               const tokenProps = getTokenProps({ token, key });
-
-              if (transformToken) {
-                return transformToken(tokenProps);
-              }
               return <span key={key} {...tokenProps} />;
             })}
           </div>
@@ -44,7 +38,6 @@ const highlightCode = ({
 
 const Editor: React.FC<TEditorProps> = ({
   code: globalCode,
-  transformToken,
   onChange,
   placeholder,
   language,
@@ -88,7 +81,7 @@ const Editor: React.FC<TEditorProps> = ({
         value={code || ""}
         placeholder={placeholder}
         highlight={(code) =>
-          highlightCode({ code, theme: editorTheme, transformToken, language })
+          highlightCode({ code, theme: editorTheme, language })
         }
         onValueChange={(code) => setCode(code)}
         onFocus={() => setFocused(true)}

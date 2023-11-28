@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
@@ -74,6 +74,7 @@ const transpile = (
 ) => {
   try {
     const ast = transformations.reduce(
+      //@ts-ignore
       (result, transformation) => transformation(result),
       parse(code),
     );
@@ -87,7 +88,7 @@ const transpile = (
     );
     setOutput({ component });
     setError(null);
-  } catch (error) {
+  } catch (error: any) {
     setError(error.toString());
   }
 };

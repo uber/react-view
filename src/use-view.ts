@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
@@ -152,7 +152,7 @@ const useView: TUseView = (config = {}) => {
             updatePropsAndCode(dispatch, newCode, propName, propValue);
             onUpdate({ code: newCode });
           }
-        } catch (e) {
+        } catch (e: any) {
           updateProps(dispatch, propName, propValue);
           setError({ where: propName, msg: e.toString() });
         }
@@ -230,7 +230,7 @@ const useView: TUseView = (config = {}) => {
           });
           setError({ where: "", msg: null });
           updatePropsAndCode(dispatch, newCode, propName, propValue);
-        } catch (e) {
+        } catch (e: any) {
           updateProps(dispatch, propName, propValue);
           setError({ where: propName, msg: e.toString() });
         }

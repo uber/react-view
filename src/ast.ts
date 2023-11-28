@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
@@ -47,10 +47,24 @@ export const parse = (code: string) =>
     ],
   });
 
+function dotToMemberExpression(dotNotation: string) {
+  const parts = dotNotation.split(".");
+  if (parts.length < 2) {
+    return t.identifier(dotNotation);
+  }
+  let expression: t.Identifier | t.MemberExpression = t.identifier(
+    parts.shift()!,
+  );
+  for (const part of parts) {
+    expression = t.memberExpression(expression, t.identifier(part));
+  }
+  return expression;
+}
+
 // creates a call expression that synchronizes view state
 const getInstrumentOnChange = (what: string, into: string) =>
   t.callExpression(t.identifier("__reactViewOnChange"), [
-    t.identifier(what),
+    dotToMemberExpression(what),
     t.stringLiteral(into),
   ]);
 
