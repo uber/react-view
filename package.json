@@ -28,7 +28,8 @@
     "test:e2e": " pnpm test:e2e:dev && pnpm test:e2e:prod",
     "test:e2e:dev": "TYPE=dev && pnpm exec playwright test",
     "test:e2e:prod": "TYPE=prod && pnpm exec playwright test",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@babel/code-frame": "^7.23.4",
@@ -65,7 +66,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.33.2",
-    "husky": "^8.0.3",
+    "husky": "^8.0.0",
     "lint-staged": "^15.1.0",
     "node-libs-browser": "^2.2.1",
     "react": "^18.2.0",
