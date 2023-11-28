@@ -4,7 +4,7 @@ Copyright (c) 2020 Uber Technologies, Inc.
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import * as React from 'react';
+import * as React from "react";
 
 type TRatingProps = {
   value: number;
@@ -18,7 +18,12 @@ type THeartProps = {
   onClick: () => void;
 };
 
-const Heart: React.FC<THeartProps> = ({active, setHovered, index, onClick}) => {
+const Heart: React.FC<THeartProps> = ({
+  active,
+  setHovered,
+  index,
+  onClick,
+}) => {
   const ref = React.useRef(null);
 
   const handleMouseOver = () => setHovered(index);
@@ -27,11 +32,11 @@ const Heart: React.FC<THeartProps> = ({active, setHovered, index, onClick}) => {
   React.useEffect(() => {
     const node = ref.current as any;
     if (node) {
-      node.addEventListener('mouseover', handleMouseOver);
-      node.addEventListener('mouseout', handleMouseOut);
+      node.addEventListener("mouseover", handleMouseOver);
+      node.addEventListener("mouseout", handleMouseOut);
       return () => {
-        node.removeEventListener('mouseover', handleMouseOver);
-        node.removeEventListener('mouseout', handleMouseOut);
+        node.removeEventListener("mouseover", handleMouseOver);
+        node.removeEventListener("mouseout", handleMouseOut);
       };
     }
     return undefined;
@@ -49,23 +54,23 @@ const Heart: React.FC<THeartProps> = ({active, setHovered, index, onClick}) => {
       title={`${index}/5`}
       onClick={onClick}
       style={{
-        listStyle: 'none',
-        fontSize: '32px',
-        margin: '5px',
-        cursor: 'pointer',
+        listStyle: "none",
+        fontSize: "32px",
+        margin: "5px",
+        cursor: "pointer",
       }}
     >
-      {active ? '❤️' : '💙'}
+      {active ? "❤️" : "💙"}
     </li>
   );
 };
-export const Rating: React.FC<TRatingProps> = ({value, onChange}) => {
+export const Rating: React.FC<TRatingProps> = ({ value, onChange }) => {
   const [hovered, setHovered] = React.useState(0);
   return (
     <ul
       role="radiogroup"
       tabIndex={0}
-      style={{display: 'flex', flexWrap: 'nowrap', padding: 0}}
+      style={{ display: "flex", flexWrap: "nowrap", padding: 0 }}
     >
       {[...Array(5).keys()].map((index) => (
         <Heart

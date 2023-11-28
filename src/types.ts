@@ -4,10 +4,10 @@ Copyright (c) 2020 Uber Technologies, Inc.
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import * as t from '@babel/types';
-import {PluginItem} from '@babel/core';
-import {PropTypes, Action} from './const';
-import lightTheme from './light-theme';
+import * as t from "@babel/types";
+import { PluginItem } from "@babel/core";
+import { PropTypes, Action } from "./const";
+import lightTheme from "./light-theme";
 
 export type TProvider<T = any> = {
   value: T;
@@ -24,14 +24,14 @@ export type TCustomProps = {
 };
 
 export type TEditorLanguage =
-  | 'javascript'
-  | 'jsx'
-  | 'typescript'
-  | 'tsx'
-  | 'css';
+  | "javascript"
+  | "jsx"
+  | "typescript"
+  | "tsx"
+  | "css";
 
 export type TTransformToken = (tokenProps: {
-  style?: {[key: string]: string | number | null};
+  style?: { [key: string]: string | number | null };
   className: string;
   children: string;
   [key: string]: any;
@@ -40,9 +40,9 @@ export type TTransformToken = (tokenProps: {
 export type TUseViewParams<CustomPropFields = any> = {
   componentName?: string;
   imports?: TImportsConfig;
-  scope?: {[key: string]: any};
-  props?: {[key: string]: TProp<CustomPropFields>};
-  onUpdate?: (params: {code: string}) => void;
+  scope?: { [key: string]: any };
+  props?: { [key: string]: TProp<CustomPropFields> };
+  onUpdate?: (params: { code: string }) => void;
   initialCode?: string;
   provider?: TProvider;
   customProps?: TCustomProps;
@@ -53,18 +53,18 @@ export interface TViewParams extends TUseViewParams {
 }
 
 export type TCompilerProps = {
-  scope: {[key: string]: any};
+  scope: { [key: string]: any };
   code: string;
   minHeight?: number;
   setError: (error: string | null) => void;
   transformations: ((ast: t.File) => t.File)[];
-  placeholder?: React.FC<{height: number}>;
+  placeholder?: React.FC<{ height: number }>;
   presets?: PluginItem[];
   className?: string;
 };
 
 export type TKnobsProps = {
-  state: {[key: string]: TProp};
+  state: { [key: string]: TProp };
   set: (propValue: TPropValue, propName: string) => void;
   error: TError;
 };
@@ -77,7 +77,7 @@ export type TEditorProps = {
   onChange: (code: string) => void;
   small?: boolean;
   theme?: typeof lightTheme;
-  ['data-testid']?: string;
+  ["data-testid"]?: string;
   className?: string;
 };
 
@@ -89,15 +89,15 @@ export type TErrorProps = {
 };
 
 export type TUseView = <ProviderValue = any, CustomPropFields = any>(
-  params?: TUseViewParams<CustomPropFields>
+  params?: TUseViewParams<CustomPropFields>,
 ) => {
   compilerProps: Omit<
     TCompilerProps,
-    'minHeight' | 'placeholder' | 'presets' | 'className'
+    "minHeight" | "placeholder" | "presets" | "className"
   >;
   knobProps: TKnobsProps;
-  editorProps: Omit<TEditorProps, 'className'>;
-  errorProps: Omit<TErrorProps, 'className'>;
+  editorProps: Omit<TEditorProps, "className">;
+  errorProps: Omit<TErrorProps, "className">;
   providerValue: ProviderValue;
   actions: {
     formatCode: () => void;
@@ -108,7 +108,7 @@ export type TUseView = <ProviderValue = any, CustomPropFields = any>(
   };
 };
 
-export type TDispatch = (value: {type: Action; payload: any}) => void;
+export type TDispatch = (value: { type: Action; payload: any }) => void;
 
 type TPropHookFn = (params: {
   getInstrumentOnChange: (what: string, into: string) => t.CallExpression;

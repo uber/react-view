@@ -1,0 +1,97 @@
+{
+  "about": {
+    "homepage": "https://www.ladle.dev",
+    "github": "https://github.com/tajo/ladle",
+    "version": 1
+  },
+  "stories": {
+    "advanced--custom-prop": {
+      "name": "Custom prop",
+      "levels": [
+        "Advanced"
+      ],
+      "locStart": 15,
+      "locEnd": 17,
+      "filePath": "examples/advanced.stories.tsx",
+      "namedExport": "customProp",
+      "meta": {}
+    },
+    "advanced--theming": {
+      "name": "Theming",
+      "levels": [
+        "Advanced"
+      ],
+      "locStart": 19,
+      "locEnd": 21,
+      "filePath": "examples/advanced.stories.tsx",
+      "namedExport": "theming",
+      "meta": {}
+    },
+    "tests--modal": {
+      "name": "Modal",
+      "levels": [
+        "Tests"
+      ],
+      "locStart": 14,
+      "locEnd": 16,
+      "filePath": "examples/test.stories.tsx",
+      "namedExport": "modal",
+      "meta": {}
+    },
+    "useview--basic": {
+      "name": "Basic",
+      "levels": [
+        "Useview"
+      ],
+      "locStart": 17,
+      "locEnd": 19,
+      "filePath": "examples/use-view.stories.tsx",
+      "namedExport": "basic",
+      "meta": {}
+    },
+    "useview--live-code-only": {
+      "name": "Live code only",
+      "levels": [
+        "Useview"
+      ],
+      "locStart": 25,
+      "locEnd": 27,
+      "filePath": "examples/use-view.stories.tsx",
+      "namedExport": "liveCodeOnly",
+      "meta": {}
+    },
+    "useview--state-hook": {
+      "name": "State hook",
+      "levels": [
+        "Useview"
+      ],
+      "locStart": 21,
+      "locEnd": 23,
+      "filePath": "examples/use-view.stories.tsx",
+      "namedExport": "stateHook",
+      "meta": {}
+    },
+    "useview--typescript": {
+      "name": "Typescript",
+      "levels": [
+        "Useview"
+      ],
+      "locStart": 29,
+      "locEnd": 31,
+      "filePath": "examples/use-view.stories.tsx",
+      "namedExport": "typescript",
+      "meta": {}
+    },
+    "view--view": {
+      "name": "View",
+      "levels": [
+        "View"
+      ],
+      "locStart": 14,
+      "locEnd": 16,
+      "filePath": "examples/view.stories.tsx",
+      "namedExport": "view",
+      "meta": {}
+    }
+  }
+}

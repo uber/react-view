@@ -4,52 +4,52 @@ Copyright (c) 2020 Uber Technologies, Inc.
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import traverse, {NodePath} from '@babel/traverse';
-import generate from '@babel/generator';
-import * as t from '@babel/types';
-import {TProp} from './types';
-import {parse as babelParse} from '@babel/parser';
-import {getAstJsxElement, formatAstAndPrint} from './code-generator';
+import traverse, { NodePath } from "@babel/traverse";
+import generate from "@babel/generator";
+import * as t from "@babel/types";
+import type { TProp } from "./types";
+import { parse as babelParse } from "@babel/parser";
+import { getAstJsxElement, formatAstAndPrint } from "./code-generator";
 
 export const parse = (code: string) =>
   babelParse(code, {
-    sourceType: 'module',
+    sourceType: "module",
     plugins: [
-      'jsx',
-      'flowComments',
-      'typescript',
-      'asyncGenerators',
-      'classProperties',
-      'classPrivateProperties',
-      'classPrivateMethods',
+      "jsx",
+      "flowComments",
+      "typescript",
+      "asyncGenerators",
+      "classProperties",
+      "classPrivateProperties",
+      "classPrivateMethods",
       [
-        'decorators',
+        "decorators",
         {
           decoratorsBeforeExport: true,
         },
       ],
-      'doExpressions',
-      'dynamicImport',
-      'exportDefaultFrom',
-      'exportNamespaceFrom',
-      'functionBind',
-      'functionSent',
-      'importMeta',
-      'logicalAssignment',
-      'nullishCoalescingOperator',
-      'numericSeparator',
-      'objectRestSpread',
-      'optionalCatchBinding',
-      'optionalChaining',
-      'partialApplication',
-      'throwExpressions',
-      'topLevelAwait',
+      "doExpressions",
+      "dynamicImport",
+      "exportDefaultFrom",
+      "exportNamespaceFrom",
+      "functionBind",
+      "functionSent",
+      "importMeta",
+      "logicalAssignment",
+      "nullishCoalescingOperator",
+      "numericSeparator",
+      "objectRestSpread",
+      "optionalCatchBinding",
+      "optionalChaining",
+      "partialApplication",
+      "throwExpressions",
+      "topLevelAwait",
     ],
   });
 
 // creates a call expression that synchronizes view state
 const getInstrumentOnChange = (what: string, into: string) =>
-  t.callExpression(t.identifier('__reactViewOnChange'), [
+  t.callExpression(t.identifier("__reactViewOnChange"), [
     t.identifier(what),
     t.stringLiteral(into),
   ]);
@@ -57,16 +57,16 @@ const getInstrumentOnChange = (what: string, into: string) =>
 // appends a call expression to a function body
 const fnBodyAppend = (
   path: NodePath<any>,
-  callExpression: t.CallExpression
+  callExpression: t.CallExpression,
 ) => {
-  if (path.node.type !== 'JSXExpressionContainer') {
+  if (path.node.type !== "JSXExpressionContainer") {
     return;
   }
-  const callbackBody = (path.get('expression') as any).get('body');
-  if (callbackBody.type === 'BlockStatement') {
+  const callbackBody = (path.get("expression") as any).get("body");
+  if (callbackBody.type === "BlockStatement") {
     // when the callback body is a block
     // e.g.: e => { setValue(e.target.value) }
-    callbackBody.pushContainer('body', callExpression);
+    callbackBody.pushContainer("body", callExpression);
   } else {
     // when it is a single statement like e => setValue(e.target.value)
     // we have to create a BlockStatement first
@@ -74,7 +74,7 @@ const fnBodyAppend = (
       t.blockStatement([
         t.expressionStatement(callbackBody.node),
         t.expressionStatement(callExpression),
-      ])
+      ]),
     );
   }
 };
@@ -84,12 +84,12 @@ const fnBodyAppend = (
 export const transformBeforeCompilation = (
   ast: t.File,
   elementName: string,
-  propsConfig: {[key: string]: TProp}
+  propsConfig: { [key: string]: TProp },
 ) => {
   try {
     traverse(ast as any, {
       VariableDeclaration(path) {
-        if (path.parent.type === 'Program') {
+        if (path.parent.type === "Program") {
           //@ts-ignore
           path.replaceWith(path.node.declarations[0].init);
         }
@@ -99,8 +99,8 @@ export const transformBeforeCompilation = (
       },
       ExportDefaultDeclaration(path) {
         if (
-          path.node.declaration.type === 'ArrowFunctionExpression' ||
-          path.node.declaration.type === 'FunctionDeclaration'
+          path.node.declaration.type === "ArrowFunctionExpression" ||
+          path.node.declaration.type === "FunctionDeclaration"
         ) {
           path.replaceWith(path.node.declaration);
         } else {
@@ -110,37 +110,37 @@ export const transformBeforeCompilation = (
       // adds internal state instrumentation through __reactViewOnChange callback
       JSXElement(path) {
         if (
-          path.node.openingElement.type === 'JSXOpeningElement' &&
+          path.node.openingElement.type === "JSXOpeningElement" &&
           //@ts-ignore
           path.node.openingElement.name.name === elementName
         ) {
-          if (propsConfig['children'] && propsConfig['children'].propHook) {
-            const propHook = propsConfig['children'].propHook;
-            path.get('children').forEach((child) => {
-              typeof propHook === 'object'
+          if (propsConfig["children"] && propsConfig["children"].propHook) {
+            const propHook = propsConfig["children"].propHook;
+            path.get("children").forEach((child) => {
+              typeof propHook === "object"
                 ? fnBodyAppend(
                     child,
-                    getInstrumentOnChange(propHook.what, propHook.into)
+                    getInstrumentOnChange(propHook.what, propHook.into),
                   )
                 : child.traverse(
-                    propHook({getInstrumentOnChange, fnBodyAppend})
+                    propHook({ getInstrumentOnChange, fnBodyAppend }),
                   );
             });
           }
           path
-            .get('openingElement')
-            .get('attributes')
+            .get("openingElement")
+            .get("attributes")
             .forEach((attr) => {
-              const name = (attr.get('name') as any).node.name;
+              const name = (attr.get("name") as any).node.name;
               const propHook = propsConfig[name].propHook;
-              if (typeof propHook !== 'undefined') {
-                typeof propHook === 'object'
+              if (typeof propHook !== "undefined") {
+                typeof propHook === "object"
                   ? fnBodyAppend(
-                      attr.get('value') as any,
-                      getInstrumentOnChange(propHook.what, propHook.into)
+                      attr.get("value") as any,
+                      getInstrumentOnChange(propHook.what, propHook.into),
                     )
                   : attr.traverse(
-                      propHook({getInstrumentOnChange, fnBodyAppend})
+                      propHook({ getInstrumentOnChange, fnBodyAppend }),
                     );
               }
             });
@@ -154,10 +154,10 @@ export const transformBeforeCompilation = (
 export function parseCode(
   code: string,
   elementName: string,
-  parseProvider?: (ast: any) => void
+  parseProvider?: (ast: any) => void,
 ) {
-  const propValues: {[key: string]: string} = {};
-  const stateValues: {[key: string]: string} = {};
+  const propValues: { [key: string]: string } = {};
+  const stateValues: { [key: string]: string } = {};
   let parsedProvider: any = undefined;
   try {
     const ast = parse(code) as any;
@@ -165,7 +165,7 @@ export function parseCode(
       JSXElement(path) {
         if (
           Object.keys(propValues).length === 0 && // process just the first element
-          path.node.openingElement.type === 'JSXOpeningElement' &&
+          path.node.openingElement.type === "JSXOpeningElement" &&
           //@ts-ignore
           path.node.openingElement.name.name === elementName
         ) {
@@ -176,24 +176,24 @@ export function parseCode(
               //boolean prop without value
               value = true;
             } else {
-              if (attr.value.type === 'StringLiteral') {
+              if (attr.value.type === "StringLiteral") {
                 value = attr.value.value;
-              } else if (attr.value.type === 'JSXExpressionContainer') {
-                if (attr.value.expression.type === 'BooleanLiteral') {
+              } else if (attr.value.type === "JSXExpressionContainer") {
+                if (attr.value.expression.type === "BooleanLiteral") {
                   value = attr.value.expression.value;
                 } else {
                   value = formatAstAndPrint(
                     //@ts-ignore
                     t.program([t.expressionStatement(attr.value.expression)]),
-                    30
+                    30,
                   );
-                  if (attr.value.expression.type === 'ObjectExpression') {
+                  if (attr.value.expression.type === "ObjectExpression") {
                     // the generated code is ({ .... }), this removes the brackets to
                     // keep the input more readable
                     value = value.slice(1, -1);
                   }
                   if (
-                    attr.value.expression.type === 'MemberExpression' &&
+                    attr.value.expression.type === "MemberExpression" &&
                     attr.value.expression.computed
                   ) {
                     // turn a['hello-world'] into a.hello-world so we don't have to deal with two
@@ -205,29 +205,29 @@ export function parseCode(
             }
             propValues[name] = value;
           });
-          propValues['children'] = formatAstAndPrint(
-            getAstJsxElement('ViewRoot', [], path.node.children as any) as any,
-            30
+          propValues["children"] = formatAstAndPrint(
+            getAstJsxElement("ViewRoot", [], path.node.children as any) as any,
+            30,
           )
-            .replace(/\n  /g, '\n')
-            .replace(/^<ViewRoot>\n?/, '')
-            .replace(/<\/ViewRoot>$/, '')
-            .replace(/\s*<ViewRoot \/>\s*/, '');
+            .replace(/\n  /g, "\n")
+            .replace(/^<ViewRoot>\n?/, "")
+            .replace(/<\/ViewRoot>$/, "")
+            .replace(/\s*<ViewRoot \/>\s*/, "");
         }
       },
       VariableDeclarator(path) {
         // looking for React.useState()
         const node = path.node as any;
         if (
-          node.id.type === 'ArrayPattern' &&
-          node.init.type === 'CallExpression' &&
-          node.init.callee.property.name === 'useState'
+          node.id.type === "ArrayPattern" &&
+          node.init.type === "CallExpression" &&
+          node.init.callee.property.name === "useState"
         ) {
           const name = node.id.elements[0].name;
           const valueNode = node.init.arguments[0];
           if (
-            valueNode.type === 'StringLiteral' ||
-            valueNode.type === 'BooleanLiteral'
+            valueNode.type === "StringLiteral" ||
+            valueNode.type === "BooleanLiteral"
           ) {
             stateValues[name] = valueNode.value;
           } else {
@@ -252,5 +252,5 @@ export function parseCode(
     });
   });
 
-  return {parsedProps: propValues, parsedProvider};
+  return { parsedProps: propValues, parsedProvider };
 }

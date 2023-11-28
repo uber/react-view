@@ -4,16 +4,16 @@ Copyright (c) 2020 Uber Technologies, Inc.
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import {useState, useReducer, useEffect} from 'react';
-import copy from 'copy-to-clipboard';
-import debounce from 'lodash/debounce';
-import * as t from '@babel/types';
+import { useState, useReducer, useEffect } from "react";
+import copy from "copy-to-clipboard";
+import debounce from "lodash/debounce";
+import * as t from "@babel/types";
 
 // transformations, code generation
-import {transformBeforeCompilation} from './ast';
-import {getCode, formatCode} from './code-generator';
-import {buildPropsObj} from './utils';
-import {TPropValue, TError, TUseView} from './types';
+import { transformBeforeCompilation } from "./ast";
+import { getCode, formatCode } from "./code-generator";
+import { buildPropsObj } from "./utils";
+import { TPropValue, TError, TUseView } from "./types";
 
 // actions that can be dispatched
 import {
@@ -24,12 +24,12 @@ import {
   updateProps,
   updatePropsAndCode,
   updatePropsAndCodeNoRecompile,
-} from './actions';
-import reducer from './reducer';
+} from "./actions";
+import reducer from "./reducer";
 
 const useView: TUseView = (config = {}) => {
   // setting defaults
-  const componentName = config.componentName ? config.componentName : '';
+  const componentName = config.componentName ? config.componentName : "";
   const propsConfig = config.props ? config.props : {};
   const scopeConfig = config.scope ? config.scope : {};
   const importsConfig = config.imports ? config.imports : {};
@@ -46,7 +46,7 @@ const useView: TUseView = (config = {}) => {
   const initialCode = config.initialCode;
 
   const [hydrated, setHydrated] = useState(false);
-  const [error, setError] = useState<TError>({where: '', msg: null});
+  const [error, setError] = useState<TError>({ where: "", msg: null });
   const [state, dispatch] = useReducer(reducer, {
     code:
       initialCode ||
@@ -58,7 +58,7 @@ const useView: TUseView = (config = {}) => {
         importsConfig,
         customProps,
       }),
-    codeNoRecompile: '',
+    codeNoRecompile: "",
     props: propsConfig,
     providerValue: provider ? provider.value : undefined,
   });
@@ -74,7 +74,7 @@ const useView: TUseView = (config = {}) => {
           componentName,
           propsConfig,
           provider ? provider.parse : undefined,
-          customProps
+          customProps,
         );
       } catch (e) {}
     }
@@ -87,7 +87,7 @@ const useView: TUseView = (config = {}) => {
     (propValue: TPropValue, propName: string) => {
       !hydrated && setHydrated(true);
       const newCode = getCode({
-        props: buildPropsObj(state.props, {[propName]: propValue}),
+        props: buildPropsObj(state.props, { [propName]: propValue }),
         componentName,
         provider,
         providerValue: state.providerValue,
@@ -95,15 +95,15 @@ const useView: TUseView = (config = {}) => {
         customProps,
       });
       updatePropsAndCodeNoRecompile(dispatch, newCode, propName, propValue);
-      onUpdate({code: newCode});
+      onUpdate({ code: newCode });
     },
-    200
+    200,
   );
 
   return {
     compilerProps: {
       code: state.code,
-      setError: (msg: string | null) => setError({where: '__compiler', msg}),
+      setError: (msg: string | null) => setError({ where: "__compiler", msg }),
       transformations: [
         (ast: t.File) =>
           transformBeforeCompilation(ast, componentName, propsConfig),
@@ -120,15 +120,15 @@ const useView: TUseView = (config = {}) => {
         try {
           !hydrated && setHydrated(true);
           const newCode = getCode({
-            props: buildPropsObj(state.props, {[propName]: propValue}),
+            props: buildPropsObj(state.props, { [propName]: propValue }),
             componentName,
             provider,
             providerValue: state.providerValue,
             importsConfig,
             customProps,
           });
-          setError({where: '', msg: null});
-          if (state.codeNoRecompile !== '') {
+          setError({ where: "", msg: null });
+          if (state.codeNoRecompile !== "") {
             // fixes https://github.com/uber/react-view/issues/19
             // We don't run compiler when the state change comes from interacting
             // with the component since that causes remount and lost of focus.
@@ -146,21 +146,21 @@ const useView: TUseView = (config = {}) => {
             // in the next tick
             setTimeout(() => {
               updatePropsAndCode(dispatch, newCode, propName, propValue);
-              onUpdate({code: newCode});
+              onUpdate({ code: newCode });
             }, 0);
           } else {
             updatePropsAndCode(dispatch, newCode, propName, propValue);
-            onUpdate({code: newCode});
+            onUpdate({ code: newCode });
           }
         } catch (e) {
           updateProps(dispatch, propName, propValue);
-          setError({where: propName, msg: e.toString()});
+          setError({ where: propName, msg: e.toString() });
         }
       },
     },
     providerValue: state.providerValue,
     editorProps: {
-      code: state.codeNoRecompile !== '' ? state.codeNoRecompile : state.code,
+      code: state.codeNoRecompile !== "" ? state.codeNoRecompile : state.code,
       onChange: (newCode: string) => {
         try {
           updateAll(
@@ -169,16 +169,16 @@ const useView: TUseView = (config = {}) => {
             componentName,
             propsConfig,
             provider ? provider.parse : undefined,
-            customProps
+            customProps,
           );
-          onUpdate({code: newCode});
+          onUpdate({ code: newCode });
         } catch (e) {
           updateCode(dispatch, newCode);
         }
       },
     },
     errorProps: {
-      msg: error.where === '__compiler' ? error.msg : null,
+      msg: error.where === "__compiler" ? error.msg : null,
       code: state.code,
     },
     actions: {
@@ -205,7 +205,7 @@ const useView: TUseView = (config = {}) => {
               customProps,
             });
         reset(dispatch, newCode, providerValue, propsConfig);
-        onUpdate({code: newCode});
+        onUpdate({ code: newCode });
       },
       updateProvider: (providerValue: any) => {
         const newCode: string = getCode({
@@ -221,18 +221,18 @@ const useView: TUseView = (config = {}) => {
       updateProp: (propName: string, propValue: any) => {
         try {
           const newCode = getCode({
-            props: buildPropsObj(state.props, {[propName]: propValue}),
+            props: buildPropsObj(state.props, { [propName]: propValue }),
             componentName,
             provider,
             providerValue: state.providerValue,
             importsConfig,
             customProps,
           });
-          setError({where: '', msg: null});
+          setError({ where: "", msg: null });
           updatePropsAndCode(dispatch, newCode, propName, propValue);
         } catch (e) {
           updateProps(dispatch, propName, propValue);
-          setError({where: propName, msg: e.toString()});
+          setError({ where: propName, msg: e.toString() });
         }
       },
     },

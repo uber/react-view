@@ -4,14 +4,14 @@ Copyright (c) 2020 Uber Technologies, Inc.
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import * as React from 'react';
-import {getStyles} from '../utils';
+import * as React from "react";
+import { getStyles } from "../utils";
 
 export const ActionButton: React.FC<{
   onClick: () => void;
   children: React.ReactNode;
   style?: React.CSSProperties;
-  ['data-testid']?: string;
+  ["data-testid"]?: string;
 }> = (props) => <button className="react-view-button" {...props} />;
 
 export const ActionButtons: React.FC<{
@@ -20,7 +20,7 @@ export const ActionButtons: React.FC<{
   copyUrl: () => void;
   reset: () => void;
   className?: string;
-}> = ({formatCode, copyCode, copyUrl, reset, className}) => (
+}> = ({ formatCode, copyCode, copyUrl, reset, className }) => (
   <React.Fragment>
     <style
       dangerouslySetInnerHTML={{
@@ -48,31 +48,31 @@ export const ActionButtons: React.FC<{
   `,
       }}
     />
-    <div {...getStyles({margin: '10px 0px'}, className)}>
+    <div {...getStyles({ margin: "10px 0px" }, className)}>
       <ActionButton
         data-testid="rv-format"
-        style={{marginRight: '8px'}}
+        style={{ marginRight: "8px" }}
         onClick={formatCode}
       >
         Format code
       </ActionButton>
       <ActionButton
         data-testid="rv-copy-code"
-        style={{marginRight: '8px'}}
+        style={{ marginRight: "8px" }}
         onClick={copyCode}
       >
         Copy code
       </ActionButton>
       <ActionButton
         data-testid="rv-copy-url"
-        style={{marginRight: '8px'}}
+        style={{ marginRight: "8px" }}
         onClick={copyUrl}
       >
         Copy URL
       </ActionButton>
       <ActionButton
         data-testid="rv-reset"
-        style={{marginRight: '8px'}}
+        style={{ marginRight: "8px" }}
         onClick={reset}
       >
         Reset

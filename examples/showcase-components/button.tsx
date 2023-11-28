@@ -4,13 +4,13 @@ Copyright (c) 2020 Uber Technologies, Inc.
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import * as React from 'react';
-import {ThemeContext} from './theme-provider';
+import * as React from "react";
+import { ThemeContext } from "./theme-provider";
 
 export const SIZE = {
-  default: 'default',
-  compact: 'compact',
-  large: 'large',
+  default: "default",
+  compact: "compact",
+  large: "large",
 };
 
 type TButtonProps = {
@@ -31,30 +31,30 @@ export const Button: React.FC<TButtonProps> = ({
     switch (size) {
       case SIZE.compact:
         return {
-          padding: '8px',
-          fontSize: '14px',
+          padding: "8px",
+          fontSize: "14px",
         };
       case SIZE.large:
         return {
-          padding: '18px',
-          fontSize: '20px',
+          padding: "18px",
+          fontSize: "20px",
         };
       default:
         return {
-          padding: '12px',
-          fontSize: '16px',
+          padding: "12px",
+          fontSize: "16px",
         };
     }
   };
   const btnStyle = {
     ...getSizeStyle(size),
-    background: disabled ? '#CCC' : colors.background,
-    margin: '0px',
-    color: disabled ? '#000' : colors.text,
-    borderRadius: '5px',
-    borderWidth: '2px',
-    borderStyle: 'solid',
-    borderColor: disabled ? '#CCC' : colors.background,
+    background: disabled ? "#CCC" : colors.background,
+    margin: "0px",
+    color: disabled ? "#000" : colors.text,
+    borderRadius: "5px",
+    borderWidth: "2px",
+    borderStyle: "solid",
+    borderColor: disabled ? "#CCC" : colors.background,
   };
   return (
     <button

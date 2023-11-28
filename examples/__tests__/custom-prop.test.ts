@@ -4,11 +4,11 @@ Copyright (c) 2020 Uber Technologies, Inc.
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import {urls} from '../const';
+import { urls } from "../const";
 
 jest.setTimeout(20 * 1000);
 
-describe('Basic knobs', () => {
+describe("Basic knobs", () => {
   beforeAll(async () => {
     await page.goto(urls.customProps);
   });
@@ -17,7 +17,7 @@ describe('Basic knobs', () => {
     await page.click('[data-testid="rv-reset"]');
   });
 
-  it('should output initial code', async () => {
+  it("should output initial code", async () => {
     const codeOutput = `import * as React from "react";
 import { Rating } from "your-rating-component";
 
@@ -35,7 +35,7 @@ export default () => {
     expect(text).toBe(codeOutput);
   });
 
-  it('should select 4 hearts and update the slider and code', async () => {
+  it("should select 4 hearts and update the slider and code", async () => {
     const codeOutput = `import * as React from "react";
 import { Rating } from "your-rating-component";
 
@@ -48,10 +48,10 @@ export default () => {
     />
   );
 }`;
-    await page.click('#heart-4');
+    await page.click("#heart-4");
     await page.waitFor(300); // debounce time
-    const inputValue = await page.$eval('input', (e) => (e as any).value);
-    expect(inputValue).toBe('4');
+    const inputValue = await page.$eval("input", (e) => (e as any).value);
+    expect(inputValue).toBe("4");
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
     const text = await page.evaluate((el) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);

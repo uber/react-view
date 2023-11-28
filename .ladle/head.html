@@ -1,0 +1,7 @@
+<script>
+  window.global = window;
+  window.process = { cwd: () => '', browser: true };
+  window.assert = () => {};
+  window.assert.ok = () => {};
+  window.Buffer = { isBuffer: () => {}, [Symbol.hasInstance]: () => {} };
+</script>

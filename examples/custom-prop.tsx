@@ -4,11 +4,11 @@ Copyright (c) 2020 Uber Technologies, Inc.
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import * as React from 'react';
-import template from '@babel/template';
+import * as React from "react";
+import template from "@babel/template";
 
-import {Layout, H1, P, Inline} from './layout/';
-import {Rating} from './showcase-components/rating';
+import { Layout, H1, P, Inline } from "./layout/";
+import { Rating } from "./showcase-components/rating";
 
 import {
   useView,
@@ -20,13 +20,13 @@ import {
   Placeholder,
   PropTypes,
   useValueDebounce,
-} from '../src';
+} from "../src";
 
 export const customProps = {
   value: {
     // define how to convert value into an AST tree
     generate: (value: number) => {
-      return (template.ast(String(value), {plugins: ['jsx']}) as any)
+      return (template.ast(String(value), { plugins: ["jsx"] }) as any)
         .expression;
     },
     // define how to convert the JSX attribute value into value
@@ -40,23 +40,23 @@ export const customProps = {
 const Slider: React.FC<{
   value: number;
   set: (val: number, propName: string) => void;
-}> = ({value, set}) => {
+}> = ({ value, set }) => {
   // debouncing the knob value so it's always interactive
   const [rangeValue, setRangeValue] = useValueDebounce(value, (val) =>
-    set(val, 'value')
+    set(val, "value"),
   );
   return (
     <React.Fragment>
       <label
         style={{
           fontWeight: 500,
-          fontSize: '14px',
+          fontSize: "14px",
           fontFamily: "'Helvetica Neue', Arial",
         }}
       >
         <p>Custom knob for the custom value prop</p>
         <input
-          style={{width: '284px'}}
+          style={{ width: "284px" }}
           list="tickmarks"
           type="range"
           min="1"
@@ -81,7 +81,7 @@ const Slider: React.FC<{
 
 const StateHook = () => {
   const params = useView({
-    componentName: 'Rating',
+    componentName: "Rating",
     props: {
       value: {
         value: 3,
@@ -91,12 +91,12 @@ const StateHook = () => {
         stateful: true,
       },
       onChange: {
-        value: 'value => setValue(value)',
+        value: "value => setValue(value)",
         type: PropTypes.Function,
         description: `Function called when rating value is changed.`,
         propHook: {
-          what: 'value',
-          into: 'value',
+          what: "value",
+          into: "value",
         },
       },
     },
@@ -104,8 +104,8 @@ const StateHook = () => {
       Rating,
     },
     imports: {
-      'your-rating-component': {
-        named: ['Rating'],
+      "your-rating-component": {
+        named: ["Rating"],
       },
     },
     customProps,
@@ -152,22 +152,22 @@ const StateHook = () => {
       <ActionButtons {...params.actions} />
       <P>
         However, you can go much further. For example, our Base Web component
-        library has this concept of{' '}
+        library has this concept of{" "}
         <a href="https://baseweb.design/guides/understanding-overrides/">
           overrides
         </a>
         . It is a fairly complicated prop that exists on each component and lets
         you to customize every aspect of our components. So we have created a
         whole sub-playground to just better control the value of this single
-        prop. Check the{' '}
+        prop. Check the{" "}
         <a href="https://baseweb.design/components/button/">
           Style Overrides tab on the Button page
         </a>
-        .{' '}
+        .{" "}
       </P>
       <P>
         <b>This is an advanced and very flexible API</b>. For example, you have
-        to be familiar with the concept of{' '}
+        to be familiar with the concept of{" "}
         <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a> to
         use it. Check the source code of this page or main README for more
         details. We will add more docs over time.

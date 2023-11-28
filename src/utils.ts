@@ -4,29 +4,29 @@ Copyright (c) 2020 Uber Technologies, Inc.
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import * as React from 'react';
-import {TProp, TPropValue} from './types';
-import {codeFrameColumns} from '@babel/code-frame';
+import * as React from "react";
+import type { TProp, TPropValue } from "./types";
+import { codeFrameColumns } from "@babel/code-frame";
 
 export function assertUnreachable(): never {
   throw new Error("Didn't expect to get here");
 }
 
 export const formatBabelError = (error: string) => {
-  const isTemplate = error.includes('/* @babel/template */');
+  const isTemplate = error.includes("/* @babel/template */");
   return error
-    .replace('1 | /* @babel/template */;', '')
+    .replace("1 | /* @babel/template */;", "")
     .replace(
       /\((\d+):(\d+)\)/,
-      (_, line, col) => `(${parseInt(line, 10) - (isTemplate ? 1 : 0)}:${col})`
+      (_, line, col) => `(${parseInt(line, 10) - (isTemplate ? 1 : 0)}:${col})`,
     )
-    .replace('<>', '')
-    .replace('</>', '')
+    .replace("<>", "")
+    .replace("</>", "")
     .replace(/(\d+) \|/g, (_, line) => {
       const lineNum = parseInt(line, 10);
       const newLineNum = lineNum - 1;
       const lenDiff = line.length - `${newLineNum}`.length;
-      return `${' '.repeat(lenDiff)}${newLineNum} |`;
+      return `${" ".repeat(lenDiff)}${newLineNum} |`;
     });
 };
 
@@ -35,7 +35,7 @@ export const frameError = (error: string, code: string) => {
     const found = error.match(/\((\d+)\:(\d+)\)$/);
     if (found) {
       const location = {
-        start: {line: parseInt(found[1], 10), column: parseInt(found[2], 10)},
+        start: { line: parseInt(found[1], 10), column: parseInt(found[2], 10) },
       };
       return `${error}\n\n${codeFrameColumns(code, location)}`;
     }
@@ -44,19 +44,19 @@ export const frameError = (error: string, code: string) => {
 };
 
 export const buildPropsObj = (
-  stateProps: {[key: string]: TProp},
-  updatedPropValues: {[key: string]: TPropValue}
+  stateProps: { [key: string]: TProp },
+  updatedPropValues: { [key: string]: TPropValue },
 ) => {
   const newProps: {
     [key: string]: TProp;
   } = {};
   Object.keys(stateProps).forEach((name) => {
-    newProps[name] = {...stateProps[name]};
+    newProps[name] = { ...stateProps[name] };
   });
   Object.keys(updatedPropValues).forEach((name) => {
     newProps[name] = {
       value:
-        typeof updatedPropValues[name] !== 'undefined'
+        typeof updatedPropValues[name] !== "undefined"
           ? updatedPropValues[name]
           : stateProps[name].defaultValue,
       type: stateProps[name].type,
@@ -79,7 +79,7 @@ export const buildPropsObj = (
 // while debouncing top-level state updates that are slow
 export function useValueDebounce<T>(
   globalVal: T,
-  globalSet: (val: T) => void
+  globalSet: (val: T) => void,
 ): [T, (val: T) => void] {
   const [val, set] = React.useState(globalVal);
 
@@ -109,12 +109,12 @@ export function useHover() {
   React.useEffect(() => {
     const node = ref.current as any;
     if (node) {
-      node.addEventListener('mouseover', handleMouseOver);
-      node.addEventListener('mouseout', handleMouseOut);
+      node.addEventListener("mouseover", handleMouseOver);
+      node.addEventListener("mouseout", handleMouseOut);
 
       return () => {
-        node.removeEventListener('mouseover', handleMouseOver);
-        node.removeEventListener('mouseout', handleMouseOut);
+        node.removeEventListener("mouseover", handleMouseOver);
+        node.removeEventListener("mouseout", handleMouseOut);
       };
     }
     return undefined;
@@ -123,14 +123,14 @@ export function useHover() {
 }
 
 export function clone<T>(obj: T): T {
-  if (typeof obj == 'function') {
+  if (typeof obj == "function") {
     return obj;
   }
   const result: any = Array.isArray(obj) ? [] : {};
   for (const key in obj) {
     const value = obj[key];
     const type = {}.toString.call(value).slice(8, -1);
-    if (type == 'Array' || type == 'Object') {
+    if (type == "Array" || type == "Object") {
       result[key] = clone(value);
     } else {
       result[key] = value;
@@ -140,5 +140,5 @@ export function clone<T>(obj: T): T {
 }
 
 export function getStyles(style: React.CSSProperties, className?: string) {
-  return className ? {className} : {style};
+  return className ? { className } : { style };
 }
