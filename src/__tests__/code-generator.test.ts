@@ -1,9 +1,10 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
+import { describe, test, expect } from "vitest";
 import {
   getAstPropsArray,
   getAstPropValue,
@@ -11,42 +12,40 @@ import {
   getAstImport,
   getAstImports,
   getCode,
-} from '../code-generator';
-import {PropTypes} from '../const';
-import generate from '@babel/generator';
-import * as t from '@babel/types';
+} from "../code-generator";
+import { PropTypes } from "../const";
+import generate from "@babel/generator";
+import * as t from "@babel/types";
 
-import {provider} from '../../examples/theming';
-import {customProps} from '../../examples/custom-prop';
+import { provider } from "../../examples/theming";
+import { customProps } from "../../examples/custom-prop";
 
-describe('getAstPropsArray', () => {
-  test('number (0) and value !== defaulValue', () => {
+describe("getAstPropsArray", () => {
+  test("number (0) and value !== defaulValue", () => {
     expect(
       getAstPropsArray(
         {
           a: {
             value: 0,
-            defaultValue: undefined,
             type: PropTypes.Number,
-            description: '',
+            description: "",
           },
         },
-        {}
-      )[0]?.value
+        {},
+      )[0]?.value,
     ).toEqual({
       expression: {
         extra: {
-          raw: '0',
+          raw: "0",
           rawValue: 0,
         },
-        loc: undefined,
-        type: 'NumericLiteral',
+        type: "NumericLiteral",
         value: 0,
       },
-      type: 'JSXExpressionContainer',
+      type: "JSXExpressionContainer",
     });
   });
-  test('boolean (true) and value === defaulValue', () => {
+  test("boolean (true) and value === defaulValue", () => {
     expect(
       getAstPropsArray(
         {
@@ -54,14 +53,14 @@ describe('getAstPropsArray', () => {
             value: true,
             defaultValue: true,
             type: PropTypes.Boolean,
-            description: '',
+            description: "",
           },
         },
-        {}
-      )
+        {},
+      ),
     ).toEqual([null]);
   });
-  test('boolean (false) and value === defaulValue', () => {
+  test("boolean (false) and value === defaulValue", () => {
     expect(
       getAstPropsArray(
         {
@@ -69,397 +68,337 @@ describe('getAstPropsArray', () => {
             value: false,
             defaultValue: false,
             type: PropTypes.Boolean,
-            description: '',
+            description: "",
           },
         },
-        {}
-      )
+        {},
+      ),
     ).toEqual([null]);
   });
-  test('boolean (false) and !defaulValue', () => {
+  test("boolean (false) and !defaulValue", () => {
     expect(
       getAstPropsArray(
         {
           a: {
             value: false,
             type: PropTypes.Boolean,
-            description: '',
+            description: "",
           },
         },
-        {}
-      )
+        {},
+      ),
     ).toEqual([null]);
   });
-  test('enum and value === defaulValue', () => {
+  test("enum and value === defaulValue", () => {
     expect(
       getAstPropsArray(
         {
           a: {
-            value: 'SIZE.default',
-            defaultValue: 'SIZE.default',
+            value: "SIZE.default",
+            defaultValue: "SIZE.default",
             type: PropTypes.Enum,
-            description: '',
+            description: "",
           },
         },
-        {}
-      )
+        {},
+      ),
     ).toEqual([null]);
   });
-  test('!value', () => {
+  test("!value", () => {
     expect(
       getAstPropsArray(
         {
+          //@ts-ignore
           a: {
-            value: undefined,
             type: PropTypes.String,
-            description: '',
+            description: "",
           },
         },
-        {}
-      )
+        {},
+      ),
     ).toEqual([null]);
   });
-  test('boolean (true) and value !== defaulValue', () => {
+  test("boolean (true) and value !== defaulValue", () => {
     expect(
       getAstPropsArray(
         {
           a: {
             value: true,
             type: PropTypes.Boolean,
-            description: '',
+            description: "",
           },
         },
-        {}
-      )
+        {},
+      ),
     ).not.toEqual([null]);
   });
-  test('enum and value !== defaulValue', () => {
+  test("enum and value !== defaulValue", () => {
     expect(
       getAstPropsArray(
         {
           a: {
-            value: 'SIZE.large',
-            defaultValue: 'SIZE.default',
+            value: "SIZE.large",
+            defaultValue: "SIZE.default",
             type: PropTypes.Enum,
-            description: '',
+            description: "",
           },
         },
-        {}
-      )
+        {},
+      ),
     ).not.toEqual([null]);
   });
 });
-describe('getAstPropValue', () => {
-  test('boolean', () => {
+describe("getAstPropValue", () => {
+  test("boolean", () => {
     expect(
       getAstPropValue(
         {
           value: true,
           type: PropTypes.Boolean,
-          description: '',
+          description: "",
         },
-        'foo',
-        {}
-      )
+        "foo",
+        {},
+      ),
     ).toEqual({
-      type: 'BooleanLiteral',
+      type: "BooleanLiteral",
       value: true,
     });
   });
-  test('string', () => {
+  test("string", () => {
     expect(
       getAstPropValue(
         {
-          value: 'Hello',
+          value: "Hello",
           type: PropTypes.String,
-          description: '',
+          description: "",
         },
-        'foo',
-        {}
-      )
+        "foo",
+        {},
+      ),
     ).toEqual({
-      type: 'StringLiteral',
-      value: 'Hello',
+      type: "StringLiteral",
+      value: "Hello",
     });
   });
-  test('number', () => {
+  test("number", () => {
     expect(
       getAstPropValue(
         {
-          value: '42',
+          value: "42",
           type: PropTypes.Number,
-          description: '',
+          description: "",
         },
-        'foo',
-        {}
-      )
+        "foo",
+        {},
+      ),
     ).toEqual({
       extra: {
-        raw: '42',
+        raw: "42",
         rawValue: 42,
       },
-      loc: undefined,
-      type: 'NumericLiteral',
+      type: "NumericLiteral",
       value: 42,
     });
   });
-  test('enum', () => {
+  test("enum", () => {
     expect(
       getAstPropValue(
         {
-          value: 'SIZE.large',
+          value: "SIZE.large",
           type: PropTypes.Enum,
-          description: '',
+          description: "",
           imports: {
-            'your-button-component': {
-              named: ['SIZE'],
+            "your-button-component": {
+              named: ["SIZE"],
             },
           },
         },
-        'foo',
-        {}
-      )
+        "foo",
+        {},
+      ),
     ).toEqual({
       computed: false,
       object: {
-        name: 'SIZE',
-        type: 'Identifier',
+        name: "SIZE",
+        type: "Identifier",
       },
       optional: null,
       property: {
-        name: 'large',
-        type: 'Identifier',
+        name: "large",
+        type: "Identifier",
       },
-      type: 'MemberExpression',
+      type: "MemberExpression",
     });
     expect(
       getAstPropValue(
         {
-          value: 'SIZE.large-size',
+          value: "SIZE.large-size",
           type: PropTypes.Enum,
-          description: '',
+          description: "",
           imports: {
-            'your-button-component': {
-              named: ['SIZE'],
+            "your-button-component": {
+              named: ["SIZE"],
             },
           },
         },
-        'foo',
-        {}
-      )
+        "foo",
+        {},
+      ),
     ).toEqual({
       computed: true,
       object: {
-        name: 'SIZE',
-        type: 'Identifier',
+        name: "SIZE",
+        type: "Identifier",
       },
       optional: null,
       property: {
-        value: 'large-size',
-        type: 'StringLiteral',
+        value: "large-size",
+        type: "StringLiteral",
       },
-      type: 'MemberExpression',
+      type: "MemberExpression",
     });
     expect(
       getAstPropValue(
         {
-          value: 'compact',
+          value: "compact",
           type: PropTypes.Enum,
-          description: '',
+          description: "",
         },
-        'foo',
-        {}
-      )
+        "foo",
+        {},
+      ),
     ).toEqual({
-      value: 'compact',
-      type: 'StringLiteral',
+      value: "compact",
+      type: "StringLiteral",
     });
   });
-  test('ref', () => {
+  test("ref", () => {
     expect(
       getAstPropValue(
+        //@ts-ignore
         {
-          value: undefined,
           type: PropTypes.Ref,
-          description: '',
+          description: "",
         },
-        'foo',
-        {}
-      )
+        "foo",
+        {},
+      ),
     ).toBe(null);
   });
-  test('array', () => {
+  test("array", () => {
     expect(
       getAstPropValue(
         {
-          value: '[1]',
+          value: "[1]",
           type: PropTypes.Array,
-          description: '',
+          description: "",
         },
-        'foo',
-        {}
-      )
+        "foo",
+        {},
+      ),
     ).toEqual({
       elements: [
         {
           extra: {
-            raw: '1',
+            raw: "1",
             rawValue: 1,
           },
-          innerComments: undefined,
-          leadingComments: undefined,
-          trailingComments: undefined,
-          loc: undefined,
-          type: 'NumericLiteral',
+          type: "NumericLiteral",
           value: 1,
         },
       ],
-      extra: {},
-      innerComments: undefined,
-      leadingComments: undefined,
-      loc: undefined,
-      trailingComments: undefined,
-      type: 'ArrayExpression',
+      type: "ArrayExpression",
     });
   });
-  test('object', () => {
+  test("object", () => {
     expect(
       getAstPropValue(
         {
           value: `{foo: true}`,
           type: PropTypes.Object,
-          description: '',
+          description: "",
         },
-        'foo',
-        {}
-      )
+        "foo",
+        {},
+      ),
     ).toEqual({
-      extra: {},
-      innerComments: undefined,
-      leadingComments: undefined,
-      loc: undefined,
       properties: [
         {
           computed: false,
-          extra: {},
-          innerComments: undefined,
           key: {
-            extra: {},
-            innerComments: undefined,
-            leadingComments: undefined,
-            loc: undefined,
-            name: 'foo',
-            trailingComments: undefined,
-            type: 'Identifier',
+            name: "foo",
+            type: "Identifier",
           },
-          leadingComments: undefined,
-          trailingComments: undefined,
-          loc: undefined,
           shorthand: false,
-          type: 'ObjectProperty',
+          type: "ObjectProperty",
           value: {
-            extra: {},
-            innerComments: undefined,
-            leadingComments: undefined,
-            loc: undefined,
-            trailingComments: undefined,
-            type: 'BooleanLiteral',
+            type: "BooleanLiteral",
             value: true,
           },
         },
       ],
-      trailingComments: undefined,
-      type: 'ObjectExpression',
+      type: "ObjectExpression",
     });
   });
-  test('React node', () => {
+  test("React node", () => {
     expect(
       getAstPropValue(
         {
-          value: '<div />',
+          value: "<div />",
           type: PropTypes.ReactNode,
-          description: '',
+          description: "",
         },
-        'foo',
-        {}
-      )
+        "foo",
+        {},
+      ),
     ).toEqual({
       children: [],
       closingElement: null,
-      extra: {},
-      innerComments: undefined,
-      leadingComments: undefined,
-      loc: undefined,
       openingElement: {
         attributes: [],
-        extra: {},
-        innerComments: undefined,
-        leadingComments: undefined,
-        loc: undefined,
         name: {
-          extra: {},
-          innerComments: undefined,
-          leadingComments: undefined,
-          loc: undefined,
-          name: 'div',
-          trailingComments: undefined,
-          type: 'JSXIdentifier',
+          name: "div",
+          type: "JSXIdentifier",
         },
         selfClosing: true,
-        trailingComments: undefined,
-        type: 'JSXOpeningElement',
+        type: "JSXOpeningElement",
       },
-      trailingComments: undefined,
-      type: 'JSXElement',
+      type: "JSXElement",
     });
   });
-  test('function', () => {
+  test("function", () => {
     expect(
       getAstPropValue(
         {
-          value: '(foo) => {}',
+          value: "(foo) => {}",
           type: PropTypes.Function,
-          description: '',
+          description: "",
         },
-        'foo',
-        {}
-      )
+        "foo",
+        {},
+      ),
     ).toEqual({
       async: false,
       body: {
-        extra: {},
-        innerComments: undefined,
-        leadingComments: undefined,
         body: [],
         directives: [],
-        loc: undefined,
-        trailingComments: undefined,
-        type: 'BlockStatement',
+        type: "BlockStatement",
       },
-      extra: {},
       generator: false,
-      innerComments: undefined,
-      leadingComments: undefined,
-      loc: undefined,
       params: [
         {
-          extra: {},
-          innerComments: undefined,
-          leadingComments: undefined,
-          loc: undefined,
-          name: 'foo',
-          trailingComments: undefined,
-          type: 'Identifier',
+          name: "foo",
+          type: "Identifier",
         },
       ],
-      trailingComments: undefined,
-      type: 'ArrowFunctionExpression',
+      type: "ArrowFunctionExpression",
     });
   });
 });
 
-describe('getAstReactHooks', () => {
-  test('return single value hook', () => {
+describe("getAstReactHooks", () => {
+  test("return single value hook", () => {
     expect(
       generate(
         //@ts-ignore
@@ -467,110 +406,110 @@ describe('getAstReactHooks', () => {
           getAstReactHooks(
             {
               value: {
-                value: 'Hey',
+                value: "Hey",
                 type: PropTypes.String,
-                description: '',
+                description: "",
                 stateful: true,
               },
               foo: {
-                value: 'Not stateful',
+                value: "Not stateful",
                 type: PropTypes.String,
-                description: '',
+                description: "",
               },
             },
-            {}
-          )
-        )
-      ).code
+            {},
+          ),
+        ),
+      ).code,
     ).toBe('const [value, setValue] = React.useState("Hey");');
   });
 });
 
-describe('getAstImport', () => {
-  test('return multiple named imports', () => {
+describe("getAstImport", () => {
+  test("return multiple named imports", () => {
     expect(
-      generate(getAstImport(['Button', 'KIND'], 'baseui/button') as any).code
+      generate(getAstImport(["Button", "KIND"], "baseui/button") as any).code,
     ).toBe('import { Button, KIND } from "baseui/button";');
   });
 });
 
-describe('getAstImports', () => {
-  test('return multiple named and default imports', () => {
+describe("getAstImports", () => {
+  test("return multiple named and default imports", () => {
     expect(
       generate(
         t.program(
           //@ts-ignore
           getAstImports(
             {
-              'baseui/tabs': {
-                named: ['Tab'],
-                default: 'Root',
+              "baseui/tabs": {
+                named: ["Tab"],
+                default: "Root",
               },
-              'react-motion': {
-                named: ['Motion'],
+              "react-motion": {
+                named: ["Motion"],
               },
             },
             {
-              'my-provider': {
-                named: ['ThemeProvider'],
+              "my-provider": {
+                named: ["ThemeProvider"],
               },
             },
             {
               a: {
                 value: true,
                 type: PropTypes.Boolean,
-                description: '',
+                description: "",
                 imports: {
-                  'baseui/tabs': {
-                    named: ['Tab', 'Tabs'],
-                    default: 'OverrideRoot',
+                  "baseui/tabs": {
+                    named: ["Tab", "Tabs"],
+                    default: "OverrideRoot",
                   },
                 },
               },
+              // @ts-ignore
               b: {
-                value: undefined,
                 type: PropTypes.String,
-                description: '',
+                description: "",
                 imports: {
-                  'baseui/button': {
-                    named: ['Button'],
+                  "baseui/button": {
+                    named: ["Button"],
                   },
                 },
               },
               c: {
-                value: 'SIZE.default',
-                defaultValue: 'SIZE.default',
+                value: "SIZE.default",
+                defaultValue: "SIZE.default",
                 type: PropTypes.Enum,
-                description: '',
+                description: "",
                 imports: {
-                  'baseui/button': {
-                    named: ['SIZE'],
+                  "baseui/button": {
+                    named: ["SIZE"],
                   },
                 },
               },
               d: {
-                value: 'ORIENTATION.vertical',
-                defaultValue: 'ORIENTATION.horizontal',
+                value: "ORIENTATION.vertical",
+                defaultValue: "ORIENTATION.horizontal",
                 type: PropTypes.Enum,
-                description: '',
+                description: "",
                 imports: {
-                  'baseui/tabs': {
-                    named: ['ORIENTATION'],
+                  "baseui/tabs": {
+                    named: ["ORIENTATION"],
                   },
                 },
               },
-            }
-          )
-        ) as any
-      ).code
+            },
+          ),
+        ) as any,
+      ).code,
     ).toBe(`import OverrideRoot, { Tab, Tabs, ORIENTATION } from "baseui/tabs";
 import { Motion } from "react-motion";
 import { ThemeProvider } from "my-provider";`);
   });
 });
 
-describe('getCode', () => {
-  test('stateful, hooks enabled component', () => {
+describe("getCode", () => {
+  test("stateful, hooks enabled component", () => {
     expect(
       getCode({
         props: {
@@ -581,22 +520,22 @@ describe('getCode', () => {
             stateful: true,
           },
           onChange: {
-            value: 'e => setValue(e.target.value)',
+            value: "e => setValue(e.target.value)",
             type: PropTypes.Function,
-            description: '',
-            propHook: {what: 'e.target.value', into: 'value'},
+            description: "",
+            propHook: { what: "e.target.value", into: "value" },
           },
         },
-        componentName: 'Rating',
-        providerValue: {inputFill: 'yellow'},
+        componentName: "Rating",
+        providerValue: { inputFill: "yellow" },
         provider,
         importsConfig: {
-          'some-rating': {
-            named: ['Rating'],
+          "some-rating": {
+            named: ["Rating"],
           },
         },
         customProps,
-      })
+      }),
     ).toBe(`import * as React from "react";
 import { Rating } from "some-rating";
 import { ThemeProvider } from "your-component-library";

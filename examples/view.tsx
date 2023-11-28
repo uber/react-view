@@ -1,15 +1,15 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import * as React from 'react';
-import {Layout, H1, P, H2, Code, Inline} from './layout';
+import * as React from "react";
+import { Layout, H1, P, H2, Code, Inline } from "./layout";
 
-import {Button, SIZE} from './showcase-components/button';
+import { Button, SIZE } from "./showcase-components/button";
 
-import {View, PropTypes} from '../src';
+import { View, PropTypes } from "../src";
 
 const ViewExample = () => (
   <Layout>
@@ -25,19 +25,19 @@ const ViewExample = () => (
       componentName="Button"
       props={{
         children: {
-          value: 'Hello',
+          value: "Hello",
           type: PropTypes.ReactNode,
           description: `Visible label.`,
         },
         size: {
-          value: 'SIZE.default',
-          defaultValue: 'SIZE.default',
+          value: "SIZE.default",
+          defaultValue: "SIZE.default",
           options: SIZE,
           type: PropTypes.Enum,
-          description: 'Defines the size of the button.',
+          description: "Defines the size of the button.",
           imports: {
-            'your-button-component': {
-              named: ['SIZE'],
+            "your-button-component": {
+              named: ["SIZE"],
             },
           },
         },
@@ -49,7 +49,7 @@ const ViewExample = () => (
         disabled: {
           value: false,
           type: PropTypes.Boolean,
-          description: 'Indicates that the button is disabled',
+          description: "Indicates that the button is disabled",
         },
       }}
       scope={{
@@ -57,8 +57,8 @@ const ViewExample = () => (
         SIZE,
       }}
       imports={{
-        'your-button-component': {
-          named: ['Button'],
+        "your-button-component": {
+          named: ["Button"],
         },
       }}
     />

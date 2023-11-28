@@ -1,10 +1,10 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import * as React from 'react';
+import * as React from "react";
 
 const heightToSize = (height: number) => {
   if (height > 100) {
@@ -26,7 +26,7 @@ const heightToWidth = (height: number) => {
   return 0.4;
 };
 
-const Placeholder: React.FC<{height: number}> = ({height}) => (
+const Placeholder: React.FC<{ height: number }> = ({ height }) => (
   <React.Fragment>
     <style
       dangerouslySetInnerHTML={{
@@ -78,8 +78,8 @@ const Placeholder: React.FC<{height: number}> = ({height}) => (
     <div
       style={{
         height: `${height < 32 ? 32 : height}px`,
-        display: 'flex',
-        alignItems: 'center',
+        display: "flex",
+        alignItems: "center",
       }}
     >
       <div className="react-view-loader">Loading...</div>

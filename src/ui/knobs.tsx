@@ -1,14 +1,15 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import * as React from 'react';
-import {TPropValue, TKnobsProps, PropTypes} from '../index';
-import Knob from './knob';
+import * as React from "react";
+import type { TPropValue, TKnobsProps } from "../types";
+import { PropTypes } from "../const";
+import Knob from "./knob";
 
-const KnobColumn: React.FC<TKnobsProps & {knobNames: string[]}> = ({
+const KnobColumn: React.FC<TKnobsProps & { knobNames: string[] }> = ({
   state,
   knobNames,
   error,
@@ -17,7 +18,7 @@ const KnobColumn: React.FC<TKnobsProps & {knobNames: string[]}> = ({
   return (
     <div
       style={{
-        flexBasis: '50%',
+        flexBasis: "50%",
         padding: `0 16px`,
       }}
     >
@@ -40,13 +41,13 @@ const KnobColumn: React.FC<TKnobsProps & {knobNames: string[]}> = ({
   );
 };
 
-const Knobs: React.FC<TKnobsProps> = ({state, set, error}) => {
+const Knobs: React.FC<TKnobsProps> = ({ state, set, error }) => {
   const [showAllKnobs, setShowAllKnobs] = React.useState(false);
   const allKnobNames = Object.keys(state).filter(
-    (name) => state[name].type !== PropTypes.Custom
+    (name) => state[name].type !== PropTypes.Custom,
   );
   const filteredKnobNames = allKnobNames.filter(
-    (name: string) => state[name].hidden !== true
+    (name: string) => state[name].hidden !== true,
   );
   const knobNames = showAllKnobs ? allKnobNames : filteredKnobNames;
   const firstGroup = knobNames.slice(0, Math.round(knobNames.length / 2));
@@ -84,7 +85,7 @@ const Knobs: React.FC<TKnobsProps> = ({state, set, error}) => {
       </div>
       {filteredKnobNames.length !== allKnobNames.length && (
         <button onClick={() => setShowAllKnobs(!showAllKnobs)}>
-          {showAllKnobs ? 'Show only basic props' : 'Show all props'}
+          {showAllKnobs ? "Show only basic props" : "Show all props"}
         </button>
       )}
     </React.Fragment>

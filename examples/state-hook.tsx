@@ -1,12 +1,12 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import * as React from 'react';
-import {Layout, H1, H2, P, Code, Inline} from './layout/';
-import {Input, SIZE} from './showcase-components/input';
+import * as React from "react";
+import { Layout, H1, H2, P, Code, Inline } from "./layout/";
+import { Input, SIZE } from "./showcase-components/input";
 
 import {
   useView,
@@ -17,44 +17,44 @@ import {
   ActionButtons,
   Placeholder,
   PropTypes,
-} from '../src';
+} from "../src";
 
 const StateHook = () => {
   const params = useView({
-    componentName: 'Input',
+    componentName: "Input",
     props: {
       value: {
-        value: 'Hello',
+        value: "Hello",
         type: PropTypes.String,
         description: `Input value.`,
         stateful: true,
       },
       size: {
-        value: 'SIZE.default',
-        defaultValue: 'SIZE.default',
+        value: "SIZE.default",
+        defaultValue: "SIZE.default",
         options: SIZE,
         type: PropTypes.Enum,
-        description: 'Defines the size of the button.',
+        description: "Defines the size of the button.",
         imports: {
-          'your-input-component': {
-            named: ['SIZE'],
+          "your-input-component": {
+            named: ["SIZE"],
           },
         },
       },
       onChange: {
-        value: 'e => setValue(e.target.value)',
+        value: "e => setValue(e.target.value)",
         type: PropTypes.Function,
         description: `Function called when input value is changed.`,
         propHook: {
-          what: 'e.target.value',
-          into: 'value',
+          what: "e.target.value",
+          into: "value",
         },
       },
       editable: {
         value: true,
         defaultValue: true,
         type: PropTypes.Boolean,
-        description: 'Indicates that the input is editable.',
+        description: "Indicates that the input is editable.",
       },
     },
     scope: {
@@ -62,8 +62,8 @@ const StateHook = () => {
       SIZE,
     },
     imports: {
-      'your-input-component': {
-        named: ['Input'],
+      "your-input-component": {
+        named: ["Input"],
       },
     },
   });
@@ -73,8 +73,8 @@ const StateHook = () => {
       <H1>State Hook</H1>
       <P>
         Not all components are as simple as buttons. The most of React
-        components have some sort of state. For example, inputs have the{' '}
-        <b>value</b> state. By default, React View treats everything as{' '}
+        components have some sort of state. For example, inputs have the{" "}
+        <b>value</b> state. By default, React View treats everything as{" "}
         <a href="https://reactjs.org/docs/forms.html#controlled-components">
           controlled components
         </a>
@@ -85,23 +85,23 @@ const StateHook = () => {
 `}</Code>
       <P>
         And that works. You can still update the value by changing the value
-        knob or editing the code directly.{' '}
+        knob or editing the code directly.{" "}
         <b>
           However, you would not be able to interact with the component itself
-        </b>{' '}
+        </b>{" "}
         since the value is hard-coded - the component is controlled. The code
         above is also not very realistic. How often do we create non editable
         inputs?
       </P>
       <P>
-        Fortunately, React View has special{' '}
+        Fortunately, React View has special{" "}
         <b>
           <Inline>propHook</Inline>
-        </b>{' '}
-        and{' '}
+        </b>{" "}
+        and{" "}
         <b>
           <Inline>stateful</Inline>
-        </b>{' '}
+        </b>{" "}
         settings so you can achieve full interactivity:
       </P>
       <Compiler
@@ -115,12 +115,12 @@ const StateHook = () => {
       <Error {...params.errorProps} />
       <ActionButtons {...params.actions} />
       <P>
-        The example above has its <b>own internal value state</b> (using{' '}
+        The example above has its <b>own internal value state</b> (using{" "}
         <a href="https://reactjs.org/docs/hooks-reference.html#usestate">
           React.useState
         </a>
         ) and the value knob is now translated into its initial internal state.
-        Now you can interact with the component itself and{' '}
+        Now you can interact with the component itself and{" "}
         <b>everything is still synchronized</b>. Moreover, the code snippet now
         also better demonstrates the real-world usage.
       </P>
@@ -200,9 +200,9 @@ const StateHook = () => {
   );
 };`}</Code>
       <P>
-        There are just two changes that we have to make compared to the{' '}
+        There are just two changes that we have to make compared to the{" "}
         <a href="/?path=/story/useview--basic">basic example</a>. First, we have
-        to detach the value prop into an internal state. We simply add the{' '}
+        to detach the value prop into an internal state. We simply add the{" "}
         <b>
           <Inline>stateful</Inline> flag
         </b>
@@ -220,10 +220,10 @@ const StateHook = () => {
 })
 `}</Code>
       <P>
-        At this point,{' '}
+        At this point,{" "}
         <b>the value is detached and rendered input is fully interactive</b>.
         However, the changes are not synchronized with the rest of the
-        playground. We need to give React View a slight hint:{' '}
+        playground. We need to give React View a slight hint:{" "}
       </P>
       <Code>
         {`onChange: {
@@ -237,27 +237,27 @@ const StateHook = () => {
 `}
       </Code>
       <P>
-        We have added the{' '}
+        We have added the{" "}
         <b>
           <Inline>propHook.what</Inline>
-        </b>{' '}
-        and{' '}
+        </b>{" "}
+        and{" "}
         <b>
           <Inline>propHook.into</Inline>
-        </b>{' '}
-        in the <Inline>onChange</Inline> prop. We are telling React View{' '}
+        </b>{" "}
+        in the <Inline>onChange</Inline> prop. We are telling React View{" "}
         <Inline>what</Inline> value it should use and <Inline>into</Inline> what
         stateful prop it should go. Note that this setting also depends on the
         initial value of <Inline>onChange</Inline> prop since React View
-        secretly adds an instrumentation call into the body of{' '}
+        secretly adds an instrumentation call into the body of{" "}
         <Inline>e &gt; setValue(e.target.value)</Inline> function.
       </P>
       <H2>defaultValue</H2>
       <P>
-        Props can have a <Inline>defaultValue</Inline>. That is useful for an{' '}
+        Props can have a <Inline>defaultValue</Inline>. That is useful for an{" "}
         <Inline>enum</Inline> so the code generator knows when to skip the
-        default option. Sometimes you can also have a <Inline>boolean</Inline>{' '}
-        prop that treats <Inline>undefined</Inline> the opposite way to{' '}
+        default option. Sometimes you can also have a <Inline>boolean</Inline>{" "}
+        prop that treats <Inline>undefined</Inline> the opposite way to{" "}
         <Inline>false</Inline>. In the example above, this inverted behavior is
         demonstrated with the prop <Inline>editable</Inline>:
       </P>

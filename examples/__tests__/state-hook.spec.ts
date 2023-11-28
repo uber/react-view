@@ -1,23 +1,22 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import {urls} from '../const';
+import { test, expect } from "@playwright/test";
+import { urls } from "../const";
 
-jest.setTimeout(20 * 1000);
-
-describe.only('State hook', () => {
-  beforeAll(async () => {
+test.describe("State hook", () => {
+  test.beforeEach(async ({ page }) => {
     await page.goto(urls.stateHook);
-  });
-
-  beforeEach(async () => {
+    await page.waitForSelector("[data-storyloaded]");
     await page.click('[data-testid="rv-reset"]');
   });
 
-  it('should update the input and sync the knob and code', async () => {
+  test("should update the input and sync the knob and code", async ({
+    page,
+  }) => {
     const codeOutput = `import * as React from "react";
 import { Input } from "your-input-component";
 
@@ -31,20 +30,21 @@ export default () => {
   );
 }`;
 
-    await page.focus('#example-input');
-    await page.keyboard.type('Foo');
-    await page.waitFor(300); // waiting for debounce
+    await page.locator("#example-input").fill("HelloFoo");
+    await page.waitForTimeout(300); // waiting for debounce
 
     const valueKnob = await page.$('[data-testid="rv-knob-value"] textarea');
-    const valueText = await page.evaluate((el) => el.value, valueKnob);
-    expect(valueText).toBe('HelloFoo');
+    const valueText = await page.evaluate((el: any) => el.value, valueKnob);
+    expect(valueText).toBe("HelloFoo");
 
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate((el) => el.value, editorTextarea);
+    const text = await page.evaluate((el: any) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 
-  it('should update the value knob and sync with component and code', async () => {
+  test("should update the value knob and sync with component and code", async ({
+    page,
+  }) => {
     const codeOutput = `import * as React from "react";
 import { Input } from "your-input-component";
 
@@ -58,20 +58,23 @@ export default () => {
   );
 }`;
 
-    await page.focus('[data-testid="rv-knob-value"] textarea');
-    await page.keyboard.type('Foo');
-    await page.waitFor(300); // waiting for debounce
+    await page
+      .locator('[data-testid="rv-knob-value"] textarea')
+      .fill("HelloFoo");
+    await page.waitForTimeout(300); // waiting for debounce
 
-    const input = await page.$('#example-input');
-    const inputValue = await page.evaluate((el) => el.value, input);
-    expect(inputValue).toBe('HelloFoo');
+    const input = await page.$("#example-input");
+    const inputValue = await page.evaluate((el: any) => el.value, input);
+    expect(inputValue).toBe("HelloFoo");
 
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate((el) => el.value, editorTextarea);
+    const text = await page.evaluate((el: any) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 
-  it('should respect the default boolean value, uncheck editable and update component and input', async () => {
+  test("should respect the default boolean value, uncheck editable and update component and input", async ({
+    page,
+  }) => {
     const initialCode = `import * as React from "react";
 import { Input } from "your-input-component";
 
@@ -98,20 +101,20 @@ export default () => {
   );
 }`;
     const initialEditor = await page.evaluate(
-      (el) => el.value,
-      await page.$('[data-testid="rv-editor"] textarea')
+      (el: any) => el.value,
+      await page.$('[data-testid="rv-editor"] textarea'),
     );
     expect(initialEditor).toBe(initialCode);
 
-    await page.click('#editable');
+    await page.click("#editable");
     const isDisabled = await page.$eval(
-      '#example-input',
-      (e) => (e as any).disabled
+      "#example-input",
+      (e: any) => (e as any).disabled,
     );
     expect(isDisabled).toBeTruthy();
     const resultEditor = await page.evaluate(
-      (el) => el.value,
-      await page.$('[data-testid="rv-editor"] textarea')
+      (el: any) => el.value,
+      await page.$('[data-testid="rv-editor"] textarea'),
     );
     expect(resultEditor).toBe(resultCode);
   });

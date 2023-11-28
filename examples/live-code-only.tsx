@@ -1,14 +1,14 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import * as React from 'react';
-import {Layout, H1, H2, P, Code, CompilerBox, Inline} from './layout/';
-import {Button, SIZE} from './showcase-components/button';
+import * as React from "react";
+import { Layout, H1, H2, P, Code, CompilerBox, Inline } from "./layout/";
+import { Button, SIZE } from "./showcase-components/button";
 
-import {useView, Compiler, Editor, Error, ActionButtons} from '../src/';
+import { useView, Compiler, Editor, Error, ActionButtons } from "../src/";
 
 const initialCode = `export default () => {
   return (
@@ -20,16 +20,19 @@ const initialCodeEl = `<Button onClick={() => alert("click")}>Hello</Button>`;
 const initialCodeSum = `2 + 5`;
 
 const CodeOnly = () => {
-  const params = useView({initialCode, scope: {Button, SIZE}});
-  const paramsEl = useView({initialCode: initialCodeEl, scope: {Button, SIZE}});
-  const paramsSum = useView({initialCode: initialCodeSum});
+  const params = useView({ initialCode, scope: { Button, SIZE } });
+  const paramsEl = useView({
+    initialCode: initialCodeEl,
+    scope: { Button, SIZE },
+  });
+  const paramsSum = useView({ initialCode: initialCodeSum });
   return (
     <Layout>
       <H1>Live Code Editor</H1>
       <P>
         The useView hook can be also used as a live editor only (no prop knobs
-        or code generation). In this mode, it is very similar to{' '}
-        <a href="https://github.com/FormidableLabs/react-live">react-live</a>.{' '}
+        or code generation). In this mode, it is very similar to{" "}
+        <a href="https://github.com/FormidableLabs/react-live">react-live</a>.{" "}
       </P>
       <CompilerBox>
         <Compiler {...params.compilerProps} />
@@ -93,7 +96,7 @@ export default () => {
       <Editor {...paramsEl.editorProps} />
       <Error {...paramsEl.errorProps} />
       <P>
-        ...or pretty much anything that{' '}
+        ...or pretty much anything that{" "}
         <b>
           could be executed after the <Inline>return</Inline> statement of JS
           function.

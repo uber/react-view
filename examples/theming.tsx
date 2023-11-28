@@ -1,17 +1,17 @@
 /*
-Copyright (c) 2020 Uber Technologies, Inc.
+Copyright (c) Uber Technologies, Inc.
 
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
-import * as React from 'react';
-import * as t from '@babel/types';
-import traverse from '@babel/traverse';
-import {Layout, H1, H3, P, Inline} from './layout/';
-import {Button, SIZE} from './showcase-components/button';
+import * as React from "react";
+import * as t from "@babel/types";
+import traverse from "@babel/traverse";
+import { Layout, H1, H3, P, Inline } from "./layout/";
+import { Button, SIZE } from "./showcase-components/button";
 import ThemeProvider, {
   defaultTheme,
-} from './showcase-components/theme-provider';
+} from "./showcase-components/theme-provider";
 
 import {
   useView,
@@ -24,7 +24,7 @@ import {
   PropTypes,
   getAstJsxElement,
   useValueDebounce,
-} from '../src';
+} from "../src";
 
 type TTheme = typeof defaultTheme;
 type TThemeKeys = keyof TTheme;
@@ -40,10 +40,10 @@ type TColorInputProps = {
 };
 
 export const getActiveTheme = (
-  values: {[key: string]: string},
-  initialValues: {[key: string]: string}
+  values: { [key: string]: string },
+  initialValues: { [key: string]: string },
 ) => {
-  const activeValues: {[key: string]: string} = {};
+  const activeValues: { [key: string]: string } = {};
   Object.keys(initialValues).forEach((key) => {
     activeValues[key] = initialValues[key];
     if (values && values[key]) {
@@ -54,10 +54,10 @@ export const getActiveTheme = (
 };
 
 export const getThemeDiff = (
-  values: {[key: string]: string},
-  initialValues: {[key: string]: string}
+  values: { [key: string]: string },
+  initialValues: { [key: string]: string },
 ) => {
-  const diff: {[key: string]: string} = {};
+  const diff: { [key: string]: string } = {};
   Object.keys(values).forEach((key) => {
     if (
       initialValues[key] &&
@@ -79,12 +79,12 @@ const ColorInput: React.FC<TColorInputProps> = ({
   return (
     <label
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        marginBottom: '8px',
+        display: "flex",
+        alignItems: "center",
+        marginBottom: "8px",
       }}
     >
-      <div style={{width: '160px'}}>
+      <div style={{ width: "160px" }}>
         <Editor
           onChange={(val) => {
             setColor(val);
@@ -98,20 +98,20 @@ const ColorInput: React.FC<TColorInputProps> = ({
       </div>
       <div
         style={{
-          width: '16px',
-          height: '16px',
-          marginLeft: '8px',
-          border: '1px solid black',
-          borderRadius: '5px',
+          width: "16px",
+          height: "16px",
+          marginLeft: "8px",
+          border: "1px solid black",
+          borderRadius: "5px",
           backgroundColor: color,
         }}
       />
       <div
         title={themeKey}
         style={{
-          marginLeft: '8px',
+          marginLeft: "8px",
           fontFamily: "'Helvetica Neue', Arial",
-          fontSize: '14px',
+          fontSize: "14px",
         }}
       >
         {themeKey}
@@ -120,7 +120,7 @@ const ColorInput: React.FC<TColorInputProps> = ({
   );
 };
 
-const ThemeEditor: React.FC<TThemeEditorProps> = ({theme, set}) => {
+const ThemeEditor: React.FC<TThemeEditorProps> = ({ theme, set }) => {
   const activeTheme = getActiveTheme(theme, defaultTheme);
   const themeKeys = Object.keys(activeTheme) as TThemeKeys[];
   return (
@@ -138,7 +138,7 @@ const ThemeEditor: React.FC<TThemeEditorProps> = ({theme, set}) => {
                   ...theme,
                   [key]: color,
                 },
-                defaultTheme
+                defaultTheme,
               );
               set(Object.keys(diff).length > 0 ? diff : undefined);
             }}
@@ -159,8 +159,8 @@ export const provider = {
       JSXOpeningElement(path) {
         const identifier = path.node.name as t.JSXIdentifier;
         const attrs = path.node.attributes as t.JSXAttribute[];
-        if (identifier.name === 'ThemeProvider' && attrs.length > 0) {
-          const colorsAttr = attrs.find((attr) => attr.name.name === 'colors');
+        if (identifier.name === "ThemeProvider" && attrs.length > 0) {
+          const colorsAttr = attrs.find((attr) => attr.name.name === "colors");
           if (colorsAttr) {
             const colors = (colorsAttr.value as any).expression.properties;
             colors.forEach((prop: t.ObjectProperty) => {
@@ -182,51 +182,51 @@ export const provider = {
       return childTree;
     }
     return getAstJsxElement(
-      'ThemeProvider',
+      "ThemeProvider",
       [
         t.jsxAttribute(
-          t.jsxIdentifier('colors'),
+          t.jsxIdentifier("colors"),
           t.jsxExpressionContainer(
             t.objectExpression(
               Object.entries(value).map(([name, value]) =>
                 t.objectProperty(
                   t.identifier(name),
-                  t.stringLiteral(value as string)
-                )
-              )
-            )
-          )
+                  t.stringLiteral(value as string),
+                ),
+              ),
+            ),
+          ),
         ),
       ],
-      [childTree]
+      [childTree],
     );
   },
   // import statement that will be displayed when provider value is not undefined
   imports: {
-    'your-component-library': {
-      named: ['ThemeProvider'],
+    "your-component-library": {
+      named: ["ThemeProvider"],
     },
   },
 };
 
 const Theming = () => {
   const params = useView({
-    componentName: 'Button',
+    componentName: "Button",
     props: {
       children: {
-        value: 'Hello',
+        value: "Hello",
         type: PropTypes.ReactNode,
         description: `Visible label.`,
       },
       size: {
-        value: 'SIZE.default',
-        defaultValue: 'SIZE.default',
+        value: "SIZE.default",
+        defaultValue: "SIZE.default",
         options: SIZE,
         type: PropTypes.Enum,
-        description: 'Defines the size of the button.',
+        description: "Defines the size of the button.",
         imports: {
-          'your-button-component': {
-            named: ['SIZE'],
+          "your-button-component": {
+            named: ["SIZE"],
           },
         },
       },
@@ -237,8 +237,8 @@ const Theming = () => {
       ThemeProvider,
     },
     imports: {
-      'your-button-component': {
-        named: ['Button'],
+      "your-button-component": {
+        named: ["Button"],
       },
     },
     provider,
@@ -248,7 +248,7 @@ const Theming = () => {
     <Layout>
       <H1>Theming aka the provider API</H1>
       <P>
-        Component libraries often have some theming system. It usually uses the{' '}
+        Component libraries often have some theming system. It usually uses the{" "}
         <a href="https://reactjs.org/docs/context.html">React.Context</a> and
         Provider/Consumer APIs. <b>How that works?</b> There is a list of global
         values (colors, fonts, spacing) propagated through the context and each
@@ -258,7 +258,7 @@ const Theming = () => {
       <P>
         Often, you can also override these context values by adding an
         additional nested provider. Since this is a way how components can be
-        visually adjusted,{' '}
+        visually adjusted,{" "}
         <b>React View has a support for this Consumer/Provider pattern</b>:
       </P>
       <Compiler
@@ -276,15 +276,15 @@ const Theming = () => {
       />
       <ActionButtons {...params.actions} />
       <P>
-        The <Inline>ThemeEditor</Inline> is a custom built UI and utilizes the{' '}
+        The <Inline>ThemeEditor</Inline> is a custom built UI and utilizes the{" "}
         <Inline>provider</Inline> setting. You can see the default values that
         our <Inline>Button</Inline> component consumes. If you change any of
-        those, the code generator will wrap the component with the{' '}
+        those, the code generator will wrap the component with the{" "}
         <Inline>ThemeProvider</Inline> component and also add related imports.
       </P>
       <P>
         <b>This is an advanced and very flexible API</b>. For example, you have
-        to be familiar with the concept of{' '}
+        to be familiar with the concept of{" "}
         <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a> to
         use it. Check the source code of this page or main README for more
         details. We will add more docs over time.
