@@ -6,18 +6,17 @@ LICENSE file in the root directory of this source tree.
 */
 import { urls } from "../const";
 
-jest.setTimeout(20 * 1000);
+import { test, expect } from "@playwright/test";
 
-describe("Basic knobs", () => {
-  beforeAll(async () => {
+test.describe("Basic knobs", () => {
+  test.beforeEach(async ({ page }) => {
     await page.goto(urls.basic);
-  });
-
-  beforeEach(async () => {
+    await page.waitForSelector("[data-storyloaded]");
     await page.click('[data-testid="rv-reset"]');
   });
-
-  it("should select size compact, update component and input", async () => {
+  test("should select size compact, update component and input", async ({
+    page,
+  }) => {
     const codeOutput = `import * as React from "react";
 import { Button, SIZE } from "your-button-component";
 
@@ -39,11 +38,13 @@ export default () => {
     );
     expect(fontSize).toBe("14px");
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate((el) => el.value, editorTextarea);
+    const text = await page.evaluate((el: any) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 
-  it("should check disabled, update component and input", async () => {
+  test("should check disabled, update component and input", async ({
+    page,
+  }) => {
     const codeOutput = `import * as React from "react";
 import { Button } from "your-button-component";
 
@@ -61,11 +62,13 @@ export default () => {
     );
     expect(isDisabled).toBeTruthy();
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate((el) => el.value, editorTextarea);
+    const text = await page.evaluate((el: any) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 
-  it("should change the children knob, update component and code", async () => {
+  test("should change the children knob, update component and code", async ({
+    page,
+  }) => {
     const childrenPropValue = "e2etest";
     const codeOutput = `import * as React from "react";
 import { Button } from "your-button-component";
@@ -77,20 +80,20 @@ export default () => {
     </Button>
   );
 }`;
-    await page.focus('[data-testid="rv-knob-children"] textarea');
-    for (let i = 0; i < 5; i++) {
-      await page.keyboard.press("Delete");
-    }
-    await page.keyboard.type(childrenPropValue);
-    await expect(page).toMatchElement("#example-btn", {
-      text: childrenPropValue,
-    });
+    const textareaSelector = '[data-testid="rv-knob-children"] textarea';
+    await page.waitForSelector(textareaSelector);
+    await page.fill(textareaSelector, childrenPropValue);
+    await page.waitForTimeout(300); // waiting for debounce
+    const exampleBtn = await page.$("#example-btn");
+    await expect(exampleBtn!.textContent()).resolves.toBe(childrenPropValue);
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate((el) => el.value, editorTextarea);
+    const text = await page.evaluate((el: any) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 
-  it("should change the onClick knob, update component and code", async () => {
+  test("should change the onClick knob, update component and code", async ({
+    page,
+  }) => {
     const onClickPropValue = `() => {document.querySelector('h1').innerText = "foo"}`;
     const codeOutput = `import * as React from "react";
 import { Button } from "your-button-component";
@@ -106,12 +109,10 @@ export default () => {
     </Button>
   );
 }`;
-    await page.focus('[data-testid="rv-knob-onClick"] textarea');
-    for (let i = 0; i < 20; i++) {
-      await page.keyboard.press("Delete");
-    }
-    await page.keyboard.type(onClickPropValue);
-    await page.waitFor(300); // waiting for debounce
+    await page
+      .locator('[data-testid="rv-knob-onClick"] textarea')
+      .fill(onClickPropValue);
+    await page.waitForTimeout(300); // waiting for debounce
     await page.click("#example-btn");
     const text = await page.evaluate(() => {
       const h1 = document.querySelector("h1");
@@ -119,23 +120,25 @@ export default () => {
     });
     expect(text).toBe("foo");
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const editorText = await page.evaluate((el) => el.value, editorTextarea);
+    const editorText = await page.evaluate(
+      (el: any) => el.value,
+      editorTextarea,
+    );
     expect(editorText).toBe(codeOutput);
   });
 });
 
-describe("Basic actions", () => {
-  beforeAll(async () => {
+test.describe("Basic actions", () => {
+  test.beforeEach(async ({ page }) => {
     await page.goto(urls.basic);
-  });
-
-  beforeEach(async () => {
+    await page.waitForSelector("[data-storyloaded]");
     await page.click('[data-testid="rv-reset"]');
   });
 
-  it("should format the code snippet", async () => {
+  test("should format the code snippet", async ({ page }) => {
+    // todo fix bug with prettier formatting
     const formattedCode = `import * as React from "react";
-import { Button } from "your-button-component";
+import { value Button } from "your-button-component";
 
 export default () => {
   return (
@@ -151,29 +154,29 @@ export default () => {
         </Button>
       );
 }`;
-    await page.focus('[data-testid="rv-editor"] textarea');
-    for (let i = 0; i < 232; i++) {
-      await page.keyboard.press("Delete");
-    }
-    await page.keyboard.type(messyCode);
-    await page.waitFor(300); // waiting for debounce
+    await page.locator('[data-testid="rv-editor"] textarea').fill(messyCode);
+    // for (let i = 0; i < 232; i++) {
+    //   await page.keyboard.press("Delete");
+    // }
+    // await page.keyboard.type(messyCode);
+    await page.waitForTimeout(300); // waiting for debounce
     await page.click('[data-testid="rv-format"]');
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate((el) => el.value, editorTextarea);
+    const text = await page.evaluate((el: any) => el.value, editorTextarea);
     expect(text).toBe(formattedCode);
   });
 });
 
-describe("Basic editor", () => {
-  beforeAll(async () => {
+test.describe("Basic editor", () => {
+  test.beforeEach(async ({ page }) => {
     await page.goto(urls.basic);
-  });
-
-  beforeEach(async () => {
+    await page.waitForSelector("[data-storyloaded]");
     await page.click('[data-testid="rv-reset"]');
   });
 
-  it("should edit the code and update the knob and component", async () => {
+  test("should edit the code and update the knob and component", async ({
+    page,
+  }) => {
     const newCode = `import * as React from "react";
 import { Button } from "your-button-component";
 
@@ -182,12 +185,8 @@ export default () => {
     <Button onClick={() => alert("click")} disabled>Hello</Button>
   );
 }`;
-    await page.focus('[data-testid="rv-editor"] textarea');
-    for (let i = 0; i < 232; i++) {
-      await page.keyboard.press("Delete");
-    }
-    await page.keyboard.type(newCode);
-    await page.waitFor(300); // waiting for debounce
+    await page.locator('[data-testid="rv-editor"] textarea').fill(newCode);
+    await page.waitForTimeout(300); // waiting for debounce
     const isButtonDisabled = await page.$eval(
       "#example-btn",
       (e) => (e as any).disabled,

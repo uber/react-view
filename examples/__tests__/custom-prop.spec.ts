@@ -4,20 +4,18 @@ Copyright (c) Uber Technologies, Inc.
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
+
+import { test, expect } from "@playwright/test";
 import { urls } from "../const";
 
-jest.setTimeout(20 * 1000);
-
-describe("Basic knobs", () => {
-  beforeAll(async () => {
+test.describe("Basic knobs", () => {
+  test.beforeEach(async ({ page }) => {
     await page.goto(urls.customProps);
-  });
-
-  beforeEach(async () => {
+    await page.waitForSelector("[data-storyloaded]");
     await page.click('[data-testid="rv-reset"]');
   });
 
-  it("should output initial code", async () => {
+  test("should output initial code", async ({ page }) => {
     const codeOutput = `import * as React from "react";
 import { Rating } from "your-rating-component";
 
@@ -31,11 +29,13 @@ export default () => {
   );
 }`;
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate((el) => el.value, editorTextarea);
+    const text = await page.evaluate((el: any) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 
-  it("should select 4 hearts and update the slider and code", async () => {
+  test("should select 4 hearts and update the slider and code", async ({
+    page,
+  }) => {
     const codeOutput = `import * as React from "react";
 import { Rating } from "your-rating-component";
 
@@ -49,11 +49,11 @@ export default () => {
   );
 }`;
     await page.click("#heart-4");
-    await page.waitFor(300); // debounce time
+    await page.waitForTimeout(300); // debounce time
     const inputValue = await page.$eval("input", (e) => (e as any).value);
     expect(inputValue).toBe("4");
     const editorTextarea = await page.$('[data-testid="rv-editor"] textarea');
-    const text = await page.evaluate((el) => el.value, editorTextarea);
+    const text = await page.evaluate((el: any) => el.value, editorTextarea);
     expect(text).toBe(codeOutput);
   });
 });
