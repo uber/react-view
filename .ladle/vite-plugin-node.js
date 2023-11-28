@@ -1,14 +1,12 @@
 /* eslint-env node */
 
-import { builtinModules, createRequire } from "node:module";
+import { builtinModules } from "node:module";
 import nodeLibsBrowser from "node-libs-browser";
-
-const require = createRequire(import.meta.url);
 
 function NodeBuiltinsPolyfillPlugin() {
   return {
     name: "vite:node-builtins-polyfill",
-    config(config) {
+    config() {
       const aliasEntries = [];
       for (let moduleName of builtinModules) {
         const polyfillPath = nodeLibsBrowser[moduleName];

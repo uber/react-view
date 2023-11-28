@@ -5,6 +5,13 @@ export default {
     "process.env.BABEL_TYPES_8_BREAKING": JSON.stringify("true"),
   },
   plugins: [NodePlugin()],
+  server: {
+    open:
+      process.env.TYPE === "prod" || process.env.TYPE === "dev"
+        ? "none"
+        : undefined,
+    host: "127.0.0.1",
+  },
   build: {
     commonjsOptions: {
       strictRequires: true,

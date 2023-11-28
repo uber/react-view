@@ -21,13 +21,13 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc --p tsconfig.lib.json && tsc --p tsconfig.es.json",
-    "lint": "eslint '{examples,src}/**/*.{js,ts,tsx}' vite.config.js",
+    "lint": "eslint '{examples,src}/**/*.{js,ts,tsx}' vite.config.js .ladle",
     "prebuild": "rimraf dist",
-    "test": "tsc && yarn lint && vitest src",
-    "test:unit": "vitest src",
-    "test:e2e": "pnpm test:e2e:dev && pnpm test:e2e:prod",
-    "test:e2e:dev": "export TYPE=dev && pnpm exec playwright test",
-    "test:e2e:prod": "export TYPE=prod && pnpm exec playwright test",
+    "test": "vitest src --run",
+    "test:dev": "vitest src",
+    "test:e2e": " pnpm test:e2e:dev && pnpm test:e2e:prod",
+    "test:e2e:dev": "TYPE=dev && pnpm exec playwright test",
+    "test:e2e:prod": "TYPE=prod && pnpm exec playwright test",
     "typecheck": "tsc"
   },
   "dependencies": {
@@ -65,6 +65,8 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.33.2",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.1.0",
     "node-libs-browser": "^2.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

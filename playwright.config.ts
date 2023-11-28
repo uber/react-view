@@ -20,12 +20,12 @@ const config: PlaywrightTestConfig = {
   // Opt out of parallel tests on CI.
   workers: process.env.CI ? 1 : undefined,
   use: {
-    baseURL: `http://localhost:61000`,
+    baseURL: `http://127.0.0.1:${process.env.TYPE === "dev" ? 61000 : 8080}`,
   },
   webServer: {
     reuseExistingServer: true,
     command: getCommand(process.env.TYPE),
-    url: `http://localhost:61000`,
+    url: `http://127.0.0.1:${process.env.TYPE === "dev" ? 61000 : 8080}`,
   },
 };
 
