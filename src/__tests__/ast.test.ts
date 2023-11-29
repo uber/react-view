@@ -28,9 +28,10 @@ describe("transformBeforeCompilation", () => {
     const source = `
       export default () => <Input value="Hello" />;
     `;
-    expect(
-      formatAstAndPrint(transformBeforeCompilation(parse(source), "", {})),
-    ).toBe('() => <Input value="Hello" />');
+    expect(formatAstAndPrint(transformBeforeCompilation(parse(source), "", {})))
+      .toBe(`(() => {
+  return () => <Input value="Hello" />;
+})()`);
   });
 
   test("instrument a callback with __reactViewOnChange", () => {
@@ -77,7 +78,7 @@ describe("transformBeforeCompilation", () => {
   onChange={e => {
     foo();
     baz();
-    __reactViewOnChange(e.target.value, "value")
+    __reactViewOnChange(e.target.value, "value");
   }}
 />`);
   });
@@ -191,7 +192,9 @@ describe("parseCode", () => {
           >
             <Input
               value={value}
-              obj={{ foo: true }}
+              obj={{
+                foo: true
+              }}
               size={SIZE['a-b']}
               size2={SIZE.a}
               onChange={e => setValue(e.target.value)}
@@ -209,7 +212,7 @@ describe("parseCode", () => {
         value: "Hello",
         size: "SIZE.a-b",
         size2: "SIZE.a",
-        obj: "{ foo: true }",
+        obj: "{\n  foo: true\n}",
       },
       parsedProvider: {
         inputFill: "yellow",

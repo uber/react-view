@@ -543,7 +543,11 @@ import { ThemeProvider } from "your-component-library";
 export default () => {
   const [value, setValue] = React.useState(3);
   return (
-    <ThemeProvider colors={{ inputFill: "yellow" }}>
+    <ThemeProvider
+      colors={{
+        inputFill: "yellow"
+      }}
+    >
       <Rating
         value={value}
         onChange={e => setValue(e.target.value)}

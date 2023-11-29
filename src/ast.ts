@@ -100,26 +100,17 @@ export const transformBeforeCompilation = (
   elementName: string,
   propsConfig: { [key: string]: TProp },
 ) => {
+  let shouldApplyIIFE = false;
+
   try {
     traverse(ast as any, {
-      VariableDeclaration(path) {
-        if (path.parent.type === "Program") {
-          //@ts-ignore
-          path.replaceWith(path.node.declarations[0].init);
-        }
-      },
       ImportDeclaration(path) {
         path.remove();
       },
       ExportDefaultDeclaration(path) {
-        if (
-          path.node.declaration.type === "ArrowFunctionExpression" ||
-          path.node.declaration.type === "FunctionDeclaration"
-        ) {
-          path.replaceWith(path.node.declaration);
-        } else {
-          path.remove();
-        }
+        //Replace the default export with a return statement
+        path.replaceWith(t.returnStatement(path.node.declaration as any));
+        shouldApplyIIFE = true;
       },
       // adds internal state instrumentation through __reactViewOnChange callback
       JSXElement(path) {
@@ -158,6 +149,24 @@ export const transformBeforeCompilation = (
                     );
               }
             });
+        }
+      },
+    });
+  } catch (e) {}
+
+  try {
+    traverse(ast as any, {
+      Program(path) {
+        if (shouldApplyIIFE) {
+          const body = path.node.body;
+          // Create an IIFE around the body
+          const iife = t.callExpression(
+            t.arrowFunctionExpression([], t.blockStatement(body)),
+            [],
+          );
+          // Replace the original program body with the IIFE
+          path.replaceWith(t.program([t.expressionStatement(iife)]));
+          shouldApplyIIFE = false;
         }
       },
     });
