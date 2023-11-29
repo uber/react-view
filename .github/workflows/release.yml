@@ -35,6 +35,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build
+        run: pnpm build
+
       - name: Creating .npmrc
         run: |
           cat << EOF > "$HOME/.npmrc"
@@ -48,7 +51,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm build && pnpm changeset publish
+          publish: pnpm changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_DEPLOY_KEY }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
