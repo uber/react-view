@@ -15,6 +15,14 @@
   "files": [
     "dist"
   ],
+  "packageManager": "pnpm@8.7.1",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "author": "Vojtech Miksu <vojtech@uber.com>",
   "repository": "uber/react-view",
   "license": "MIT",
@@ -49,6 +57,10 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.23.3",
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.1",
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
     "@ladle/react": "^4.0.0",
     "@playwright/test": "^1.40.0",
     "@types/babel__code-frame": "^7.0.6",
