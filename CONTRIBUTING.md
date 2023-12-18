@@ -5,19 +5,21 @@
 ```sh
 git clone https://github.com/uber/react-view
 cd react-view
-yarn
+pnpm install
 ```
 
-2. You can test your changes inside of the storybook:
+2. You can test your changes inside of the Ladle dev server by running:
 
 ```sh
-yarn storybook
+pnpm ladle serve
 ```
 
 3. When done, run all unit tests, e2e tests, typescript check and eslint via:
 
 ```sh
-yarn test:ci
+pnpm typecheck
+pnpm lint
+pnpm test
 ```
 
 All features and bug fixes should be covered by unit or e2e tests.
