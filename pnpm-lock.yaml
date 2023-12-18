@@ -32,9 +32,6 @@ dependencies:
   '@miksu/prettier':
     specifier: ^1.18.6
     version: 1.18.6(@angular/compiler@7.2.16)(remark-parse@5.0.0)(yaml@1.10.2)
-  '@miksu/react-tiny-popover':
-    specifier: ^3.5.1
-    version: 3.5.1(react-dom@18.2.0)(react@18.2.0)
   copy-to-clipboard:
     specifier: ^3.3.3
     version: 3.3.3
@@ -47,6 +44,9 @@ dependencies:
   react-simple-code-editor:
     specifier: ^0.13.1
     version: 0.13.1(react-dom@18.2.0)(react@18.2.0)
+  react-tiny-popover:
+    specifier: ^8.0.4
+    version: 8.0.4(react-dom@18.2.0)(react@18.2.0)
 
 devDependencies:
   '@babel/preset-typescript':
@@ -1432,18 +1432,6 @@ packages:
       - yaml
     dev: false
 
-  /@miksu/react-tiny-popover@3.5.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-YSpc7wznyAzQdkQhrLwRNTvLX96swskKvWTNGkilFB2MyC6E0xMem4EtX93DYXHK0vslhpYMtqbjcAWQcLhZeQ==}
-    peerDependencies:
-      react: ^15.6.1 || ^16.0.0
-      react-dom: ^15.6.1 || ^16.0.0
-    dependencies:
-      '@types/underscore': 1.11.15
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      underscore: 1.13.6
-    dev: false
-
   /@mswjs/cookies@1.1.0:
     resolution: {integrity: sha512-0ZcCVQxifZmhwNBoQIrystCb+2sWBY2Zw8lpfJBPCHGCA/HWqehITeCRVIv4VMy8MPlaHo2w2pTHFV2pFfqKPw==}
     engines: {node: '>=18'}
@@ -1899,10 +1887,6 @@ packages:
   /@types/statuses@2.0.4:
     resolution: {integrity: sha512-eqNDvZsCNY49OAXB0Firg/Sc2BgoWsntsLUdybGFOhAfCD6QJ2n9HXUIHGqt5qjrxmMv4wS8WLAw43ZkKcJ8Pw==}
     dev: true
-
-  /@types/underscore@1.11.15:
-    resolution: {integrity: sha512-HP38xE+GuWGlbSRq9WrZkousaQ7dragtZCruBVMi0oX1migFZavZ3OROKHSkNp/9ouq82zrWtZpg18jFnVN96g==}
-    dev: false
 
   /@types/unist@2.0.10:
     resolution: {integrity: sha512-IfYcSBWE3hLpBg8+X2SEa8LVkJdJEkT2Ese2aaLs3ptGdVtABxndrMaxuFlQ1qdFf9Q5rDvDpxI3WwgvKFAsQA==}
@@ -6907,6 +6891,16 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /react-tiny-popover@8.0.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-pn0Y/G0gyMdYTBEWSKCCnaZsXAa54PkfnRE4fnMM5633SSClYrXxwXKc6vPYgJ9shLatGginxMjnhXq6guZmng==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
     engines: {node: '>=0.10.0'}
@@ -8006,10 +8000,6 @@ packages:
       has-symbols: 1.0.3
       which-boxed-primitive: 1.0.2
     dev: true
-
-  /underscore@1.13.6:
-    resolution: {integrity: sha512-+A5Sja4HP1M08MaXya7p5LvjuM7K6q/2EaC0+iovj/wOcMsTzMvDFbasi/oSapiwOlt252IqsKqPjCl7huKS0A==}
-    dev: false
 
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
