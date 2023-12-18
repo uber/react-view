@@ -5,7 +5,7 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
 import * as React from "react";
-import Popover from "@miksu/react-tiny-popover";
+import { Popover } from "react-tiny-popover";
 import type { TPropValue, TImportsConfig } from "../types";
 import Error from "./error";
 import Editor from "./editor";
@@ -56,11 +56,11 @@ const Label: React.FC<{
   return (
     <Popover
       isOpen={Boolean(isHover)}
-      position={"top"}
+      positions={"top"}
       content={<div>{tooltip}</div>}
+      ref={hoverRef as any}
     >
       <label
-        ref={hoverRef as any}
         style={{
           fontWeight: 500,
           lineHeight: "20px",
@@ -83,11 +83,11 @@ const BooleanKnob: React.FC<{
   return (
     <Popover
       isOpen={Boolean(isHover)}
-      position={"top"}
+      positions={"top"}
       content={<div>{tooltip}</div>}
+      ref={hoverRef as any}
     >
       <div
-        ref={hoverRef as any}
         style={{
           display: "flex",
           alignItems: "center",

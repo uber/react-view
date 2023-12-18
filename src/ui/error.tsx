@@ -5,7 +5,7 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 */
 import * as React from "react";
-import Popover from "@miksu/react-tiny-popover";
+import { Popover } from "react-tiny-popover";
 import { formatBabelError, frameError, getStyles } from "../utils";
 import type { TErrorProps } from "../types";
 
@@ -17,7 +17,7 @@ const PopupError: React.FC<{ enabled: boolean; children: React.ReactNode }> = ({
   return (
     <Popover
       isOpen={enabled}
-      position={"bottom"}
+      positions={"bottom"}
       content={<div>{children}</div>}
     >
       <div />
