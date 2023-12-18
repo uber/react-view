@@ -1,5 +1,11 @@
 # react-view
 
+## 3.0.1
+
+### Patch Changes
+
+- [#105](https://github.com/uber/react-view/pull/105) [`9a6fd36`](https://github.com/uber/react-view/commit/9a6fd361380e6540edffe1e4068084a8b87c269a) Thanks [@taifen](https://github.com/taifen)! - Updated react-tiny-popover to use React 17 and 18
+
 ## 3.0.0
 
 ### Major Changes
