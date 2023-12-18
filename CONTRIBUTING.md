@@ -20,6 +20,9 @@ pnpm ladle serve
 pnpm typecheck
 pnpm lint
 pnpm test
+
+pnpm exec playwright install
+pnpm test:e2e:dev
 ```
 
 All features and bug fixes should be covered by unit or e2e tests.
